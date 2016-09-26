@@ -1,0 +1,6 @@
+framework module SwiftyVK {
+  umbrella header "SwiftyVK-umbrella.h"
+
+  export *
+  module * { export * }
+}
