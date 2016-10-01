@@ -4,8 +4,8 @@
 
 <br>
 <img height="350" src="https://github.com/yarodevuci/VKMusic/blob/master/Splash.png?raw=true" />
-<img height="350" src="https://github.com/yarodevuci/VKMusic/blob/master/MyMusic.png?raw=true" />
-<img height="350" src="https://github.com/yarodevuci/VKMusic/blob/master/Downloads.png?raw=true" />
+<img height="350" src="https://github.com/yarodevuci/VKMusic/blob/master/DropDownMenu.png?raw=true" />
+<img height="350" src="https://github.com/yarodevuci/VKMusic/blob/master/AudioList.png?raw=true" />
 <img height="350" src="https://github.com/yarodevuci/VKMusic/blob/master/Player.png?raw=true" />
 <br>
 
