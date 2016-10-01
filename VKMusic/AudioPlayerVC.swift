@@ -18,8 +18,10 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var volumeControl: UISlider!
+    @IBOutlet weak var albumCoverImage: UIImageView!
     @IBOutlet weak var durationSliderYConstraint: NSLayoutConstraint!
     @IBOutlet weak var artistNameBottonLayoutConstraint: NSLayoutConstraint!
+    
     
     static var musicToPlay = [Audio]()
     static var indexToPlay = 0
@@ -29,14 +31,22 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     let defaults = UserDefaults.standard
     var time = Float(0)
     var timer = Timer()
-    var interactor:Interactor? = nil
+    static var albumImage = UIImage(named: "music_plate")
+    
+    var tapCloseButtonActionHandler : ((Void) -> Void)?
     
     
     //MARK: Override preferredStatusBarStyle
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
-     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(getAlbumCover), name:NSNotification.Name(rawValue: "albumCoverImageRetrieved"), object: nil)
+        
+        durationSlider.value = 0
+        
+        GlobalFunctions().addBlurEffectToView(view: self.view)
+        
         if UIScreen.main.bounds.size.width == 375 {
             durationSliderYConstraint.constant = 348 //adjust duration Slider for iphone6
             artistNameBottonLayoutConstraint.constant = 170
@@ -44,20 +54,25 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         }
         player.delegate = self
         volumeControl.value = defaults.float(forKey: "volumeControlValue")
-        self.setInfo(fromIndex: AudioPlayerVC.indexToPlay)
         durationSlider.setThumbImage(UIImage(named: "circle"), for: UIControlState.normal)
         durationSlider.setThumbImage(UIImage(named: "circle"), for: UIControlState.highlighted)
         volumeControl.setThumbImage(UIImage(named: "circle"), for: UIControlState.normal)
         volumeControl.setThumbImage(UIImage(named: "circle"), for: UIControlState.highlighted)
+        
+        self.setInfo(fromIndex: AudioPlayerVC.indexToPlay)
+
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //durationSlider.value = Float(time)
         
     }
     @IBAction func adjustVolume(_ sender: AnyObject) {
         player.controlVolume(value: volumeControl.value)
+        var volume = AVAudioSession.sharedInstance().outputVolume
+        volume = volumeControl.value
+        print("Output volume: \(volume)")
         defaults.set(volumeControl.value, forKey: "volumeControlValue")
     }
     
@@ -67,12 +82,11 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         playButton.setImage(UIImage(named: "play"), for: UIControlState())
     }
     
-    @IBAction func cancelToDownloads(segue:UIStoryboardSegue) {}
-    
-    
     @IBAction func tapToDismiss(_ sender: AnyObject) {
-        dismiss(animated: true, completion: nil)
+        self.tapCloseButtonActionHandler?()
+        self.dismiss(animated: true, completion: nil)
     }
+    
     
     @IBAction func didFinishDragging(_ sender: AnyObject) {
         let value = self.durationSlider.value
@@ -80,37 +94,6 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         player.seekToTime(time)
         playButton.setImage(UIImage(named: "pause"), for: UIControlState())
         player.play()
-    }
-    
-    @IBAction func handleSwipe(_ sender: UIPanGestureRecognizer) {
-        let percentThreshold:CGFloat = 0.3
-        // convert y-position to downward pull progress (percentage)
-        let translation = sender.translation(in: view)
-        let verticalMovement = translation.y / view.bounds.height
-        let downwardMovement = fmaxf(Float(verticalMovement), 0.0)
-        let downwardMovementPercent = fminf(downwardMovement, 1.0)
-        let progress = CGFloat(downwardMovementPercent)
-        
-        guard let interactor = interactor else { return }
-        
-        switch sender.state {
-        case .began:
-            interactor.hasStarted = true
-            dismiss(animated: true, completion: nil)
-        case .changed:
-            interactor.shouldFinish = progress > percentThreshold
-            interactor.update(progress)
-        case .cancelled:
-            interactor.hasStarted = false
-            interactor.cancel()
-        case .ended:
-            interactor.hasStarted = false
-            interactor.shouldFinish
-                ? interactor.finish()
-                : interactor.cancel()
-        default:
-            break
-        }
     }
     
     
@@ -136,6 +119,18 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         player.previous()
     }
     
+    func getAlbumCover() {
+        
+        
+        if AudioPlayerVC.albumImage?.size.width == 250 {
+            self.albumCoverImage.contentMode = .scaleAspectFit
+        }
+        else {
+            self.albumCoverImage.contentMode = .scaleAspectFit
+        }
+        self.albumCoverImage.image = AudioPlayerVC.albumImage
+    }
+    
     
     fileprivate func setInfo(fromIndex: Int) {
         if AudioPlayerVC.musicToPlay.count != 0 {
@@ -148,7 +143,7 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
             currenTimeLabel.text? = "0:00"
             durationSlider.maximumValue = Float((audio.duration))
             self.player.controlVolume(value: self.volumeControl.value)
-            
+            durationSlider.value = 0
         }
     }
     
@@ -169,6 +164,7 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "reloadTableView"), object: nil)
         currenTimeLabel.text? = durationString(Int(time))
         durationSlider.value = Float(time)
+        
     }
     
     

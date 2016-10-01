@@ -8,6 +8,8 @@
 
 import Foundation
 import AVFoundation
+import MediaPlayer
+
 
 enum PlaybleScreen {
     case none
@@ -77,22 +79,32 @@ class AudioPlayer{
         if let d = self.delegate {
             d.playerWillPlayNexAudio()
         }
-    }
-    
-    func playLocalAudio(audioURL: URL) {
-        if currentAudio != nil {
-            killTimeObserver()
+        let metadataList = playerItem.asset.metadata
+        var isFound = false
+        if metadataList.count != 0 {
+            for item in metadataList {
+                if item.commonKey == "artwork" {
+                    print("image loaded")
+                    AudioPlayerVC.albumImage = UIImage(data: item.value as! Data)!
+                    NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "albumCoverImageRetrieved"), object: nil)
+                    isFound = true
+                    break
+                }
+            }
+            if !isFound {
+                print("Not Found ")
+                AudioPlayerVC.albumImage = UIImage(named: "music_plate")
+                NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "albumCoverImageRetrieved"), object: nil)
+            }
         }
-        let playerItem = AVPlayerItem(url: audioURL)
-        player = AVPlayer(playerItem: playerItem)
-        player.play()
-        addTimeObeserver()
-        CommandCenter.defaultCenter.setNowPlayingInfo()
+        else {
+            AudioPlayerVC.albumImage = UIImage(named: "music_plate")
+            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "albumCoverImageRetrieved"), object: nil)
+            print("No album Image found ")
+        }
     }
     
-    func play() {
-        player.play()
-    }
+    func play() { player.play() }
     
     func previous() {
         NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "playPreviousSong"), object: nil)

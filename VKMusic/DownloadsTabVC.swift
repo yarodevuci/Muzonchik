@@ -23,7 +23,6 @@ class DownloadsTabVC: UIViewController {
     var selectedIndex = 0
     static var a = ""
     static var b = Float(0)
-    let interactor = Interactor()
 
     
     
@@ -35,20 +34,14 @@ class DownloadsTabVC: UIViewController {
         tableView.reloadData()
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destinationViewController = segue.destination as? AudioPlayerVC {
-            destinationViewController.transitioningDelegate = self
-            destinationViewController.interactor = interactor
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(displayDownloads), name:NSNotification.Name(rawValue: "downloadComplete"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(updateProgress), name:NSNotification.Name(rawValue: "reloadTableView"), object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(playNextSong), name:NSNotification.Name(rawValue: "playNextSong"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(playPreviousSong), name:NSNotification.Name(rawValue: "playPreviousSong"), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(displayDownloads), name:NSNotification.Name(rawValue: "downloadComplete"), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(updateProgress), name:NSNotification.Name(rawValue: "reloadTableView"), object: nil)
+//        
+//        NotificationCenter.default.addObserver(self, selector: #selector(playNextSong), name:NSNotification.Name(rawValue: "playNextSong"), object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(playPreviousSong), name:NSNotification.Name(rawValue: "playPreviousSong"), object: nil)
         
         let cancelButtonAttributes: NSDictionary = [NSForegroundColorAttributeName: UIColor.red]
         UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes as? [String : AnyObject], for: UIControlState.normal)
@@ -90,15 +83,15 @@ class DownloadsTabVC: UIViewController {
     func displayDownloads() {
         allowToDelete = true
         myDownloads.removeAll()
-        for audio in SearchAudioVC.searchResults {
-            refreshControl?.endRefreshing()
-            if SearchAudioVC().localFileExistsForTrack(audio) {
-                self.myDownloads.append(audio)
-            }
-            DispatchQueue.main.async(execute: { () -> Void in
-                self.tableView.reloadData()
-            })
-        }
+//        for audio in searchResults {
+//            refreshControl?.endRefreshing()
+//            if SearchAudioVC().localFileExistsForTrack(audio) {
+//                self.myDownloads.append(audio)
+//            }
+//            DispatchQueue.main.async(execute: { () -> Void in
+//                self.tableView.reloadData()
+//            })
+//        }
     }
     
     func deleteTrack(_ row: Int) {
@@ -221,16 +214,6 @@ extension DownloadsTabVC: UITableViewDelegate {
         }
     }
     
-}
-
-extension DownloadsTabVC: UIViewControllerTransitioningDelegate {
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return DismissAnimator()
-    }
-    
-    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        return interactor.hasStarted ? interactor : nil
-    }
 }
 
 

@@ -18,26 +18,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         _ = VKDelegateImpl(window_: window!)
         
-        //settings for tab bar
-        UITabBar.appearance().isTranslucent = true
-        UITabBar.appearance().barTintColor = UIColor.black
-        UITabBar.appearance().tintColor = UIColor.white
         return true
     }
     
     func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
         backgroundSessionCompletionHandler = completionHandler
-    }
-    
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        if #available(iOS 9.0, *) {
-            VK.processURL(url: url, options: options)
-        } else {
-            VK.processURL_old(url: url, sourceApplication: "")
-        }
-        
-        // VK.processURL(url: url, options: options)
-        return true
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

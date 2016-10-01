@@ -11,15 +11,20 @@ import SwiftyVK
 import MediaPlayer
 
 class SearchAudioVC: UIViewController {
-    
+    //MARK: @IBOutlet
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var containerView : UIView!
+    @IBOutlet weak var miniPlayerView : LineView!
+    @IBOutlet weak var miniPlayerButton : UIButton!
+    @IBOutlet weak var miniPlayerArtistName: UILabel!
+    @IBOutlet weak var miniPlayerSongName: UILabel!
+    @IBOutlet weak var playPauseMiniPlayerButton: UIButton!
     
+    //MARK: Constants
     let player = AudioPlayer.defaultPlayer
     let defaultSession = Foundation.URLSession(configuration: URLSessionConfiguration.default)
-    let blueButtonColor = UIColor(red:0.04, green:0.38, blue:1.00, alpha:1.0).cgColor
-    let redButtonColor = UIColor(red:0.93, green:0.11, blue:0.14, alpha:1.0).cgColor
-    let interactor = Interactor()
+    let gF = GlobalFunctions()
     
     var activeDownloads = [String: Download]()
     var dataTask: URLSessionDataTask?
@@ -27,9 +32,13 @@ class SearchAudioVC: UIViewController {
     var isNowPlaying = -1
     var allowToAddAudio = false
     var activeDownloadsCount = 0
+    var menuView: BTNavigationDropdownMenu!
+    static var selectedIndex = 0
+
     fileprivate weak var refreshControl: UIRefreshControl?
     static var searchResults = [Audio]()
-    
+    static var tempArray = [Audio]()
+    var allowToPresent = true
     
     lazy var tapRecognizer: UITapGestureRecognizer = {
         var recognizer = UITapGestureRecognizer(target:self, action: #selector(dismissKeyboard))
@@ -41,57 +50,163 @@ class SearchAudioVC: UIViewController {
         return session
     }()
     
+    //MARK: Override viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        let cancelButtonAttributes: NSDictionary = [NSForegroundColorAttributeName: UIColor.red]
-        UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes as? [String : AnyObject], for: UIControlState.normal)
+        //Set up the navigation dropdown menu
+        setupDropdownMenu()
+        //Set up miniPlayerView
+        gF.setupAnimator(vc: self, miniPlayerView: miniPlayerView, view: self.view, cView: containerView, tableView: tableView)
+        
         //refresh control
         let refreshControl = UIRefreshControl()
-        refreshControl.tintColor = UIColor.white
+        refreshControl.tintColor = UIColor.black
         refreshControl.addTarget(self, action: #selector(displayMusicList), for: .valueChanged)
         tableView.insertSubview(refreshControl, at: 0)
         self.refreshControl = refreshControl
         
-        tableView.tableFooterView = UIView()
+        gF.addBlurEffectToView(view: miniPlayerView)
+        
         _ = self.downloadsSession
-        displayMusicList()
+        tableView.tableFooterView = UIView()
         searchBar.keyboardAppearance = .dark
+        
+        displayMusicList()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(playNextSong), name:NSNotification.Name(rawValue: "playNextSong"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(playPreviousSong), name:NSNotification.Name(rawValue: "playPreviousSong"), object: nil)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destinationViewController = segue.destination as? AudioPlayerVC {
-            destinationViewController.transitioningDelegate = self
-            destinationViewController.interactor = interactor
+    @IBAction func tapMiniPlayerButton() {
+        gF.animator.interactiveType = .none
+        self.present(gF.modalVC, animated: true, completion: nil)
+    }
+    
+    func playPreviousSong() {
+        allowToPresent = false
+        if SearchAudioVC.selectedIndex == 0 {
+            SearchAudioVC.selectedIndex = SearchAudioVC.searchResults.count - 1
+        } else {
+            SearchAudioVC.selectedIndex = SearchAudioVC.selectedIndex - 1
         }
+        let rowToSelect = NSIndexPath(row: SearchAudioVC.selectedIndex, section: 0)
+        print(rowToSelect.row)
+        self.tableView.selectRow(at: rowToSelect as IndexPath, animated: true, scrollPosition: UITableViewScrollPosition.none)
+        self.tableView(self.tableView, didSelectRowAt: rowToSelect as IndexPath)
+        allowToPresent = true
+    }
+    
+    func playNextSong() {
+        allowToPresent = false
+        if SearchAudioVC.selectedIndex == (SearchAudioVC.searchResults.count - 1) {
+            SearchAudioVC.selectedIndex = -1
+        }
+        let rowToSelect = NSIndexPath(row: SearchAudioVC.selectedIndex + 1, section: 0)
+        print(SearchAudioVC.selectedIndex)
+        print(rowToSelect.row)
+        self.tableView.selectRow(at: rowToSelect as IndexPath, animated: true, scrollPosition: UITableViewScrollPosition.none)
+        self.tableView(self.tableView, didSelectRowAt: rowToSelect as IndexPath)
+        allowToPresent = true
+    }
+
+    
+    //Set up the navigation dropdown menu
+    func setupDropdownMenu() {
+        var menuView: BTNavigationDropdownMenu!
+        let items = ["Мои Аудиозаписи", "Загруженные", "Рекомендации", "Популярные"]
+        menuView = BTNavigationDropdownMenu(containerView: self.view, title: "Аудиозаписи", items: items as [AnyObject])
+        menuView.cellHeight = 50
+        menuView.cellBackgroundColor = UIColor(red:0.95, green:0.95, blue:0.95, alpha:1.0)
+        menuView.cellSelectionColor = GlobalFunctions.vkNavBarColor
+        menuView.shouldKeepSelectedCellColor = false
+        menuView.cellTextLabelColor = UIColor.black
+        menuView.cellTextLabelFont = UIFont(name: "Avenir-Heavy", size: 17)
+        menuView.cellTextLabelAlignment = .center // .Center // .Right // .Left
+        menuView.arrowPadding = 15
+        menuView.animationDuration = 0.5
+        menuView.maskBackgroundColor = UIColor.black
+        menuView.maskBackgroundOpacity = 0.3
+        menuView.didSelectItemAtIndexHandler = {(indexPath: Int) -> () in
+            self.handleDropdownSelection(index: indexPath)
+        }
+        view.addSubview(menuView)
     }
     
     
-    func deleteTrack(_ row: Int) {
-        let audio = SearchAudioVC.searchResults[row]
-        let trackToDelete = VK.API.Audio.delete([.audioId: String(audio.id), .ownerId: String(audio.ownerID)])
-        trackToDelete.successBlock = { result in
-            if result.intValue == 1 {
-                DispatchQueue.main.async(execute: { () -> Void in
-                    self.player.pause()
-                    SearchAudioVC.searchResults.remove(at: row)
-                    self.tableView.reloadData()
-                    SwiftNotificationBanner.presentNotification("Удалено")
-                })
+    func displayDownloadedSongsOnly() {
+        allowToDelete = true
+        SearchAudioVC.tempArray = SearchAudioVC.searchResults
+        SearchAudioVC.searchResults.removeAll()
+        for audio in SearchAudioVC.tempArray {
+            if localFileExistsForTrack(audio) {
+                SearchAudioVC.searchResults.append(audio)
             }
+            DispatchQueue.main.async(execute: { () -> Void in
+                self.tableView.reloadData()
+            })
         }
-        trackToDelete.errorBlock = {error in
-            SwiftNotificationBanner.presentNotification("Не удалось удалить! Попробуйте еще раз")
-            print("Deleting Audio Failed\n \(error)")}
-        trackToDelete.send()
     }
     
-    @IBAction func cancelToPlayersViewController(segue:UIStoryboardSegue) {}
+    func displayRecomendations() {
+        allowToDelete = false
+        allowToAddAudio = true
+        
+        let getAudios = VK.API.Audio.getRecommendations([.targetAudio: "3970872_117703755", .shuffle: "1", .count: "500"])
+        
+        RappleActivityIndicatorView.startAnimatingWithLabel("Loading...", attributes: RappleModernAttributes)
+        
+        getAudios.successBlock = { response in
+            SearchAudioVC.searchResults.removeAll()
+            RappleActivityIndicatorView.stopAnimating()
+            for data in response["items"] {
+                let audio = Audio(serverData: data.1.object as! [String : AnyObject])
+                SearchAudioVC.searchResults.append(audio)
+            }
+            DispatchQueue.main.async(execute: { () -> Void in
+                self.tableView.reloadData()
+                self.refreshControl?.endRefreshing()
+            })
+        }
+        getAudios.errorBlock = { error in
+            DispatchQueue.main.async(execute: { () -> Void in
+                self.refreshControl?.endRefreshing() })
+            print("Get Audios fail with error: \(error)")}
+        getAudios.send()
+    }
+    
+    func displayPopularMusic() {
+        allowToDelete = false
+        allowToAddAudio = true
+        
+        let getAudios = VK.API.Audio.getPopular([.count: "500"])
+        
+        RappleActivityIndicatorView.startAnimatingWithLabel("Loading...", attributes: RappleModernAttributes)
+        
+        getAudios.successBlock = { response in
+            SearchAudioVC.searchResults.removeAll()
+            RappleActivityIndicatorView.stopAnimating()
+            for data in response {
+                let audio = Audio(serverData: data.1.object as! [String : AnyObject])
+                SearchAudioVC.searchResults.append(audio)
+            }
+            DispatchQueue.main.async(execute: { () -> Void in
+                self.tableView.reloadData()
+                self.refreshControl?.endRefreshing()
+            })
+        }
+        getAudios.errorBlock = { error in
+            DispatchQueue.main.async(execute: { () -> Void in
+                self.refreshControl?.endRefreshing() })
+            print("Get Audios fail with error: \(error)")}
+        getAudios.send()
+    }
     
     func displayMusicList() {
         allowToDelete = true
         allowToAddAudio = false
         
         let getAudios = VK.API.Audio.get()
+        
         if VK.state == .authorized {
             RappleActivityIndicatorView.startAnimatingWithLabel("Loading...", attributes: RappleModernAttributes)
         }
@@ -114,6 +229,78 @@ class SearchAudioVC: UIViewController {
             print("Get Audios fail with error: \(error)")}
         getAudios.send()
     }
+    
+    func handleDropdownSelection(index: Int) {
+        print("Selected index is \(index)")
+        switch index {
+        case 0:
+            displayMusicList()
+        case 1:
+            displayDownloadedSongsOnly()
+        case 2:
+            displayRecomendations()
+        case 3:
+            displayPopularMusic()
+        default:
+            break
+        }
+    }
+    
+    func deleteTrack(_ row: Int) {
+        
+        let track = SearchAudioVC.searchResults[row]
+        
+        if localFileExistsForTrack(track) {
+            let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let fileManager = FileManager.default
+            
+            do {
+                let directoryContents = try FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil, options: [])
+                let mp3Files = directoryContents.filter{ $0.pathExtension == "mp3" }
+                do {
+                    print("deleting file at location:\n\(mp3Files[row].absoluteString)")
+                    try! fileManager.removeItem(at: mp3Files[row].absoluteURL)
+                    print("Deleted..")
+                    miniPlayerView.isHidden = true
+                    player.pause()
+                    tableView.reloadData()
+                    isNowPlaying = -1
+                    SwiftNotificationBanner.presentNotification("Удалено")
+                }
+                
+            } catch let error as NSError {
+                print(error.localizedDescription)
+            }
+        }
+        let audio = SearchAudioVC.searchResults[row]
+        let trackToDelete = VK.API.Audio.delete([.audioId: String(audio.id), .ownerId: String(audio.ownerID)])
+        trackToDelete.successBlock = { result in
+            if result.intValue == 1 {
+                DispatchQueue.main.async(execute: { () -> Void in
+                    self.player.pause()
+                    SearchAudioVC.searchResults.remove(at: row)
+                    self.tableView.reloadData()
+                    SwiftNotificationBanner.presentNotification("Удалено")
+                    self.isNowPlaying = -1
+                })
+            }
+        }
+        trackToDelete.errorBlock = {error in
+            SwiftNotificationBanner.presentNotification("Не удалось удалить!\nПопробуйте еще раз")
+            print("Deleting Audio Failed\n \(error)")}
+        trackToDelete.send()
+    }
+    
+    @IBAction func tapPlayPauseMiniPlayer(_ sender: AnyObject) {
+        if playPauseMiniPlayerButton?.imageView?.image == UIImage(named: "miniPlay") {
+            playPauseMiniPlayerButton?.setImage(UIImage(named: "miniPause"), for: UIControlState())
+            player.play()
+        } else {
+            playPauseMiniPlayerButton?.setImage(UIImage(named: "miniPlay"), for: UIControlState())
+            player.pause()
+        }
+    }
+    
     
     func searchAudio(searchText:String) {
         RappleActivityIndicatorView.startAnimatingWithLabel("Searching for \(searchText)", attributes: RappleModernAttributes)
@@ -296,6 +483,7 @@ extension SearchAudioVC: UISearchBarDelegate {
         if !allowToDelete {
             displayMusicList()
         }
+        searchBar.text = ""
         allowToDelete = true
         searchBar.showsCancelButton = false
         view.endEditing(true)
@@ -358,14 +546,17 @@ extension SearchAudioVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TrackCell", for: indexPath) as! TrackCell
         
-        cell.downloadButton.layer.borderColor = blueButtonColor
-        cell.cancelButton.layer.borderColor = redButtonColor
+        cell.downloadButton.layer.borderColor = gF.blueButtonColor
+        cell.downloadButton.layer.cornerRadius = 5
+        cell.cancelButton.layer.borderColor = gF.redButtonColor
+        cell.cancelButton.layer.cornerRadius = 5
+        
         
         cell.delegate = self
         
         let track = SearchAudioVC.searchResults[indexPath.row]
-        cell.titleLabel.text = track.title
-        cell.artistLabel.text = track.artist
+        cell.artistLabel.text = track.title
+        cell.titleLabel.text = track.artist
         
         var showDownloadControls = false
         if let download = activeDownloads[track.url!] {
@@ -397,8 +588,22 @@ extension SearchAudioVC: UITableViewDelegate {
         return .delete
     }
     
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return miniPlayerView.isHidden ? 0 : 44.0
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        miniPlayerView.isHidden = false
+        SearchAudioVC.selectedIndex = indexPath.row
+
+        miniPlayerArtistName.text = SearchAudioVC.searchResults[indexPath.row].artist
+        miniPlayerSongName.text = SearchAudioVC.searchResults[indexPath.row].title
+        if allowToPresent {
+
+        self.gF.animator.interactiveType = .none
+        self.present(self.gF.modalVC, animated: true, completion: nil)
+        }
         if isNowPlaying != indexPath.row {
             player.setPlayList(SearchAudioVC.searchResults)
             AudioPlayerVC.musicToPlay = SearchAudioVC.searchResults
@@ -406,6 +611,7 @@ extension SearchAudioVC: UITableViewDelegate {
             AudioPlayer.index = indexPath.row
             isNowPlaying = indexPath.row
             let track = SearchAudioVC.searchResults[(indexPath as NSIndexPath).row]
+            
             if localFileExistsForTrack(track) {
                 let urlString = "\(track.title)\n\(track.artist).mp3"
                 let url = localFilePathForUrl(urlString)
@@ -417,16 +623,6 @@ extension SearchAudioVC: UITableViewDelegate {
             }
             
         }
-    }
-}
-
-extension SearchAudioVC: UIViewControllerTransitioningDelegate {
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return DismissAnimator()
-    }
-    
-    func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-        return interactor.hasStarted ? interactor : nil
     }
 }
 
