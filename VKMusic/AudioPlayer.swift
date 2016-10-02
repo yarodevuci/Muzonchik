@@ -86,6 +86,7 @@ class AudioPlayer{
                 if item.commonKey == "artwork" {
                     print("image loaded")
                     AudioPlayerVC.albumImage = UIImage(data: item.value as! Data)!
+                    setAlbumImageForMiniPlayer(image: UIImage(data: item.value as! Data)!)
                     NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "albumCoverImageRetrieved"), object: nil)
                     isFound = true
                     break
@@ -95,13 +96,20 @@ class AudioPlayer{
                 print("Not Found ")
                 AudioPlayerVC.albumImage = UIImage(named: "music_plate")
                 NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "albumCoverImageRetrieved"), object: nil)
+                setAlbumImageForMiniPlayer(image: UIImage(named: "music_plate")!)
             }
         }
         else {
             AudioPlayerVC.albumImage = UIImage(named: "music_plate")
+            setAlbumImageForMiniPlayer(image: UIImage(named: "music_plate")!)
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "albumCoverImageRetrieved"), object: nil)
             print("No album Image found ")
         }
+    }
+    
+    func setAlbumImageForMiniPlayer(image: UIImage) {
+        let rootViewController = UIApplication.shared.keyWindow?.rootViewController
+        if let sa = rootViewController as? SearchAudioVC { sa.miniPlayerAlbumCoverImage.image = image }
     }
     
     func play() { player.play() }

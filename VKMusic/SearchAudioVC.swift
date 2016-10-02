@@ -11,15 +11,19 @@ import SwiftyVK
 import MediaPlayer
 
 class SearchAudioVC: UIViewController {
+
     //MARK: @IBOutlet
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var containerView : UIView!
-    @IBOutlet weak var miniPlayerView : LineView!
+    @IBOutlet  var miniPlayerView : LineView!
     @IBOutlet weak var miniPlayerButton : UIButton!
     @IBOutlet weak var miniPlayerArtistName: UILabel!
     @IBOutlet weak var miniPlayerSongName: UILabel!
     @IBOutlet weak var playPauseMiniPlayerButton: UIButton!
+    @IBOutlet weak var miniPlayerAlbumCoverImage: UIImageView!
+    @IBOutlet var miniPlayerProgressView: UIProgressView!
+    
     
     //MARK: Constants
     let player = AudioPlayer.defaultPlayer
@@ -34,7 +38,8 @@ class SearchAudioVC: UIViewController {
     var activeDownloadsCount = 0
     var menuView: BTNavigationDropdownMenu!
     static var selectedIndex = 0
-
+    static var trackProgress = Float(0)
+    
     fileprivate weak var refreshControl: UIRefreshControl?
     static var searchResults = [Audio]()
     static var tempArray = [Audio]()
@@ -64,8 +69,6 @@ class SearchAudioVC: UIViewController {
         refreshControl.addTarget(self, action: #selector(displayMusicList), for: .valueChanged)
         tableView.insertSubview(refreshControl, at: 0)
         self.refreshControl = refreshControl
-        
-        gF.addBlurEffectToView(view: miniPlayerView)
         
         _ = self.downloadsSession
         tableView.tableFooterView = UIView()
@@ -107,7 +110,7 @@ class SearchAudioVC: UIViewController {
         self.tableView(self.tableView, didSelectRowAt: rowToSelect as IndexPath)
         allowToPresent = true
     }
-
+    
     
     //Set up the navigation dropdown menu
     func setupDropdownMenu() {
@@ -290,16 +293,35 @@ class SearchAudioVC: UIViewController {
         trackToDelete.send()
     }
     
+    //MARK: IBAction
     @IBAction func tapPlayPauseMiniPlayer(_ sender: AnyObject) {
-        if playPauseMiniPlayerButton?.imageView?.image == UIImage(named: "miniPlay") {
-            playPauseMiniPlayerButton?.setImage(UIImage(named: "miniPause"), for: UIControlState())
+        if playPauseMiniPlayerButton?.imageView?.image == UIImage(named: "Play") {
+            playPauseMiniPlayerButton?.setImage(UIImage(named: "Pause"), for: UIControlState())
             player.play()
         } else {
-            playPauseMiniPlayerButton?.setImage(UIImage(named: "miniPlay"), for: UIControlState())
+            playPauseMiniPlayerButton?.setImage(UIImage(named: "Play"), for: UIControlState())
             player.pause()
         }
     }
     
+    @IBAction func tapNextOnMiniPlayer(_ sender: AnyObject) {
+        playNextSong()
+    }
+    
+    
+    class func updateMiniPlayerProgressView(vc: UIViewController) {
+        
+        
+       // if vc.miniPlayerProgressView != nil {
+       // vc.miniPlayerProgressView.progress = SearchAudioVC.trackProgress
+        //}
+    }
+    
+    func setMiniPlayerAlbumImage() {
+        
+    }
+    
+   
     
     func searchAudio(searchText:String) {
         RappleActivityIndicatorView.startAnimatingWithLabel("Searching for \(searchText)", attributes: RappleModernAttributes)
@@ -542,6 +564,8 @@ extension SearchAudioVC: UITableViewDataSource {
         }
     }
     
+    
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TrackCell", for: indexPath) as! TrackCell
         
@@ -587,21 +611,29 @@ extension SearchAudioVC: UITableViewDelegate {
         return .delete
     }
     
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let tableViewWidth = self.tableView.bounds
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableViewWidth.size.width, height: self.tableView.sectionFooterHeight))
+        headerView.backgroundColor = UIColor.clear
+        return headerView
+    }
+    
+    
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return miniPlayerView.isHidden ? 0 : 44.0
+        return miniPlayerView.isHidden ? 0 : 55.0
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         miniPlayerView.isHidden = false
         SearchAudioVC.selectedIndex = indexPath.row
-
+        
         miniPlayerArtistName.text = SearchAudioVC.searchResults[indexPath.row].artist
         miniPlayerSongName.text = SearchAudioVC.searchResults[indexPath.row].title
+        
         if allowToPresent {
-
-        self.gF.animator.interactiveType = .none
-        self.present(self.gF.modalVC, animated: true, completion: nil)
+            self.gF.animator.interactiveType = .none
+            self.present(self.gF.modalVC, animated: true, completion: nil)
         }
         if isNowPlaying != indexPath.row {
             player.setPlayList(SearchAudioVC.searchResults)

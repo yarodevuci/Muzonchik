@@ -138,48 +138,90 @@
                             </searchBar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pbz-Yg-r90" customClass="LineView" customModule="VKMusic" customModuleProvider="target">
                                 <subviews>
-                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artist Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bRD-z5-SH5">
+                                    <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PBJ-Up-xMR">
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="znS-j1-emD">
+                                            <frame key="frameInset"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        </view>
+                                        <blurEffect style="light"/>
+                                    </visualEffectView>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Tqp-qh-a7X">
+                                        <color key="progressTintColor" red="1" green="0.2209299391" blue="0.16963408369999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="trackTintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    </progressView>
+                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artist Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bRD-z5-SH5">
                                         <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="16"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Song Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I7H-Il-wBu">
+                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Song Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I7H-Il-wBu">
                                         <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="13"/>
                                         <color key="textColor" red="0.30196079609999998" green="0.3058823645" blue="0.31764706970000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gy6-91-UTJ">
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="22" id="TAd-wj-2JU"/>
+                                            <constraint firstAttribute="height" constant="22" id="kOj-bG-WIn"/>
+                                        </constraints>
+                                        <state key="normal" image="Play"/>
+                                        <connections>
+                                            <action selector="tapPlayPauseMiniPlayer:" destination="NdM-N6-ndb" eventType="touchUpInside" id="cEE-EO-nMT"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ze1-e7-bBR" userLabel="NextSong">
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="22" id="kqd-NV-mOg"/>
+                                            <constraint firstAttribute="width" constant="24" id="qbU-cI-bBt"/>
+                                        </constraints>
+                                        <state key="normal" image="Fast Forward"/>
+                                        <connections>
+                                            <action selector="tapNextOnMiniPlayer:" destination="NdM-N6-ndb" eventType="touchUpInside" id="ryY-32-w2m"/>
+                                        </connections>
+                                    </button>
                                     <button clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jXV-05-oVW">
-                                        <frame key="frameInset" minX="49" width="271" height="44"/>
+                                        <frame key="frameInset" minY="-3" width="226" height="60"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <connections>
                                             <action selector="tapMiniPlayerButton" destination="NdM-N6-ndb" eventType="touchUpInside" id="zTR-Uj-Tzq"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gy6-91-UTJ">
-                                        <frame key="frameInset" minX="8" minY="11" width="22" height="22"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="miniPause"/>
-                                        <connections>
-                                            <action selector="tapPlayPauseMiniPlayer:" destination="NdM-N6-ndb" eventType="touchUpInside" id="cEE-EO-nMT"/>
-                                        </connections>
-                                    </button>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="music_plate" translatesAutoresizingMaskIntoConstraints="NO" id="iiZ-qv-tfr">
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="45" id="BKW-Mv-u7r"/>
+                                            <constraint firstAttribute="width" constant="45" id="xKh-uZ-vmc"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="bRD-z5-SH5" firstAttribute="width" secondItem="Pbz-Yg-r90" secondAttribute="width" constant="-90" id="2Vd-Pp-To6"/>
-                                    <constraint firstItem="bRD-z5-SH5" firstAttribute="centerX" secondItem="Pbz-Yg-r90" secondAttribute="centerX" id="LYX-kX-BXv"/>
-                                    <constraint firstItem="I7H-Il-wBu" firstAttribute="width" secondItem="Pbz-Yg-r90" secondAttribute="width" constant="-55" id="QnB-Nk-kGi"/>
-                                    <constraint firstAttribute="height" constant="44" id="TW3-kQ-5gR"/>
-                                    <constraint firstItem="bRD-z5-SH5" firstAttribute="top" secondItem="Pbz-Yg-r90" secondAttribute="top" constant="4" id="bny-gO-VyU"/>
-                                    <constraint firstItem="I7H-Il-wBu" firstAttribute="top" secondItem="bRD-z5-SH5" secondAttribute="bottom" constant="2" id="jCP-Xh-oPM"/>
-                                    <constraint firstItem="I7H-Il-wBu" firstAttribute="centerX" secondItem="Pbz-Yg-r90" secondAttribute="centerX" id="z5W-fc-QLB"/>
+                                    <constraint firstItem="PBJ-Up-xMR" firstAttribute="height" secondItem="Pbz-Yg-r90" secondAttribute="height" id="8xR-RP-gx4"/>
+                                    <constraint firstItem="Tqp-qh-a7X" firstAttribute="centerX" secondItem="Pbz-Yg-r90" secondAttribute="centerX" id="CMk-Ee-CIw"/>
+                                    <constraint firstItem="Tqp-qh-a7X" firstAttribute="width" secondItem="Pbz-Yg-r90" secondAttribute="width" id="LUO-sW-xrl"/>
+                                    <constraint firstItem="Tqp-qh-a7X" firstAttribute="top" secondItem="Pbz-Yg-r90" secondAttribute="top" constant="53" id="Mep-vO-Gcm"/>
+                                    <constraint firstAttribute="height" constant="55" id="TW3-kQ-5gR"/>
+                                    <constraint firstItem="I7H-Il-wBu" firstAttribute="leading" secondItem="iiZ-qv-tfr" secondAttribute="trailing" constant="5" id="Yu9-t3-Nbh"/>
+                                    <constraint firstItem="iiZ-qv-tfr" firstAttribute="centerY" secondItem="Pbz-Yg-r90" secondAttribute="centerY" id="bje-Gi-upf"/>
+                                    <constraint firstItem="I7H-Il-wBu" firstAttribute="trailing" secondItem="Gy6-91-UTJ" secondAttribute="leading" id="egP-LY-tWR"/>
+                                    <constraint firstItem="PBJ-Up-xMR" firstAttribute="width" secondItem="Pbz-Yg-r90" secondAttribute="width" id="fbR-Cb-b1h"/>
+                                    <constraint firstItem="Gy6-91-UTJ" firstAttribute="trailing" secondItem="Ze1-e7-bBR" secondAttribute="leading" constant="-10" id="ilV-Bv-j1M"/>
+                                    <constraint firstItem="Gy6-91-UTJ" firstAttribute="centerY" secondItem="Pbz-Yg-r90" secondAttribute="centerY" id="lWL-QW-W7S"/>
+                                    <constraint firstItem="I7H-Il-wBu" firstAttribute="top" secondItem="bRD-z5-SH5" secondAttribute="bottom" constant="1" id="mj4-Ep-WN9"/>
+                                    <constraint firstItem="Ze1-e7-bBR" firstAttribute="centerY" secondItem="Pbz-Yg-r90" secondAttribute="centerY" id="oAj-yD-Nbt"/>
+                                    <constraint firstItem="PBJ-Up-xMR" firstAttribute="centerY" secondItem="Pbz-Yg-r90" secondAttribute="centerY" id="oJp-re-fJ8"/>
+                                    <constraint firstItem="bRD-z5-SH5" firstAttribute="trailing" secondItem="Gy6-91-UTJ" secondAttribute="leading" id="q2G-rv-GnK"/>
+                                    <constraint firstItem="bRD-z5-SH5" firstAttribute="leading" secondItem="iiZ-qv-tfr" secondAttribute="trailing" constant="5" id="sVC-mD-nFB"/>
+                                    <constraint firstItem="bRD-z5-SH5" firstAttribute="centerY" secondItem="Pbz-Yg-r90" secondAttribute="centerY" constant="-8" id="six-9V-qJJ"/>
+                                    <constraint firstItem="PBJ-Up-xMR" firstAttribute="centerX" secondItem="Pbz-Yg-r90" secondAttribute="centerX" id="v0e-qr-dvs"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ze1-e7-bBR" secondAttribute="trailing" constant="10" id="vwd-b4-Kzg"/>
+                                    <constraint firstItem="iiZ-qv-tfr" firstAttribute="leading" secondItem="Pbz-Yg-r90" secondAttribute="leading" constant="5" id="xuN-2k-zWI"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.94509804249999996" green="0.94509804249999996" blue="0.94509804249999996" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="bBS-C7-hYh" firstAttribute="width" secondItem="md2-6F-H6J" secondAttribute="width" id="3Kc-zw-qVf"/>
-                            <constraint firstItem="wpI-ze-hWc" firstAttribute="bottom" secondItem="Pbz-Yg-r90" secondAttribute="top" constant="44" id="AJT-CC-hZi"/>
+                            <constraint firstItem="wpI-ze-hWc" firstAttribute="bottom" secondItem="Pbz-Yg-r90" secondAttribute="top" constant="55" id="AJT-CC-hZi"/>
                             <constraint firstItem="s17-GW-RnV" firstAttribute="centerX" secondItem="md2-6F-H6J" secondAttribute="centerX" id="DRa-b8-ZlR"/>
                             <constraint firstItem="wpI-ze-hWc" firstAttribute="trailing" secondItem="PJc-zv-6gn" secondAttribute="trailing" id="Gde-pX-aIZ"/>
                             <constraint firstItem="Pbz-Yg-r90" firstAttribute="width" secondItem="md2-6F-H6J" secondAttribute="width" id="Hc1-Yu-yOg"/>
@@ -199,8 +241,10 @@
                     </view>
                     <connections>
                         <outlet property="containerView" destination="PJc-zv-6gn" id="eR6-og-Lw0"/>
+                        <outlet property="miniPlayerAlbumCoverImage" destination="iiZ-qv-tfr" id="grb-Rh-2ZN"/>
                         <outlet property="miniPlayerArtistName" destination="bRD-z5-SH5" id="kEb-7V-iKV"/>
                         <outlet property="miniPlayerButton" destination="jXV-05-oVW" id="kwz-Ec-ouq"/>
+                        <outlet property="miniPlayerProgressView" destination="Tqp-qh-a7X" id="EsW-PG-YZx"/>
                         <outlet property="miniPlayerSongName" destination="I7H-Il-wBu" id="LXy-IG-lbs"/>
                         <outlet property="miniPlayerView" destination="Pbz-Yg-r90" id="bq0-xg-bek"/>
                         <outlet property="playPauseMiniPlayerButton" destination="Gy6-91-UTJ" id="udm-Tj-aU3"/>
@@ -294,7 +338,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jMv-VO-FGg">
-                                <state key="normal" image="pause"/>
+                                <state key="normal" image="Pause"/>
                                 <connections>
                                     <action selector="tapPlayPauseButton:" destination="nQy-n9-NN1" eventType="touchUpInside" id="36R-v2-FJy"/>
                                 </connections>
@@ -326,7 +370,7 @@
                                     <constraint firstAttribute="width" constant="40" id="M9P-XE-07x"/>
                                     <constraint firstAttribute="height" constant="40" id="owZ-KS-zoc"/>
                                 </constraints>
-                                <state key="normal" image="Rewind Filled-80"/>
+                                <state key="normal" image="Rewind"/>
                                 <connections>
                                     <action selector="tapPreviousSong:" destination="nQy-n9-NN1" eventType="touchUpInside" id="Xg0-Xh-w6j"/>
                                 </connections>
@@ -336,7 +380,7 @@
                                     <constraint firstAttribute="height" constant="40" id="Un6-GA-Iee"/>
                                     <constraint firstAttribute="width" constant="40" id="lbt-U0-duR"/>
                                 </constraints>
-                                <state key="normal" image="Fast Forward Filled-80"/>
+                                <state key="normal" image="Fast Forward"/>
                                 <connections>
                                     <action selector="tapNextSong:" destination="nQy-n9-NN1" eventType="touchUpInside" id="JRY-tN-1fR"/>
                                 </connections>
@@ -352,10 +396,10 @@
                             </slider>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="giz-st-WXQ" userLabel="dismissButton">
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="50" id="ZgU-Wb-aNg"/>
-                                    <constraint firstAttribute="height" constant="25" id="ysE-zx-S4M"/>
+                                    <constraint firstAttribute="width" constant="31" id="ZgU-Wb-aNg"/>
+                                    <constraint firstAttribute="height" constant="10" id="ysE-zx-S4M"/>
                                 </constraints>
-                                <state key="normal" image="Cancel Filled-70">
+                                <state key="normal" image="arrowDown">
                                     <color key="titleColor" red="0.1019607843" green="0.1019607843" blue="0.1019607843" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
@@ -379,7 +423,7 @@
                             <constraint firstItem="K7n-yC-sJE" firstAttribute="top" secondItem="j7d-cP-D0K" secondAttribute="bottom" constant="75" id="ErU-ED-cby"/>
                             <constraint firstItem="K7n-yC-sJE" firstAttribute="top" secondItem="1Ln-AZ-wXg" secondAttribute="bottom" constant="160" id="Hlm-UX-nrV"/>
                             <constraint firstItem="Een-r1-sij" firstAttribute="width" secondItem="xFM-HM-qvC" secondAttribute="width" constant="-75" id="J7A-c4-c2U"/>
-                            <constraint firstItem="giz-st-WXQ" firstAttribute="top" secondItem="t2p-lA-vjo" secondAttribute="bottom" constant="4" id="LzM-mQ-EXw"/>
+                            <constraint firstItem="giz-st-WXQ" firstAttribute="top" secondItem="t2p-lA-vjo" secondAttribute="bottom" constant="10" id="LzM-mQ-EXw"/>
                             <constraint firstItem="jMv-VO-FGg" firstAttribute="centerX" secondItem="xFM-HM-qvC" secondAttribute="centerX" id="Men-3y-GUT"/>
                             <constraint firstItem="5ib-Xb-yNI" firstAttribute="leading" secondItem="xFM-HM-qvC" secondAttribute="leadingMargin" constant="6" id="RnD-lP-e5A"/>
                             <constraint firstItem="uTk-QY-nNU" firstAttribute="trailing" secondItem="Een-r1-sij" secondAttribute="leading" constant="-2" id="WfK-8u-hxf"/>
@@ -574,17 +618,17 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Cancel Filled-70" width="127" height="73"/>
-        <image name="Fast Forward Filled-80" width="40" height="40"/>
+        <image name="Fast Forward" width="24" height="15"/>
         <image name="IMG_6952" width="375" height="667"/>
         <image name="Low Volume Filled-100" width="50" height="50"/>
+        <image name="Pause" width="40" height="40"/>
         <image name="PauseWhite" width="35" height="35"/>
-        <image name="Rewind Filled-80" width="40" height="40"/>
+        <image name="Play" width="40" height="40"/>
+        <image name="Rewind" width="24" height="15"/>
+        <image name="arrowDown" width="75" height="23"/>
         <image name="cellBackground" width="320" height="55"/>
         <image name="maxVolume" width="50" height="50"/>
-        <image name="miniPause" width="50" height="50"/>
         <image name="music_plate" width="250" height="250"/>
         <image name="navBar" width="320" height="44"/>
-        <image name="pause" width="40" height="40"/>
     </resources>
 </document>

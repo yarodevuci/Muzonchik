@@ -30,9 +30,8 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     var durationNumber: Float = 1
     let defaults = UserDefaults.standard
     var time = Float(0)
-    var timer = Timer()
     static var albumImage = UIImage(named: "music_plate")
-    
+
     var tapCloseButtonActionHandler : ((Void) -> Void)?
     
     
@@ -77,10 +76,11 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     @IBAction func adjustDuration(_ sender: AnyObject) {
         player.pause()
         currenTimeLabel.text? = durationString(Int(durationSlider.value))
-        playButton.setImage(UIImage(named: "play"), for: UIControlState())
+        playButton.setImage(UIImage(named: "Play"), for: UIControlState())
     }
     
     @IBAction func tapToDismiss(_ sender: AnyObject) {
+        
         self.tapCloseButtonActionHandler?()
         self.dismiss(animated: true, completion: nil)
     }
@@ -90,30 +90,30 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         let value = self.durationSlider.value
         let time = CMTime(value: Int64(value), timescale: 1)
         player.seekToTime(time)
-        playButton.setImage(UIImage(named: "pause"), for: UIControlState())
+        playButton.setImage(UIImage(named: "Pause"), for: UIControlState())
         player.play()
     }
     
     
     @IBAction func tapPlayPauseButton(_ sender: AnyObject) {
         let button = sender as! UIButton
-        if button.imageView?.image == UIImage(named: "play") {
-            button.setImage(UIImage(named: "pause"), for: UIControlState())
+        if button.imageView?.image == UIImage(named: "Play") {
+            button.setImage(UIImage(named: "Pause"), for: UIControlState())
             player.play()
         } else {
-            button.setImage(UIImage(named: "play"), for: UIControlState())
+            button.setImage(UIImage(named: "Play"), for: UIControlState())
             player.pause()
         }
     }
     
     
     @IBAction func tapNextSong(_ sender: AnyObject) {
-        playButton.setImage(UIImage(named: "pause"), for: UIControlState())
+        playButton.setImage(UIImage(named: "Pause"), for: UIControlState())
         player.next()
     }
     
     @IBAction func tapPreviousSong(_ sender: AnyObject) {
-        playButton.setImage(UIImage(named: "pause"), for: UIControlState())
+        playButton.setImage(UIImage(named: "Pause"), for: UIControlState())
         player.previous()
     }
     
@@ -157,12 +157,14 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     //MARK: - AudioPlayerDelegate
     func audioDidChangeTime(_ time: Int64) {
         self.time = Float(time)
-        DownloadsTabVC.a = "\(durationString(Int(time))) / \(currentAudioDuration)"
-        DownloadsTabVC.b = Float(time) / Float(durationNumber)
-        NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "reloadTableView"), object: nil)
+        //DownloadsTabVC.a = "\(durationString(Int(time))) / \(currentAudioDuration)"
+        let progressValue = Float(time) / Float(durationNumber)
+        
+        //NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "reloadTableView"), object: nil)
         currenTimeLabel.text? = durationString(Int(time))
         durationSlider.value = Float(time)
-        
+        let rootViewController = UIApplication.shared.keyWindow?.rootViewController
+        if let sa = rootViewController as? SearchAudioVC { sa.miniPlayerProgressView.progress = progressValue }
     }
     
     
@@ -171,8 +173,8 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     }
     
     fileprivate func updatePlayButton() {
-        if playButton.imageView?.image == UIImage(named: "play") {
-            playButton.setImage(UIImage(named: "pause"), for: UIControlState())
+        if playButton.imageView?.image == UIImage(named: "Play") {
+            playButton.setImage(UIImage(named: "Pause"), for: UIControlState())
         }
     }
     
