@@ -102,7 +102,6 @@ class SearchAudioVC: UIViewController {
             SearchAudioVC.selectedIndex = -1
         }
         let rowToSelect = NSIndexPath(row: SearchAudioVC.selectedIndex + 1, section: 0)
-        print(SearchAudioVC.selectedIndex)
         print(rowToSelect.row)
         self.tableView.selectRow(at: rowToSelect as IndexPath, animated: true, scrollPosition: UITableViewScrollPosition.none)
         self.tableView(self.tableView, didSelectRowAt: rowToSelect as IndexPath)

@@ -44,9 +44,7 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(getAlbumCover), name:NSNotification.Name(rawValue: "albumCoverImageRetrieved"), object: nil)
         
         durationSlider.value = 0
-        
-        GlobalFunctions().addBlurEffectToView(view: self.view)
-        
+                
         if UIScreen.main.bounds.size.width == 375 {
             durationSliderYConstraint.constant = 348 //adjust duration Slider for iphone6
             artistNameBottonLayoutConstraint.constant = 170
@@ -139,7 +137,7 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
             songNameLabel.text? = (audio.title)
             currentAudioDuration = durationString((audio.duration))
             durationNumber = Float(audio.duration)
-            durationLabel.text? = durationString((audio.duration))
+            durationLabel.text? = "-\(durationString((audio.duration)))"
             currenTimeLabel.text? = "0:00"
             durationSlider.maximumValue = Float((audio.duration))
             self.player.controlVolume(value: self.volumeControl.value)

@@ -270,7 +270,7 @@ extension ARNTransitionAnimator {
             case .top:
                 animationRatio = (self.panLocationStart - location.y) / bounds.height
             case .bottom:
-                animationRatio = (location.y - self.panLocationStart) / bounds.height
+                animationRatio = -0.001 //(location.y - self.panLocationStart) / bounds.height
             case .left:
                 animationRatio = (self.panLocationStart - location.x) / bounds.width
             case .right:
