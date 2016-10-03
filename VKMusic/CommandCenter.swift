@@ -25,7 +25,7 @@ class CommandCenter: NSObject {
     fileprivate func setAudioSeccion() {
         let audioSeccion = AVAudioSession.sharedInstance()
         do {
-            try audioSeccion.setCategory("AVAudioSessionCategoryPlayback", with: .mixWithOthers)
+            try audioSeccion.setCategory("AVAudioSessionCategoryPlayback", with: .defaultToSpeaker)
             try audioSeccion.setActive(true)
         } catch {
             print("ERROR")
@@ -37,6 +37,7 @@ class CommandCenter: NSObject {
         let commandCenter = MPRemoteCommandCenter.shared()
         commandCenter.pauseCommand.addTarget(self, action: #selector(CommandCenter.remoteCommandPause))
         commandCenter.playCommand.addTarget(self, action: #selector(CommandCenter.remoteCommandPlay))
+        commandCenter.previousTrackCommand.addTarget(self, action: #selector(CommandCenter.remoteCommandPrevious))
         commandCenter.nextTrackCommand.addTarget(self, action: #selector(CommandCenter.remoteCommandNext))
     }
     
@@ -52,11 +53,18 @@ class CommandCenter: NSObject {
        player.next()
     }
     
+    @objc fileprivate func remoteCommandPrevious() {
+        player.previous()
+    }
+    
     //MARK: - Public Methods
     
     func setNowPlayingInfo() {
-        MPNowPlayingInfoCenter.default().nowPlayingInfo = [MPMediaItemPropertyTitle: player.currentAudio.title,
-                                                                MPMediaItemPropertyArtist: player.currentAudio.artist,
-                                                                MPNowPlayingInfoPropertyPlaybackRate: 1.0]
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = [
+            MPMediaItemPropertyPlaybackDuration: player.currentAudio.duration,
+            MPMediaItemPropertyTitle: player.currentAudio.title,
+            MPMediaItemPropertyArtist: player.currentAudio.artist,
+            MPMediaItemPropertyArtwork: MPMediaItemArtwork(image: AudioPlayerVC.albumImage!),
+            MPNowPlayingInfoPropertyPlaybackRate: 1.0]
     }
 }

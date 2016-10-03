@@ -1,10 +1,5 @@
-//
 //  AudioPlayer.swift
-//  VKMusic
-//
-//  Created by Владимир Мельников on 09.02.16.
-//  Copyright © 2016 vlmlnkv. All rights reserved.
-//
+//  Created by Yaroslav on 10.01.16
 
 import Foundation
 import AVFoundation
@@ -75,7 +70,6 @@ class AudioPlayer{
         player = AVPlayer(playerItem: playerItem)
         player.play()
         addTimeObeserver()
-        CommandCenter.defaultCenter.setNowPlayingInfo()
         if let d = self.delegate {
             d.playerWillPlayNexAudio()
         }
@@ -105,6 +99,9 @@ class AudioPlayer{
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "albumCoverImageRetrieved"), object: nil)
             print("No album Image found ")
         }
+        
+        CommandCenter.defaultCenter.setNowPlayingInfo()
+
     }
     
     func setAlbumImageForMiniPlayer(image: UIImage) {

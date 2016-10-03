@@ -22,7 +22,6 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     @IBOutlet weak var durationSliderYConstraint: NSLayoutConstraint!
     @IBOutlet weak var artistNameBottonLayoutConstraint: NSLayoutConstraint!
     
-    
     static var musicToPlay = [Audio]()
     static var indexToPlay = 0
     fileprivate let player = AudioPlayer.defaultPlayer
@@ -40,10 +39,11 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         NotificationCenter.default.addObserver(self, selector: #selector(getAlbumCover), name:NSNotification.Name(rawValue: "albumCoverImageRetrieved"), object: nil)
         
-        durationSlider.value = 0
-                
+        NotificationCenter.default.addObserver(self, selector: #selector(updatePlayButton), name:NSNotification.Name(rawValue: "SwapPlayButtonImage"), object: nil)
+        
         if UIScreen.main.bounds.size.width == 375 {
             durationSliderYConstraint.constant = 348 //adjust duration Slider for iphone6
             artistNameBottonLayoutConstraint.constant = 170
@@ -57,14 +57,12 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         volumeControl.setThumbImage(UIImage(named: "circle"), for: UIControlState.highlighted)
         
         self.setInfo(fromIndex: AudioPlayerVC.indexToPlay)
-
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
     }
+    
     @IBAction func adjustVolume(_ sender: AnyObject) {
         player.controlVolume(value: volumeControl.value)
         var volume = AVAudioSession.sharedInstance().outputVolume
@@ -96,6 +94,8 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     
     
     @IBAction func tapPlayPauseButton(_ sender: AnyObject) {
+        NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "SwapMinPlayerPlayButtonImage"), object: nil)
+        
         let button = sender as! UIButton
         if button.imageView?.image == UIImage(named: "Play") {
             button.setImage(UIImage(named: "Pause"), for: UIControlState())
@@ -108,24 +108,16 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     
     
     @IBAction func tapNextSong(_ sender: AnyObject) {
-        playButton.setImage(UIImage(named: "Pause"), for: UIControlState())
+        updatePlayButton()
         player.next()
     }
     
     @IBAction func tapPreviousSong(_ sender: AnyObject) {
-        playButton.setImage(UIImage(named: "Pause"), for: UIControlState())
+        updatePlayButton()
         player.previous()
     }
     
     func getAlbumCover() {
-        
-        
-        if AudioPlayerVC.albumImage?.size.width == 250 {
-            self.albumCoverImage.contentMode = .scaleAspectFit
-        }
-        else {
-            self.albumCoverImage.contentMode = .scaleAspectFit
-        }
         self.albumCoverImage.image = AudioPlayerVC.albumImage
     }
     
@@ -172,9 +164,14 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         setInfo(fromIndex: AudioPlayerVC.indexToPlay)
     }
     
-    fileprivate func updatePlayButton() {
+    func updatePlayButton() {
         if playButton.imageView?.image == UIImage(named: "Play") {
             playButton.setImage(UIImage(named: "Pause"), for: UIControlState())
+            player.play()
+        }
+        else {
+            playButton.setImage(UIImage(named: "Play"), for: UIControlState())
+            player.pause()
         }
     }
     

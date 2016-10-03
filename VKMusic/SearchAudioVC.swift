@@ -10,8 +10,8 @@ import UIKit
 import SwiftyVK
 import MediaPlayer
 
-class SearchAudioVC: UIViewController {
-
+class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
+    
     //MARK: @IBOutlet
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -78,6 +78,7 @@ class SearchAudioVC: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(playNextSong), name:NSNotification.Name(rawValue: "playNextSong"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(playPreviousSong), name:NSNotification.Name(rawValue: "playPreviousSong"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updatePlayButton), name:NSNotification.Name(rawValue: "SwapMinPlayerPlayButtonImage"), object: nil)
     }
     
     @IBAction func tapMiniPlayerButton() {
@@ -227,7 +228,9 @@ class SearchAudioVC: UIViewController {
         getAudios.errorBlock = { error in
             DispatchQueue.main.async(execute: { () -> Void in
                 self.refreshControl?.endRefreshing()
-                SwiftNotificationBanner.presentNotification("Ошибка авторизации") })
+                SwiftNotificationBanner.presentNotification("Ошибка авторизации")
+                RappleActivityIndicatorView.stopAnimating()
+            })
             print("Get Audios fail with error: \(error)")}
         getAudios.send()
     }
@@ -293,35 +296,55 @@ class SearchAudioVC: UIViewController {
         trackToDelete.send()
     }
     
+    func updatePlayButton() {
+        if playPauseMiniPlayerButton.imageView?.image == UIImage(named: "Play") {
+            playPauseMiniPlayerButton.setImage(UIImage(named: "Pause"), for: UIControlState())
+        }
+        else {
+            playPauseMiniPlayerButton.setImage(UIImage(named: "Play"), for: UIControlState())
+        }
+    }
+    
     //MARK: IBAction
     @IBAction func tapPlayPauseMiniPlayer(_ sender: AnyObject) {
-        if playPauseMiniPlayerButton?.imageView?.image == UIImage(named: "Play") {
-            playPauseMiniPlayerButton?.setImage(UIImage(named: "Pause"), for: UIControlState())
-            player.play()
-        } else {
-            playPauseMiniPlayerButton?.setImage(UIImage(named: "Play"), for: UIControlState())
-            player.pause()
-        }
+        NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "SwapPlayButtonImage"), object: nil)
+        updatePlayButton()
     }
     
     @IBAction func tapNextOnMiniPlayer(_ sender: AnyObject) {
         playNextSong()
     }
     
-    
-    class func updateMiniPlayerProgressView(vc: UIViewController) {
-        
-        
-       // if vc.miniPlayerProgressView != nil {
-       // vc.miniPlayerProgressView.progress = SearchAudioVC.trackProgress
-        //}
+    //MGSwipeTableCell
+    func swipeTableCell(_ cell: MGSwipeTableCell, canSwipe direction: MGSwipeDirection) -> Bool {
+        let indexPath = self.tableView.indexPath(for: cell)
+        let track = SearchAudioVC.searchResults[(indexPath?.row)!]
+        return direction == .leftToRight && !localFileExistsForTrack(track)
     }
     
-    func setMiniPlayerAlbumImage() {
+    //MGSwipeTableCell
+    func swipeTableCell(_ cell: MGSwipeTableCell, swipeButtonsFor direction: MGSwipeDirection, swipeSettings: MGSwipeSettings, expansionSettings: MGSwipeExpansionSettings) -> [UIView]? {
+        
+        swipeSettings.transition = MGSwipeTransition.border
+        expansionSettings.buttonIndex = 0
+        
+        if direction == MGSwipeDirection.leftToRight {
+            expansionSettings.fillOnTrigger = true
+            expansionSettings.threshold = 1.5
+        }
+        return [
+            MGSwipeButton(title: "Скачать", backgroundColor: UIColor.gray, callback: { (cell) -> Bool in
+                let indexPath = self.tableView.indexPath(for: cell)
+                let track = SearchAudioVC.searchResults[(indexPath?.row)!]
+                print("Downloading \(track.title)")
+                self.startDownload(track)
+                self.tableView.reloadRows(at: [IndexPath(row: (indexPath?.row)!, section: 0)], with: .none)
+                return true
+            })
+        ]
+        
         
     }
-    
-   
     
     func searchAudio(searchText:String) {
         RappleActivityIndicatorView.startAnimatingWithLabel("Searching for \(searchText)", attributes: RappleModernAttributes)
@@ -457,7 +480,6 @@ extension SearchAudioVC: URLSessionDownloadDelegate {
                     SwiftNotificationBanner.presentNotification("\(self.activeDownloads[originalURL]!.songName)\nОшибка загрузки")
                     let url = downloadTask.originalRequest?.url?.absoluteString
                     self.activeDownloads[url!] = nil
-                    self.trackBadgeCount()
                 })
                 print("Could not copy file to disk: \(error.localizedDescription)")
             }
@@ -564,9 +586,8 @@ extension SearchAudioVC: UITableViewDataSource {
         }
     }
     
-    
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "TrackCell", for: indexPath) as! TrackCell
         
         cell.downloadButton.layer.borderColor = gF.blueButtonColor
@@ -574,8 +595,8 @@ extension SearchAudioVC: UITableViewDataSource {
         cell.cancelButton.layer.borderColor = gF.redButtonColor
         cell.cancelButton.layer.cornerRadius = 5
         
-        
         cell.delegate = self
+        cell.delegat = self
         
         let track = SearchAudioVC.searchResults[indexPath.row]
         cell.artistLabel.text = track.title
@@ -593,8 +614,9 @@ extension SearchAudioVC: UITableViewDataSource {
         
         // If the track is already downloaded, enable cell selection and hide the Download button
         let downloaded = localFileExistsForTrack(track)
-        cell.downloadButton.isHidden = downloaded || showDownloadControls
+        cell.downloadButton.isHidden = true
         cell.cancelButton.isHidden = !showDownloadControls
+        if downloaded { cell.accessoryType = .checkmark } else { cell.accessoryType = .none }
         
         //        if cell.downloadButton.isHidden && cell.cancelButton.isHidden {
         //            cell.titleLabel.frame = CGRect(x: 8, y: 12, width: 300, height: 20)
@@ -627,6 +649,7 @@ extension SearchAudioVC: UITableViewDelegate {
         
         miniPlayerView.isHidden = false
         SearchAudioVC.selectedIndex = indexPath.row
+        playPauseMiniPlayerButton?.setImage(UIImage(named: "Pause"), for: UIControlState())
         
         miniPlayerArtistName.text = SearchAudioVC.searchResults[indexPath.row].artist
         miniPlayerSongName.text = SearchAudioVC.searchResults[indexPath.row].title

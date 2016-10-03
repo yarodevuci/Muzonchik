@@ -13,9 +13,9 @@ protocol TrackCellDelegate {
     func downloadTapped(_ cell: TrackCell)
 }
 
-class TrackCell: UITableViewCell {
+class TrackCell: MGSwipeTableCell {
 
-    var delegate: TrackCellDelegate?
+    var delegat: TrackCellDelegate?
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var artistLabel: UILabel!
@@ -26,11 +26,11 @@ class TrackCell: UITableViewCell {
     
     
     @IBAction func cancelTapped(_ sender: AnyObject) {
-        delegate?.cancelTapped(self)
+        delegat?.cancelTapped(self)
     }
     
     @IBAction func downloadTapped(_ sender: AnyObject) {
-        delegate?.downloadTapped(self)
+        //delegate?.downloadTapped(self)
     }
 
 }
