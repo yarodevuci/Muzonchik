@@ -16,6 +16,13 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="65"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L8o-YX-eNU">
+                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="Fsn-2d-a5G">
+                        <frame key="frameInset"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                    <blurEffect style="dark"/>
+                </visualEffectView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Download Complete fs dsfsdf" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="WUT-kj-MMm">
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="0rw-MW-Suo"/>
@@ -25,10 +32,14 @@
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" red="0.34509803919999998" green="0.51764705879999995" blue="0.70980392160000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.31957883883248728" green="0.31957883883248728" blue="0.31957883883248728" alpha="0.57239940068493156" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="L8o-YX-eNU" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="3mL-Ub-ClV"/>
+                <constraint firstItem="L8o-YX-eNU" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="4OL-Si-n6X"/>
+                <constraint firstItem="L8o-YX-eNU" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="QFo-n4-QzP"/>
                 <constraint firstAttribute="centerX" secondItem="WUT-kj-MMm" secondAttribute="centerX" id="bZk-7B-8Nq"/>
                 <constraint firstItem="WUT-kj-MMm" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" constant="-10" id="qKA-1D-bYF"/>
+                <constraint firstItem="L8o-YX-eNU" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" id="tyu-Iv-Kdj"/>
                 <constraint firstAttribute="centerY" secondItem="WUT-kj-MMm" secondAttribute="centerY" constant="-7" id="x4M-E2-bjU"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>

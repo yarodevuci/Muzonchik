@@ -409,7 +409,6 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
             addAudio.send()
         }
         activeDownloads[download.url] = download
-        tabBarController?.tabBar.items?[1].badgeValue = "\(activeDownloads.count)"
     }
     
     // Called when the Cancel button for a track is tapped
@@ -418,7 +417,6 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
             let download = activeDownloads[urlString] {
             download.downloadTask?.cancel()
             activeDownloads[urlString] = nil
-            trackBadgeCount()
         }
     }
     
@@ -489,7 +487,6 @@ extension SearchAudioVC: URLSessionDownloadDelegate {
                     NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "downloadComplete"), object: nil)
                     let url = downloadTask.originalRequest?.url?.absoluteString
                     self.activeDownloads[url!] = nil
-                    self.trackBadgeCount()
                 })
             } catch let error as NSError {
                 DispatchQueue.main.async(execute: { () -> Void in
@@ -504,14 +501,6 @@ extension SearchAudioVC: URLSessionDownloadDelegate {
             DispatchQueue.main.async(execute: {
                 self.tableView.reloadRows(at: [IndexPath(row: trackIndex, section: 0)], with: .none)
             })
-        }
-    }
-    
-    func trackBadgeCount() {
-        if self.activeDownloads.count == 0 {
-            self.tabBarController?.tabBar.items?[1].badgeValue = nil
-        } else {
-            self.tabBarController?.tabBar.items?[1].badgeValue = "\(self.activeDownloads.count)"
         }
     }
     
@@ -613,8 +602,8 @@ extension SearchAudioVC: UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "TrackCell", for: indexPath) as! TrackCell
         
-        cell.downloadButton.layer.borderColor = gF.blueButtonColor
-        cell.downloadButton.layer.cornerRadius = 5
+//        cell.downloadButton.layer.borderColor = gF.blueButtonColor
+//        cell.downloadButton.layer.cornerRadius = 5
         cell.cancelButton.layer.borderColor = gF.redButtonColor
         cell.cancelButton.layer.cornerRadius = 5
         
