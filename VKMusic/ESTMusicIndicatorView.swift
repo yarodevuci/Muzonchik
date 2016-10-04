@@ -126,7 +126,6 @@ open class ESTMusicIndicatorView: UIView {
         addSubview(contentView)
         prepareLayoutPriorities()
         setNeedsUpdateConstraints()
-        NotificationCenter.default.addObserver(self, selector: Selector(("applicationWillEnterForeground")), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
     }
     
     fileprivate func prepareLayoutPriorities() {
@@ -201,16 +200,5 @@ open class ESTMusicIndicatorView: UIView {
         
         contentView.stopOscillation()
         contentView.startDecay()
-    }
-    
-    // MARK: Notification
-    
-    fileprivate func applicationWillEnterForeground(_ notification: Notification) {
-        // When an app entered background, UIKit removes all animations
-        // even if it's an infinite animation.
-        // So we restart the animation here if it should be when the app came back to foreground.
-        if state == .estMusicIndicatorViewStatePlaying {
-            startAnimating()
-        }
     }
 }

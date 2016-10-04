@@ -28,13 +28,14 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     //MARK: Varriables
     static var musicToPlay = [Audio]()
     static var indexToPlay = 0
-    fileprivate let player = AudioPlayer.defaultPlayer
-    var currentAudioDuration = ""
-    var durationNumber: Float = 1
-    let defaults = UserDefaults.standard
-    var time = Float(0)
     static var albumImage = UIImage(named: "music_plate")
 
+    let defaults = UserDefaults.standard
+    let player = AudioPlayer.defaultPlayer
+    
+    var currentAudioDuration = ""
+    var durationNumber: Float = 1
+    var time = Float(0)
     var tapCloseButtonActionHandler : ((Void) -> Void)?
     
     
@@ -55,7 +56,7 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
             view.setNeedsLayout()
         }
         player.delegate = self
-        volumeControl.value = defaults.float(forKey: "volumeControlValue")
+        volumeControl.setValue(defaults.float(forKey: "volumeControlValue"), animated: false)
         durationSlider.setThumbImage(UIImage(named: "circle"), for: UIControlState.normal)
         durationSlider.setThumbImage(UIImage(named: "circle"), for: UIControlState.highlighted)
         volumeControl.setThumbImage(UIImage(named: "circle"), for: UIControlState.normal)

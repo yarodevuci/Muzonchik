@@ -542,6 +542,9 @@ extension SearchAudioVC: UISearchBarDelegate {
         if !allowToDelete {
             displayMusicList()
         }
+        for (i, _) in boolArray.enumerated() {
+            boolArray[i] = false
+        }
         searchBar.text = ""
         allowToDelete = true
         searchBar.showsCancelButton = false
@@ -554,6 +557,9 @@ extension SearchAudioVC: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         allowToAddAudio = true
+        for (i, _) in boolArray.enumerated() {
+            boolArray[i] = false
+        }
         view.endEditing(true)
         searchBar.showsCancelButton = false
         if !searchBar.text!.isEmpty {
@@ -700,10 +706,11 @@ extension SearchAudioVC: UITableViewDelegate {
             
         }
         
-        //        if !allowToPresent {
-        //            self.gF.animator.interactiveType = .none
-        //            self.present(self.gF.modalVC, animated: true, completion: nil)
-        //        }
+        if allowToPresent {
+            allowToPresent = false
+            self.gF.animator.interactiveType = .none
+            self.present(self.gF.modalVC, animated: true, completion: nil)
+        }
         
     }
 }
