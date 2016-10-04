@@ -95,14 +95,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		5B3949CB1D8D0F2600A20E7E /* MainTabBar */ = {
+		5B3949CB1D8D0F2600A20E7E /* MainScreen */ = {
 			isa = PBXGroup;
 			children = (
 				5B3949D01D8D146500A20E7E /* Download.swift */,
 				5B3949CC1D8D10AA00A20E7E /* SearchAudioVC.swift */,
 				5B3949CE1D8D12DB00A20E7E /* TrackCell.swift */,
 			);
-			name = MainTabBar;
+			name = MainScreen;
 			sourceTree = "<group>";
 		};
 		9198DCA1109FBD39CBE8EF9D /* Pods */ = {
@@ -157,12 +157,11 @@
 		C47D51AA1D8FE2AB00968226 /* Extras */ = {
 			isa = PBXGroup;
 			children = (
+				C4D47B051DA3B27800244086 /* Other */,
 				C4850B041DA1C8B2004AFF81 /* MGSwipeTableCell */,
 				C498CB6E1D9D0BFC00B73FF1 /* MusicPlayerTransition */,
 				C498CB691D9CFD4D00B73FF1 /* DropDownMenu */,
-				C47D51BA1D8FFFDE00968226 /* RappleActivityIndicatorView.swift */,
 				C47D51AD1D8FE2D700968226 /* SwiftNotificationBanner */,
-				C498CB751D9ED52D00B73FF1 /* GlobalFunctions.swift */,
 				C4444E751DA2865A00160F1F /* ESTMusicIndicator */,
 				C4444E741DA27A0700160F1F /* MarqueeLabel */,
 			);
@@ -240,18 +239,27 @@
 			isa = PBXGroup;
 			children = (
 				C47D51AA1D8FE2AB00968226 /* Extras */,
-				C48A9AAB1D8A9929006B3C64 /* Audio.swift */,
-				C4CC8D891D8A7F8600BF68A1 /* AppDelegate.swift */,
-				C4CC8D9B1D8A813300BF68A1 /* VKDelegateImpl.swift */,
-				5B3949CB1D8D0F2600A20E7E /* MainTabBar */,
-				C489136C1D91F4A800CB2BD3 /* DownloadsTab */,
+				5B3949CB1D8D0F2600A20E7E /* MainScreen */,
 				C45FF80C1D913571001637A7 /* AudioPlayer */,
+				C489136C1D91F4A800CB2BD3 /* DownloadsTab */,
 				C4CC8D8D1D8A7F8600BF68A1 /* Main.storyboard */,
 				C4CC8D921D8A7F8600BF68A1 /* LaunchScreen.storyboard */,
 				C4CC8D901D8A7F8600BF68A1 /* Assets.xcassets */,
 				C4CC8D951D8A7F8600BF68A1 /* Info.plist */,
 			);
 			path = VKMusic;
+			sourceTree = "<group>";
+		};
+		C4D47B051DA3B27800244086 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				C48A9AAB1D8A9929006B3C64 /* Audio.swift */,
+				C4CC8D891D8A7F8600BF68A1 /* AppDelegate.swift */,
+				C4CC8D9B1D8A813300BF68A1 /* VKDelegateImpl.swift */,
+				C47D51BA1D8FFFDE00968226 /* RappleActivityIndicatorView.swift */,
+				C498CB751D9ED52D00B73FF1 /* GlobalFunctions.swift */,
+			);
+			name = Other;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

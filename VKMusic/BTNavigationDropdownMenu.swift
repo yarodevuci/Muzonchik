@@ -2,8 +2,8 @@
 //  BTConfiguration.swift
 //  BTNavigationDropdownMenu
 //
-//  Created by Pham Ba Tho on 6/30/15.
-//  Copyright (c) 2015 PHAM BA THO. All rights reserved.
+//  Created by Yaroslav Dukal 10/02/2016.
+//  Copyright (c) 2016 Gold_Mafia. All rights reserved.
 //
 
 import UIKit
