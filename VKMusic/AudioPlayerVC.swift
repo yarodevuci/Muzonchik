@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import MediaPlayer
 
 class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     
@@ -18,13 +19,13 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     @IBOutlet weak var currenTimeLabel: UILabel!
     @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet weak var playButton: UIButton!
-    @IBOutlet weak var volumeControl: UISlider!
     @IBOutlet weak var albumCoverImage: UIImageView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var durationSliderYConstraint: NSLayoutConstraint!
     @IBOutlet weak var artistNameBottonLayoutConstraint: NSLayoutConstraint!
     @IBOutlet weak var albumCoverHeightConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var volumeBar: MPVolumeView!
     //MARK: Varriables
     static var musicToPlay = [Audio]()
     static var indexToPlay = 0
@@ -56,26 +57,23 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
             view.setNeedsLayout()
         }
         player.delegate = self
-        volumeControl.setValue(defaults.float(forKey: "volumeControlValue"), animated: false)
+        //volumeControl.setValue(defaults.float(forKey: "volumeControlValue"), animated: false)
         durationSlider.setThumbImage(UIImage(named: "circle"), for: UIControlState.normal)
         durationSlider.setThumbImage(UIImage(named: "circle"), for: UIControlState.highlighted)
-        volumeControl.setThumbImage(UIImage(named: "circle"), for: UIControlState.normal)
-        volumeControl.setThumbImage(UIImage(named: "circle"), for: UIControlState.highlighted)
+        //volumeControl.setThumbImage(UIImage(named: "circle"), for: UIControlState.normal)
+        //volumeControl.setThumbImage(UIImage(named: "circle"), for: UIControlState.highlighted)
         
         self.setInfo(fromIndex: AudioPlayerVC.indexToPlay)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        let view = volumeBar.subviews.first as? UISlider
+        view?.setThumbImage(UIImage(named: "circle"), for: UIControlState.normal)
+        view?.setMinimumTrackImage(getImageWithColor(color: UIColor(red:0.30, green:0.31, blue:0.32, alpha:1.0), size: CGSize(width: 1, height: 1)), for: UIControlState.normal)
     }
-    
-    @IBAction func adjustVolume(_ sender: AnyObject) {
-        player.controlVolume(value: volumeControl.value)
-        var volume = AVAudioSession.sharedInstance().outputVolume
-        volume = volumeControl.value
-        print("Output volume: \(volume)")
-        defaults.set(volumeControl.value, forKey: "volumeControlValue")
-    }
+
     
     @IBAction func adjustDuration(_ sender: AnyObject) {
         player.pause()
@@ -84,7 +82,6 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     }
     
     @IBAction func tapToDismiss(_ sender: AnyObject) {
-        
         self.tapCloseButtonActionHandler?()
         self.dismiss(animated: true, completion: nil)
     }
@@ -127,6 +124,16 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         self.albumCoverImage.image = AudioPlayerVC.albumImage
     }
     
+    func getImageWithColor(color: UIColor, size: CGSize) -> UIImage {
+        let rect = CGRect(x: 0, y: 0, width: 1, height: 1)  //(0, 0, size.width, size.height)
+        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+        color.setFill()
+        UIRectFill(rect)
+        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return image
+    }
+    
     
     fileprivate func setInfo(fromIndex: Int) {
         if AudioPlayerVC.musicToPlay.count != 0 {
@@ -158,7 +165,6 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     
     //MARK: - AudioPlayerDelegate
     func audioDidChangeTime(_ time: Int64) {
-        player.controlVolume(value: self.volumeControl.value)
 
         activityIndicator.stopAnimating()
         playButton.isHidden = false

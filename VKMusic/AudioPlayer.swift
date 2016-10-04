@@ -81,7 +81,9 @@ class AudioPlayer{
             AudioPlayerVC.albumImage = UIImage(named: "music_plate")
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "albumCoverImageRetrieved"), object: nil)
             self.setAlbumImageForMiniPlayer(image: UIImage(named: "music_plate")!)
+            CommandCenter.defaultCenter.setNowPlayingInfo()
         }
+        
         
         DispatchQueue.global(qos: .background).async {
             let metadataList = playerItem.asset.metadata
@@ -99,6 +101,7 @@ class AudioPlayer{
                 }
             } else { print("MetadataList is empty ") }
         }
+
     }
     
     func setAlbumImageForMiniPlayer(image: UIImage) {
