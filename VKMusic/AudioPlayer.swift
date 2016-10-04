@@ -65,43 +65,40 @@ class AudioPlayer{
         if currentAudio != nil {
             killTimeObserver()
         }
-        currentAudio = currentPlayList[AudioPlayer.index]
-        let playerItem = AVPlayerItem(url: audioURL)
-        player = AVPlayer(playerItem: playerItem)
-        player.play()
-        addTimeObeserver()
         if let d = self.delegate {
             d.playerWillPlayNexAudio()
         }
-        let metadataList = playerItem.asset.metadata
-        var isFound = false
-        if metadataList.count != 0 {
-            for item in metadataList {
-                if item.commonKey == "artwork" {
-                    print("image loaded")
-                    AudioPlayerVC.albumImage = UIImage(data: item.value as! Data)!
-                    setAlbumImageForMiniPlayer(image: UIImage(data: item.value as! Data)!)
-                    NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "albumCoverImageRetrieved"), object: nil)
-                    isFound = true
-                    break
-                }
-            }
-            if !isFound {
-                print("Not Found ")
-                AudioPlayerVC.albumImage = UIImage(named: "music_plate")
-                NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "albumCoverImageRetrieved"), object: nil)
-                setAlbumImageForMiniPlayer(image: UIImage(named: "music_plate")!)
-            }
-        }
-        else {
+        
+        currentAudio = currentPlayList[AudioPlayer.index]
+        
+        player = AVPlayer(url: audioURL)
+        player.play()
+        addTimeObeserver()
+        
+        let playerItem = AVPlayerItem(url: audioURL)
+        
+        DispatchQueue.main.async {
             AudioPlayerVC.albumImage = UIImage(named: "music_plate")
-            setAlbumImageForMiniPlayer(image: UIImage(named: "music_plate")!)
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "albumCoverImageRetrieved"), object: nil)
-            print("No album Image found ")
+            self.setAlbumImageForMiniPlayer(image: UIImage(named: "music_plate")!)
         }
         
-        CommandCenter.defaultCenter.setNowPlayingInfo()
-
+        DispatchQueue.global(qos: .background).async {
+            let metadataList = playerItem.asset.metadata
+            if metadataList.count != 0 {
+                for item in metadataList {
+                    if item.commonKey == "artwork" {
+                        print("image Found")
+                        DispatchQueue.main.async {
+                            AudioPlayerVC.albumImage = UIImage(data: item.value as! Data)!
+                            self.setAlbumImageForMiniPlayer(image: UIImage(data: item.value as! Data)!)
+                            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "albumCoverImageRetrieved"), object: nil)
+                            CommandCenter.defaultCenter.setNowPlayingInfo()
+                        }
+                    }
+                }
+            } else { print("MetadataList is empty ") }
+        }
     }
     
     func setAlbumImageForMiniPlayer(image: UIImage) {
@@ -122,7 +119,9 @@ class AudioPlayer{
     }
     
     func controlVolume(value: Float) {
+        if player != nil {
         player.volume = value
+        }
     }
     
     func next() {

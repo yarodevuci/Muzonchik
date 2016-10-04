@@ -11,6 +11,10 @@
 		5B3949CF1D8D12DB00A20E7E /* TrackCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3949CE1D8D12DB00A20E7E /* TrackCell.swift */; };
 		5B3949D11D8D146500A20E7E /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3949D01D8D146500A20E7E /* Download.swift */; };
 		AECDB2F9E98AE2A09F75A7C7 /* Pods_VKMusic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88A37A02EE51CC4F04541D31 /* Pods_VKMusic.framework */; };
+		C4444E731DA2788400160F1F /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4444E721DA2788400160F1F /* MarqueeLabel.m */; };
+		C4444E781DA2867300160F1F /* ESTMusicIndicatorContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4444E761DA2867300160F1F /* ESTMusicIndicatorContentView.swift */; };
+		C4444E791DA2867300160F1F /* ESTMusicIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4444E771DA2867300160F1F /* ESTMusicIndicatorView.swift */; };
+		C4444E7F1DA3868200160F1F /* CircleProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4444E7E1DA3868200160F1F /* CircleProgressView.swift */; };
 		C45FF80E1D9135A4001637A7 /* AudioPlayerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45FF80D1D9135A4001637A7 /* AudioPlayerVC.swift */; };
 		C45FF8101D91377A001637A7 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45FF80F1D91377A001637A7 /* AudioPlayer.swift */; };
 		C45FF8121D9137DC001637A7 /* CommandCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45FF8111D9137DC001637A7 /* CommandCenter.swift */; };
@@ -45,6 +49,11 @@
 		89467DEFF5DF55E41E89085F /* Pods-VKMusic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VKMusic.release.xcconfig"; path = "Pods/Target Support Files/Pods-VKMusic/Pods-VKMusic.release.xcconfig"; sourceTree = "<group>"; };
 		9E57DACD874448BC21320238 /* Pods-VKMusic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VKMusic.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VKMusic/Pods-VKMusic.debug.xcconfig"; sourceTree = "<group>"; };
 		B84FFD3437C7E09FD3674FE7 /* Pods_VKMusic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VKMusic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4444E711DA2787E00160F1F /* MarqueeLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MarqueeLabel.h; sourceTree = "<group>"; };
+		C4444E721DA2788400160F1F /* MarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarqueeLabel.m; sourceTree = "<group>"; };
+		C4444E761DA2867300160F1F /* ESTMusicIndicatorContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ESTMusicIndicatorContentView.swift; sourceTree = "<group>"; };
+		C4444E771DA2867300160F1F /* ESTMusicIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ESTMusicIndicatorView.swift; sourceTree = "<group>"; };
+		C4444E7E1DA3868200160F1F /* CircleProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleProgressView.swift; sourceTree = "<group>"; };
 		C45FF80D1D9135A4001637A7 /* AudioPlayerVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayerVC.swift; sourceTree = "<group>"; };
 		C45FF80F1D91377A001637A7 /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		C45FF8111D9137DC001637A7 /* CommandCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandCenter.swift; sourceTree = "<group>"; };
@@ -116,6 +125,25 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		C4444E741DA27A0700160F1F /* MarqueeLabel */ = {
+			isa = PBXGroup;
+			children = (
+				C4444E721DA2788400160F1F /* MarqueeLabel.m */,
+				C4444E711DA2787E00160F1F /* MarqueeLabel.h */,
+			);
+			name = MarqueeLabel;
+			sourceTree = "<group>";
+		};
+		C4444E751DA2865A00160F1F /* ESTMusicIndicator */ = {
+			isa = PBXGroup;
+			children = (
+				C4444E7E1DA3868200160F1F /* CircleProgressView.swift */,
+				C4444E761DA2867300160F1F /* ESTMusicIndicatorContentView.swift */,
+				C4444E771DA2867300160F1F /* ESTMusicIndicatorView.swift */,
+			);
+			name = ESTMusicIndicator;
+			sourceTree = "<group>";
+		};
 		C45FF80C1D913571001637A7 /* AudioPlayer */ = {
 			isa = PBXGroup;
 			children = (
@@ -135,6 +163,8 @@
 				C47D51BA1D8FFFDE00968226 /* RappleActivityIndicatorView.swift */,
 				C47D51AD1D8FE2D700968226 /* SwiftNotificationBanner */,
 				C498CB751D9ED52D00B73FF1 /* GlobalFunctions.swift */,
+				C4444E751DA2865A00160F1F /* ESTMusicIndicator */,
+				C4444E741DA27A0700160F1F /* MarqueeLabel */,
 			);
 			name = Extras;
 			sourceTree = "<group>";
@@ -360,6 +390,8 @@
 				C489136E1D91F4D800CB2BD3 /* DownloadsTabVC.swift in Sources */,
 				5B3949CD1D8D10AA00A20E7E /* SearchAudioVC.swift in Sources */,
 				C45FF8101D91377A001637A7 /* AudioPlayer.swift in Sources */,
+				C4444E791DA2867300160F1F /* ESTMusicIndicatorView.swift in Sources */,
+				C4444E7F1DA3868200160F1F /* CircleProgressView.swift in Sources */,
 				C47D51BB1D8FFFDE00968226 /* RappleActivityIndicatorView.swift in Sources */,
 				C4CC8D9C1D8A813300BF68A1 /* VKDelegateImpl.swift in Sources */,
 				C47D51B81D8FE33700968226 /* SwiftNotificationBannerView.swift in Sources */,
@@ -371,8 +403,10 @@
 				C498CB761D9ED52D00B73FF1 /* GlobalFunctions.swift in Sources */,
 				C498CB741D9D0CBD00B73FF1 /* ARNTransitionAnimator.swift in Sources */,
 				C4CC8D8A1D8A7F8600BF68A1 /* AppDelegate.swift in Sources */,
+				C4444E781DA2867300160F1F /* ESTMusicIndicatorContentView.swift in Sources */,
 				5B3949CF1D8D12DB00A20E7E /* TrackCell.swift in Sources */,
 				C498CB701D9D0C1900B73FF1 /* LineView.swift in Sources */,
+				C4444E731DA2788400160F1F /* MarqueeLabel.m in Sources */,
 				C47D51B71D8FE33700968226 /* SwiftNotificationBanner.swift in Sources */,
 				C45FF8121D9137DC001637A7 /* CommandCenter.swift in Sources */,
 				5B3949D11D8D146500A20E7E /* Download.swift in Sources */,

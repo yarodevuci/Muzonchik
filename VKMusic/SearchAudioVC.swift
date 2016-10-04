@@ -29,6 +29,7 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
     let player = AudioPlayer.defaultPlayer
     let defaultSession = Foundation.URLSession(configuration: URLSessionConfiguration.default)
     let gF = GlobalFunctions()
+    let defaults = UserDefaults.standard
     
     var activeDownloads = [String: Download]()
     var dataTask: URLSessionDataTask?
@@ -37,6 +38,7 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
     var allowToAddAudio = false
     var activeDownloadsCount = 0
     var menuView: BTNavigationDropdownMenu!
+    var boolArray = [Bool]()
     static var selectedIndex = 0
     static var trackProgress = Float(0)
     
@@ -79,11 +81,18 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(playNextSong), name:NSNotification.Name(rawValue: "playNextSong"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(playPreviousSong), name:NSNotification.Name(rawValue: "playPreviousSong"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updatePlayButton), name:NSNotification.Name(rawValue: "SwapMinPlayerPlayButtonImage"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateProgress), name:NSNotification.Name(rawValue: "reloadTableView"), object: nil)
+        
     }
     
     @IBAction func tapMiniPlayerButton() {
         gF.animator.interactiveType = .none
         self.present(gF.modalVC, animated: true, completion: nil)
+    }
+    
+    func updateProgress() {
+        tableView.reloadData()
     }
     
     func playPreviousSong() {
@@ -223,6 +232,12 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
             DispatchQueue.main.async(execute: { () -> Void in
                 self.tableView.reloadData()
                 self.refreshControl?.endRefreshing()
+                
+                let cells = [Bool](repeating: false, count: SearchAudioVC.searchResults.count)
+                for i in cells {
+                    self.boolArray.append(i)
+                }
+                
             })
         }
         getAudios.errorBlock = { error in
@@ -434,6 +449,7 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
         return nil
     }
     
+    
     //MARK: Override preferredStatusBarStyle
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
     
@@ -545,6 +561,7 @@ extension SearchAudioVC: UISearchBarDelegate {
                 dataTask?.cancel()
             }
             allowToDelete = false
+            tableView.setContentOffset(CGPoint.zero, animated: true)
             searchAudio(searchText: searchBar.text!)
         }
         
@@ -602,13 +619,16 @@ extension SearchAudioVC: UITableViewDataSource {
         cell.artistLabel.text = track.title
         cell.titleLabel.text = track.artist
         
+        //when transition from music player keep bar indicator animating for selected song
+        if boolArray[indexPath.row] { cell.musicIndicator.state = .estMusicIndicatorViewStatePlaying }
+        else { cell.musicIndicator.state = .estMusicIndicatorViewStateStopped }
+        
         var showDownloadControls = false
         if let download = activeDownloads[track.url!] {
             showDownloadControls = true
             cell.progressView.progress = download.progress
             cell.progressLabel.text = (download.isDownloading) ? "Downloading..." : "Paused"
         }
-        
         cell.progressView.isHidden = !showDownloadControls
         cell.progressLabel.isHidden = !showDownloadControls
         
@@ -618,11 +638,6 @@ extension SearchAudioVC: UITableViewDataSource {
         cell.cancelButton.isHidden = !showDownloadControls
         if downloaded { cell.accessoryType = .checkmark } else { cell.accessoryType = .none }
         
-        //        if cell.downloadButton.isHidden && cell.cancelButton.isHidden {
-        //            cell.titleLabel.frame = CGRect(x: 8, y: 12, width: 300, height: 20)
-        //        } else {
-        //            cell.titleLabel.frame = CGRect(x: 8, y: 12, width: 195, height: 20)
-        //        }
         return cell
     }
 }
@@ -645,7 +660,21 @@ extension SearchAudioVC: UITableViewDelegate {
         return miniPlayerView.isHidden ? 0 : 55.0
     }
     
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        boolArray[indexPath.row] = true
+        for (i, _) in boolArray.enumerated() {
+            if i != indexPath.row {
+                boolArray[i] = false
+            }
+            tableView.reloadData()
+        }
+        let cell = tableView.cellForRow(at: indexPath) as! TrackCell
+        if cell.isSelected {
+            cell.musicIndicator.state = .estMusicIndicatorViewStatePlaying
+        }
+        
         
         miniPlayerView.isHidden = false
         SearchAudioVC.selectedIndex = indexPath.row
@@ -654,11 +683,8 @@ extension SearchAudioVC: UITableViewDelegate {
         miniPlayerArtistName.text = SearchAudioVC.searchResults[indexPath.row].artist
         miniPlayerSongName.text = SearchAudioVC.searchResults[indexPath.row].title
         
-        if allowToPresent {
-            self.gF.animator.interactiveType = .none
-            self.present(self.gF.modalVC, animated: true, completion: nil)
-        }
         if isNowPlaying != indexPath.row {
+            miniPlayerProgressView.progress = 0
             player.setPlayList(SearchAudioVC.searchResults)
             AudioPlayerVC.musicToPlay = SearchAudioVC.searchResults
             AudioPlayerVC.indexToPlay = indexPath.row
@@ -673,10 +699,16 @@ extension SearchAudioVC: UITableViewDelegate {
             }
             else {
                 let url = NSURL(string: SearchAudioVC.searchResults[indexPath.row].url!)
-                player.playAudioFromURL(audioURL: url as! URL)
+                self.player.playAudioFromURL(audioURL: url as! URL)
             }
             
         }
+        
+        //        if !allowToPresent {
+        //            self.gF.animator.interactiveType = .none
+        //            self.present(self.gF.modalVC, animated: true, completion: nil)
+        //        }
+        
     }
 }
 

@@ -11,17 +11,21 @@ import AVFoundation
 
 class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     
-    @IBOutlet weak var artistNameLabel: UILabel!
-    @IBOutlet weak var songNameLabel: UILabel!
+    //MARK: IBOutlet
+    @IBOutlet weak var artistNameLabel: MarqueeLabel!
+    @IBOutlet weak var songNameLabel: MarqueeLabel!
     @IBOutlet weak var durationSlider: UISlider!
     @IBOutlet weak var currenTimeLabel: UILabel!
     @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var volumeControl: UISlider!
     @IBOutlet weak var albumCoverImage: UIImageView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var durationSliderYConstraint: NSLayoutConstraint!
     @IBOutlet weak var artistNameBottonLayoutConstraint: NSLayoutConstraint!
+    @IBOutlet weak var albumCoverHeightConstraint: NSLayoutConstraint!
     
+    //MARK: Varriables
     static var musicToPlay = [Audio]()
     static var indexToPlay = 0
     fileprivate let player = AudioPlayer.defaultPlayer
@@ -45,8 +49,9 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(updatePlayButton), name:NSNotification.Name(rawValue: "SwapPlayButtonImage"), object: nil)
         
         if UIScreen.main.bounds.size.width == 375 {
-            durationSliderYConstraint.constant = 348 //adjust duration Slider for iphone6
-            artistNameBottonLayoutConstraint.constant = 170
+            durationSliderYConstraint.constant = 370
+            artistNameBottonLayoutConstraint.constant = 200
+            albumCoverHeightConstraint.constant = 330
             view.setNeedsLayout()
         }
         player.delegate = self
@@ -126,14 +131,18 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         if AudioPlayerVC.musicToPlay.count != 0 {
             let audio = AudioPlayerVC.musicToPlay[AudioPlayerVC.indexToPlay]
             artistNameLabel.text? = (audio.artist)
+            
             songNameLabel.text? = (audio.title)
             currentAudioDuration = durationString((audio.duration))
             durationNumber = Float(audio.duration)
             durationLabel.text? = "-\(durationString((audio.duration)))"
             currenTimeLabel.text? = "0:00"
             durationSlider.maximumValue = Float((audio.duration))
-            self.player.controlVolume(value: self.volumeControl.value)
             durationSlider.value = 0
+            playButton.setImage(UIImage(named: "Pause"), for: UIControlState())
+            
+            playButton.isHidden = true
+            activityIndicator.startAnimating()
         }
     }
     
@@ -148,9 +157,15 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     
     //MARK: - AudioPlayerDelegate
     func audioDidChangeTime(_ time: Int64) {
+        player.controlVolume(value: self.volumeControl.value)
+
+        activityIndicator.stopAnimating()
+        playButton.isHidden = false
+
         self.time = Float(time)
         //DownloadsTabVC.a = "\(durationString(Int(time))) / \(currentAudioDuration)"
         let progressValue = Float(time) / Float(durationNumber)
+        SearchAudioVC.trackProgress = progressValue
         
         //NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "reloadTableView"), object: nil)
         currenTimeLabel.text? = durationString(Int(time))
