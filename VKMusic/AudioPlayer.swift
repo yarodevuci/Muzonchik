@@ -72,6 +72,7 @@ class AudioPlayer{
         currentAudio = currentPlayList[AudioPlayer.index]
         
         player = AVPlayer(url: audioURL)
+        player.volume = 1
         player.play()
         addTimeObeserver()
         
@@ -118,12 +119,6 @@ class AudioPlayer{
     func pause() {
         if player != nil {
             player.pause()
-        }
-    }
-    
-    func controlVolume(value: Float) {
-        if player != nil {
-        player.volume = value
         }
     }
     

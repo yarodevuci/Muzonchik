@@ -57,12 +57,8 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
             view.setNeedsLayout()
         }
         player.delegate = self
-        //volumeControl.setValue(defaults.float(forKey: "volumeControlValue"), animated: false)
         durationSlider.setThumbImage(UIImage(named: "circle"), for: UIControlState.normal)
         durationSlider.setThumbImage(UIImage(named: "circle"), for: UIControlState.highlighted)
-        //volumeControl.setThumbImage(UIImage(named: "circle"), for: UIControlState.normal)
-        //volumeControl.setThumbImage(UIImage(named: "circle"), for: UIControlState.highlighted)
-        
         self.setInfo(fromIndex: AudioPlayerVC.indexToPlay)
     }
     
