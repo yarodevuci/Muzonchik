@@ -663,6 +663,7 @@ extension SearchAudioVC: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        //set true for selected cell
         boolArray[indexPath.row] = true
         for (i, _) in boolArray.enumerated() {
             if i != indexPath.row {
@@ -670,11 +671,6 @@ extension SearchAudioVC: UITableViewDelegate {
             }
             tableView.reloadData()
         }
-        let cell = tableView.cellForRow(at: indexPath) as! TrackCell
-        if cell.isSelected {
-            cell.musicIndicator.state = .estMusicIndicatorViewStatePlaying
-        }
-        
         
         miniPlayerView.isHidden = false
         SearchAudioVC.selectedIndex = indexPath.row
