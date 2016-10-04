@@ -172,7 +172,9 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         
         //NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "reloadTableView"), object: nil)
         currenTimeLabel.text? = durationString(Int(time))
+        durationLabel.text = "-\(durationString(Int(durationNumber) - Int(time)))"
         durationSlider.value = Float(time)
+        
         let rootViewController = UIApplication.shared.keyWindow?.rootViewController
         if let sa = rootViewController as? SearchAudioVC { sa.miniPlayerProgressView.progress = progressValue }
     }

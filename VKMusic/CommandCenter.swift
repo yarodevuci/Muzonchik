@@ -14,7 +14,7 @@ class CommandCenter: NSObject {
     
     fileprivate let player = AudioPlayer.defaultPlayer
     
-    fileprivate override init() {
+    override init() {
         super.init()
         setCommandCenter()
         setAudioSeccion()
@@ -22,13 +22,13 @@ class CommandCenter: NSObject {
     
     deinit { NotificationCenter.default.removeObserver(self) }
     
-    fileprivate func setAudioSeccion() {
+    func setAudioSeccion() {
         let audioSeccion = AVAudioSession.sharedInstance()
         do {
             try audioSeccion.setCategory("AVAudioSessionCategoryPlayback", with: .defaultToSpeaker)
             try audioSeccion.setActive(true)
         } catch {
-            print("ERROR")
+            print("ERROR setAudioSeccion")
         }
     }
     
