@@ -4,15 +4,13 @@
 
 
 <br>
-<<<<<<< HEAD
-<img height="350" ![animated](animated.gif "animated") />
-=======
 <img height="350" src="https://github.com/yarodevuci/VKMusic/blob/master/animated.gif?raw=true" />
->>>>>>> 1b69302eff2e8768fe9c90a799f16388869be058
 <img height="350" src="https://github.com/yarodevuci/VKMusic/blob/master/Splash.png?raw=true" />
 <img height="350" src="https://github.com/yarodevuci/VKMusic/blob/master/DropDownMenu.png?raw=true" />
 <img height="350" src="https://github.com/yarodevuci/VKMusic/blob/master/Player.png?raw=true" />
 <img height="350" src="https://github.com/yarodevuci/VKMusic/blob/master/AudioList.png?raw=true" />
+<img height="350" ![animated](animated.gif "animated") />
+
 <br>
 
 <pre>
