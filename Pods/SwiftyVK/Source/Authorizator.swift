@@ -118,12 +118,12 @@ internal struct Authorizator {
     
     
     internal static func recieveTokenURL(url: URL, fromApp app: String?) {
-      if (app == "com.vk.vkclient" || app == "com.vk.vkhd" || url.scheme == "vk\(VK.appID)") {
-        if url.absoluteString.contains("access_token=") {
-          _ = Token(urlString: url.absoluteString)
-          WebController.cancel()
+        if (app == "com.vk.vkclient" || app == "com.vk.vkhd" || url.scheme == String(format:"vk%@", VK.appID!)) {
+            if url.absoluteString.contains("access_token=") {
+                _ = Token(urlString: url.absoluteString)
+                WebController.cancel()
+            }
         }
-      }
     }
   }
 #endif

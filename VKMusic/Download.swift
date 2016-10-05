@@ -16,6 +16,10 @@ class Download: NSObject {
     var fileName: String = ""
     var songName: String = ""
     
+    var realmTitle = ""
+    var realmArtist = ""
+    var realmDuration = 0
+    
     var downloadTask: URLSessionDownloadTask?
     var resumeData: Data?
     

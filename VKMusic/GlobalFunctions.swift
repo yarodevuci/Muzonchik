@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import RealmSwift
 
 class GlobalFunctions {
     
@@ -169,7 +170,7 @@ class GlobalFunctions {
     }
     
     func emptyMessage(message:String, tableView: UITableView, view: UIView) {
-        let messageLabel = UILabel(frame: CGRectMake(0,-50, view.bounds.size.width, view.bounds.size.height))
+        let messageLabel = UILabel(frame: CGRectMake(0, -view.bounds.size.height / 2, view.bounds.size.width, view.bounds.size.height))
         messageLabel.text = message
         messageLabel.textColor = UIColor.black
         messageLabel.numberOfLines = 0;
@@ -180,7 +181,21 @@ class GlobalFunctions {
         tableView.backgroundView = messageLabel
         tableView.separatorStyle = .none
     }
+    
+    func createSavedAudio(title: String, artist: String, duration: Int, url: URL) {
+        let savedAudio = SavedAudio()
+        savedAudio.title = title
+        savedAudio.artist = artist
+        savedAudio.duration = duration
+        savedAudio.url = url.absoluteString
+        
+        print(savedAudio.url)
+        let realm = try! Realm()
+        try! realm.write {
+            realm.add(savedAudio)
+        }
+    }
+
    
 }
 
-    

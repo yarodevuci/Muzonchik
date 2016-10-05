@@ -123,7 +123,7 @@
                                                 <constraint firstItem="yKt-nu-MtH" firstAttribute="top" secondItem="sRO-c8-grm" secondAttribute="top" constant="20" id="0rz-N7-JmV"/>
                                                 <constraint firstItem="sRO-c8-grm" firstAttribute="leading" secondItem="mbR-Ty-acn" secondAttribute="leadingMargin" constant="10" id="5Dd-Pg-2XZ"/>
                                                 <constraint firstItem="Axt-bX-K6c" firstAttribute="width" secondItem="mbR-Ty-acn" secondAttribute="width" id="5zB-S2-uB5"/>
-                                                <constraint firstItem="Axt-bX-K6c" firstAttribute="top" secondItem="mbR-Ty-acn" secondAttribute="topMargin" constant="52" id="KT2-ui-Sh9"/>
+                                                <constraint firstItem="Axt-bX-K6c" firstAttribute="top" secondItem="mbR-Ty-acn" secondAttribute="topMargin" constant="51" id="KT2-ui-Sh9"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="yKt-nu-MtH" secondAttribute="trailing" id="KYZ-bg-6mt"/>
                                                 <constraint firstItem="XZH-wh-K30" firstAttribute="leading" secondItem="M9Y-px-sCv" secondAttribute="leading" id="Nyq-Bf-cTA"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="XZH-wh-K30" secondAttribute="trailing" constant="-3" id="PoO-E4-Lk5"/>

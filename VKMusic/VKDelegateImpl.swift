@@ -13,6 +13,16 @@ class VKDelegateImpl : VKDelegate {
         VK.configure(appID: appID, delegate: self)
     }
     
+    func application(app: UIApplication, openURL url: URL, options: [String : AnyObject]) -> Bool {
+        if #available(iOS 9.0, *) {
+            VK.processURL(url: url as URL, options: options)
+        } else {
+            VK.processURL_old(url: url as URL, sourceApplication: "com.vk.vkhd")
+        }
+        return true
+    }
+
+    
     func vkAutorizationFailedWith(error: VK.Error) {
         print("Autorization failed with error: \n\(error)")
     }
@@ -21,7 +31,6 @@ class VKDelegateImpl : VKDelegate {
         print("\nWill Authorize Scope: \(scope)\n")
         return scope
     }
-    
     
     func vkDidAuthorizeWith(parameters: Dictionary<String, String>) {
         print(parameters)

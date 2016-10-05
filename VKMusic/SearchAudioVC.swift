@@ -9,6 +9,7 @@
 import UIKit
 import SwiftyVK
 import MediaPlayer
+import RealmSwift
 
 class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
     
@@ -72,6 +73,7 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
         tableView.tableFooterView = UIView()
         searchBar.keyboardAppearance = .dark
         
+        VK.logIn()
         displayMusicList()
         
         NotificationCenter.default.addObserver(self, selector: #selector(playNextSong), name:NSNotification.Name(rawValue: "playNextSong"), object: nil)
@@ -152,14 +154,16 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
     
     func displayDownloadedSongsOnly() {
         allowToDelete = true
+        let realm = try! Realm()
+        let downloadedAudioFiles = realm.objects(SavedAudio.self)
+        SearchAudioVC.searchResults.removeAll()
+        for (i, _) in downloadedAudioFiles.enumerated() {
+            let object = downloadedAudioFiles[i]
+            SearchAudioVC.searchResults.append(Audio(url: object.url, title: object.title, artist: object.artist, duration: object.duration))
+        }
         self.refreshControl?.removeFromSuperview()
         allowToDeleteFromServer = false //Delete local file. Keep audio on VK server
-        SearchAudioVC.searchResults.removeAll()
-        for song in SearchAudioVC.tempArray {
-            if self.localFileExistsForTrack(song) {
-                SearchAudioVC.searchResults.append(song)
-            }
-        }
+
         DispatchQueue.main.async(execute: { () -> Void in
             self.tableView.reloadData()
         })
@@ -227,11 +231,13 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
         allowToAddAudio = false
         allowToDeleteFromServer = true
         
-        let getAudios = VK.API.Audio.get()
-        
         if VK.state == .authorized {
             RappleActivityIndicatorView.startAnimatingWithLabel("Loading...", attributes: RappleModernAttributes)
         }
+        else {
+            RappleActivityIndicatorView.stopAnimating()
+        }
+        let getAudios = VK.API.Audio.get()
         getAudios.successBlock = { response in
             SearchAudioVC.searchResults.removeAll()
             SearchAudioVC.tempArray.removeAll()
@@ -280,6 +286,19 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
     func deleteSong(_ row: Int) {
         let track = SearchAudioVC.searchResults[row]
         if localFileExistsForTrack(track) {
+            
+            let realm = try! Realm()
+            let fileToDelete = realm.objects(SavedAudio.self)
+
+            try! realm.write({ () -> Void in
+                realm.delete(fileToDelete[row])
+            })
+            boolArray[row] = false
+            if player.currentAudio != nil && player.currentAudio == track {
+                miniPlayerView.isHidden = true
+                player.kill()
+            }
+            
             let fileManager = FileManager.default
             let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
             let nsUserDomainMask = FileManager.SearchPathDomainMask.userDomainMask
@@ -300,6 +319,7 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
         }
         
         if allowToDeleteFromServer {
+            boolArray[row] = false
             deleteTrackFromServer(row)
         }
     }
@@ -419,6 +439,12 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
         download.isDownloading = true
         download.fileName = "\(track.title)\n\(track.artist).mp3"
         download.songName = track.title
+        
+        //Save info for Ream:
+        download.realmTitle = track.title
+        download.realmArtist = track.artist
+        download.realmDuration = track.duration
+        
         if allowToAddAudio {
             let addAudio = VK.API.Audio.add([.audioId: String(track.id), .ownerId: String(track.ownerID)])
             addAudio.send()
@@ -497,6 +523,8 @@ extension SearchAudioVC: URLSessionDownloadDelegate {
             do {
                 try fileManager.moveItem(at: location, to: destinationURL)
                 DispatchQueue.main.async(execute: { () -> Void in
+                    let aD = self.activeDownloads[originalURL]!
+                    self.gF.createSavedAudio(title: aD.realmTitle, artist: aD.realmArtist, duration: aD.realmDuration, url: destinationURL)
                     SwiftNotificationBanner.presentNotification("\(self.activeDownloads[originalURL]!.songName)\nЗагрузка завершена")
                     NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "downloadComplete"), object: nil)
                     let url = downloadTask.originalRequest?.url?.absoluteString
@@ -528,7 +556,8 @@ extension SearchAudioVC: URLSessionDownloadDelegate {
             if let trackIndex = trackIndexForDownloadTask(downloadTask), let trackCell = tableView.cellForRow(at: IndexPath(row: trackIndex, section: 0)) as? TrackCell {
                 DispatchQueue.main.async(execute: {
                     trackCell.progressView.progress = download.progress
-                    trackCell.progressLabel.text =  String(format: "%.1f%% of %@",  download.progress * 100, totalSize)
+                    //trackCell.progressLabel.text =  String(format: "%.1f%% of %@",  download.progress * 100, totalSize)
+                    trackCell.progressLabel.text = String(Int(totalBytesExpectedToWrite) * 8 / 1000 / download.realmDuration)
                 })
             }
         }
@@ -602,6 +631,7 @@ extension SearchAudioVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if SearchAudioVC.searchResults.count > 0 {
             tableView.backgroundView = .none
+            tableView.separatorStyle = .singleLine
             tableView.isUserInteractionEnabled = true
             return SearchAudioVC.searchResults.count
         } else {
@@ -636,7 +666,13 @@ extension SearchAudioVC: UITableViewDataSource {
         let track = SearchAudioVC.searchResults[indexPath.row]
         cell.artistLabel.text = track.title
         cell.titleLabel.text = track.artist
+    
+        let request:NSMutableURLRequest = NSMutableURLRequest(url: NSURL(string: track.url!)! as URL)
+        request.httpMethod = "HEAD"
         
+        _ = NSURLConnection(request: request as URLRequest, delegate: self)!
+        
+       
         //when transition from music player keep bar indicator animating for selected song
         if boolArray[indexPath.row] { cell.musicIndicator.state = .estMusicIndicatorViewStatePlaying }
         else { cell.musicIndicator.state = .estMusicIndicatorViewStateStopped }
@@ -657,6 +693,20 @@ extension SearchAudioVC: UITableViewDataSource {
         if downloaded { cell.accessoryType = .checkmark } else { cell.accessoryType = .none }
         
         return cell
+    }
+}
+
+extension SearchAudioVC: NSURLConnectionDataDelegate {
+    func connection(_ connection: NSURLConnection, didReceive response: URLResponse)
+    {
+        let a = SearchAudioVC.searchResults
+        let size = response.expectedContentLength
+        for i in 0..<SearchAudioVC.searchResults.count {
+            if a[i].url! == String(describing: response.url!) {
+                print("\(a[i].artist) is \(Int(size) * 8 / 1000 / a[i].duration)kbps")
+            }
+        }
+        //print("size : \(size)")
     }
 }
 
