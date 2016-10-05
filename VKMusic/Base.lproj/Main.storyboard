@@ -35,7 +35,7 @@
                                         <rect key="frame" x="0.0" y="28" width="320" height="63"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yMY-jb-9Ol" id="mbR-Ty-acn">
-                                            <frame key="frameInset" width="320" height="62"/>
+                                            <frame key="frameInset" width="320" height="62.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Artist" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sRO-c8-grm">
@@ -307,7 +307,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BEl-3X-Wu2">
+                            <visualEffectView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BEl-3X-Wu2">
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="NzK-sS-lp8">
                                     <frame key="frameInset"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

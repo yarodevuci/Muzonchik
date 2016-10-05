@@ -164,6 +164,23 @@ class GlobalFunctions {
         view.sendSubview(toBack: blurView)
     }
     
+    func CGRectMake(_ x: CGFloat, _ y: CGFloat, _ width: CGFloat, _ height: CGFloat) -> CGRect {
+        return CGRect(x: x, y: y, width: width, height: height)
+    }
+    
+    func emptyMessage(message:String, tableView: UITableView, view: UIView) {
+        let messageLabel = UILabel(frame: CGRectMake(0,-50, view.bounds.size.width, view.bounds.size.height))
+        messageLabel.text = message
+        messageLabel.textColor = UIColor.black
+        messageLabel.numberOfLines = 0;
+        messageLabel.textAlignment = .center
+        messageLabel.font = UIFont(name: "TrebuchetMS", size: 22)
+        messageLabel.sizeToFit()
+        
+        tableView.backgroundView = messageLabel
+        tableView.separatorStyle = .none
+    }
+   
 }
 
     

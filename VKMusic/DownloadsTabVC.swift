@@ -117,36 +117,11 @@ class DownloadsTabVC: UIViewController {
         }
     }
     
-    func CGRectMake(_ x: CGFloat, _ y: CGFloat, _ width: CGFloat, _ height: CGFloat) -> CGRect {
-        return CGRect(x: x, y: y, width: width, height: height)
-    }
-    
-    func emptyMessage(message:String) {
-        let messageLabel = UILabel(frame: CGRectMake(0,-50,self.view.bounds.size.width, self.view.bounds.size.height))
-        messageLabel.text = message
-        messageLabel.textColor = UIColor.white
-        messageLabel.numberOfLines = 0;
-        messageLabel.textAlignment = .center
-        messageLabel.font = UIFont(name: "TrebuchetMS", size: 22)
-        messageLabel.sizeToFit()
-        
-        tableView.backgroundView = messageLabel
-        tableView.separatorStyle = .none
-    }
-    //@IBAction func goToDownloads(segue:UIStoryboardSegue) {}
-
-    
 }
 
 extension DownloadsTabVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if myDownloads.count > 0 {
-            tableView.backgroundView = .none
-            return myDownloads.count
-        } else {
-            emptyMessage(message: "Здесь пока ничего нет.")
-            return 0
-        }
+        return myDownloads.count
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

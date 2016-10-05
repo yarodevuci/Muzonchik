@@ -66,12 +66,7 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
         //Set up miniPlayerView
         gF.setupAnimator(vc: self, miniPlayerView: miniPlayerView, view: self.view, cView: containerView, tableView: tableView)
         
-        //refresh control
-        let refreshControl = UIRefreshControl()
-        refreshControl.tintColor = UIColor.black
-        refreshControl.addTarget(self, action: #selector(displayMusicList), for: .valueChanged)
-        tableView.insertSubview(refreshControl, at: 0)
-        self.refreshControl = refreshControl
+        createRefreshControl()
         
         _ = self.downloadsSession
         tableView.tableFooterView = UIView()
@@ -90,6 +85,15 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
     @IBAction func tapMiniPlayerButton() {
         gF.animator.interactiveType = .none
         self.present(gF.modalVC, animated: true, completion: nil)
+    }
+    
+    //refresh control
+    func createRefreshControl() {
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = UIColor.black
+        refreshControl.addTarget(self, action: #selector(displayMusicList), for: .valueChanged)
+        tableView.insertSubview(refreshControl, at: 0)
+        self.refreshControl = refreshControl
     }
     
     func updateProgress() {
@@ -148,6 +152,7 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
     
     func displayDownloadedSongsOnly() {
         allowToDelete = true
+        self.refreshControl?.removeFromSuperview()
         allowToDeleteFromServer = false //Delete local file. Keep audio on VK server
         SearchAudioVC.searchResults.removeAll()
         for song in SearchAudioVC.tempArray {
@@ -155,12 +160,13 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
                 SearchAudioVC.searchResults.append(song)
             }
         }
-            DispatchQueue.main.async(execute: { () -> Void in
-                self.tableView.reloadData()
-            })
+        DispatchQueue.main.async(execute: { () -> Void in
+            self.tableView.reloadData()
+        })
     }
     
     func displayRecomendations() {
+        self.refreshControl?.removeFromSuperview()
         allowToDelete = false
         allowToAddAudio = true
         
@@ -190,6 +196,7 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
     func displayPopularMusic() {
         allowToDelete = false
         allowToAddAudio = true
+        self.refreshControl?.removeFromSuperview()
         
         let getAudios = VK.API.Audio.getPopular([.count: "500"])
         
@@ -215,6 +222,7 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
     }
     
     func displayMusicList() {
+        if refreshControl == nil { createRefreshControl() }
         allowToDelete = true
         allowToAddAudio = false
         allowToDeleteFromServer = true
@@ -272,31 +280,22 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
     func deleteSong(_ row: Int) {
         let track = SearchAudioVC.searchResults[row]
         if localFileExistsForTrack(track) {
-            let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
             let fileManager = FileManager.default
+            let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
+            let nsUserDomainMask = FileManager.SearchPathDomainMask.userDomainMask
+            let paths = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
+            guard let dirPath = paths.first else { return }
+            let filePath = String(describing: "\(dirPath)/\(track.title)\n\(track.artist).mp3")
             
             do {
-                let directoryContents = try FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil, options: [])
-                let mp3Files = directoryContents.filter{ $0.pathExtension == "mp3" }
-                do {
-                    player.pause()
-                    print("deleting file at location:\n\(mp3Files[row].absoluteString)")
-                    try! fileManager.removeItem(at: mp3Files[row].absoluteURL)
-                    print("Deleted..")
-
-                    //Clear deleted song info from miniPlayer
-//                    miniPlayerSongName.text = ""
-//                    miniPlayerArtistName.text = ""
-//                    miniPlayerProgressView.progress = 0
-                    //
-                    SearchAudioVC.searchResults.remove(at: row)
-                    tableView.reloadData()
-                    isNowPlaying = -1
-                    SwiftNotificationBanner.presentNotification("Удалено")
-                }
+                try fileManager.removeItem(atPath: filePath)
                 
+                SearchAudioVC.searchResults.remove(at: row)
+                tableView.reloadData()
+                isNowPlaying = -1
+                SwiftNotificationBanner.presentNotification("Удалено")
             } catch let error as NSError {
-                print(error.localizedDescription)
+                print(error.debugDescription)
             }
         }
         
@@ -399,10 +398,12 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
     }
     
     func dismissKeyboard() {
+        searchBar.showsCancelButton = false
         searchBar.resignFirstResponder()
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        searchBar.showsCancelButton = false
         dismissKeyboard()
     }
     
@@ -494,13 +495,13 @@ extension SearchAudioVC: URLSessionDownloadDelegate {
                 // Non-fatal: file probably doesn't exist
             }
             do {
-                try fileManager.copyItem(at: location, to: destinationURL)
-                NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "downloadComplete"), object: nil)
+                try fileManager.moveItem(at: location, to: destinationURL)
                 DispatchQueue.main.async(execute: { () -> Void in
                     SwiftNotificationBanner.presentNotification("\(self.activeDownloads[originalURL]!.songName)\nЗагрузка завершена")
                     NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "downloadComplete"), object: nil)
                     let url = downloadTask.originalRequest?.url?.absoluteString
                     self.activeDownloads[url!] = nil
+                    self.tableView.reloadData()
                 })
             } catch let error as NSError {
                 DispatchQueue.main.async(execute: { () -> Void in
@@ -599,8 +600,16 @@ extension SearchAudioVC: TrackCellDelegate {
 
 extension SearchAudioVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return SearchAudioVC.searchResults.count
-    }
+        if SearchAudioVC.searchResults.count > 0 {
+            tableView.backgroundView = .none
+            tableView.isUserInteractionEnabled = true
+            return SearchAudioVC.searchResults.count
+        } else {
+            tableView.isUserInteractionEnabled = false
+            gF.emptyMessage(message: "Здесь пока ничего нет.", tableView: tableView, view: self.view)
+            return 0
+        }
+}
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return allowToDelete
@@ -616,8 +625,8 @@ extension SearchAudioVC: UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "TrackCell", for: indexPath) as! TrackCell
         
-//        cell.downloadButton.layer.borderColor = gF.blueButtonColor
-//        cell.downloadButton.layer.cornerRadius = 5
+        //        cell.downloadButton.layer.borderColor = gF.blueButtonColor
+        //        cell.downloadButton.layer.cornerRadius = 5
         cell.cancelButton.layer.borderColor = gF.redButtonColor
         cell.cancelButton.layer.cornerRadius = 5
         
