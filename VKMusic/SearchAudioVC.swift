@@ -34,6 +34,7 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
     var activeDownloads = [String: Download]()
     var dataTask: URLSessionDataTask?
     var allowToDelete = true
+    var allowToDeleteFromServer = false
     var isNowPlaying = -1
     var allowToAddAudio = false
     var activeDownloadsCount = 0
@@ -42,7 +43,7 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
     static var selectedIndex = 0
     static var trackProgress = Float(0)
     
-    fileprivate weak var refreshControl: UIRefreshControl?
+    weak var refreshControl: UIRefreshControl?
     static var searchResults = [Audio]()
     static var tempArray = [Audio]()
     var allowToPresent = true
@@ -147,16 +148,16 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
     
     func displayDownloadedSongsOnly() {
         allowToDelete = true
-        SearchAudioVC.tempArray = SearchAudioVC.searchResults
+        allowToDeleteFromServer = false //Delete local file. Keep audio on VK server
         SearchAudioVC.searchResults.removeAll()
-        for audio in SearchAudioVC.tempArray {
-            if localFileExistsForTrack(audio) {
-                SearchAudioVC.searchResults.append(audio)
+        for song in SearchAudioVC.tempArray {
+            if self.localFileExistsForTrack(song) {
+                SearchAudioVC.searchResults.append(song)
             }
+        }
             DispatchQueue.main.async(execute: { () -> Void in
                 self.tableView.reloadData()
             })
-        }
     }
     
     func displayRecomendations() {
@@ -216,6 +217,7 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
     func displayMusicList() {
         allowToDelete = true
         allowToAddAudio = false
+        allowToDeleteFromServer = true
         
         let getAudios = VK.API.Audio.get()
         
@@ -224,15 +226,16 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
         }
         getAudios.successBlock = { response in
             SearchAudioVC.searchResults.removeAll()
+            SearchAudioVC.tempArray.removeAll()
             RappleActivityIndicatorView.stopAnimating()
             for data in response["items"] {
                 let audio = Audio(serverData: data.1.object as! [String : AnyObject])
                 SearchAudioVC.searchResults.append(audio)
             }
             DispatchQueue.main.async(execute: { () -> Void in
+                SearchAudioVC.tempArray = SearchAudioVC.searchResults
                 self.tableView.reloadData()
                 self.refreshControl?.endRefreshing()
-                
                 let cells = [Bool](repeating: false, count: SearchAudioVC.searchResults.count)
                 for i in cells {
                     self.boolArray.append(i)
@@ -266,10 +269,8 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
         }
     }
     
-    func deleteTrack(_ row: Int) {
-        
+    func deleteSong(_ row: Int) {
         let track = SearchAudioVC.searchResults[row]
-        
         if localFileExistsForTrack(track) {
             let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
             let fileManager = FileManager.default
@@ -278,11 +279,17 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
                 let directoryContents = try FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil, options: [])
                 let mp3Files = directoryContents.filter{ $0.pathExtension == "mp3" }
                 do {
+                    player.pause()
                     print("deleting file at location:\n\(mp3Files[row].absoluteString)")
                     try! fileManager.removeItem(at: mp3Files[row].absoluteURL)
                     print("Deleted..")
-                    miniPlayerView.isHidden = true
-                    player.pause()
+
+                    //Clear deleted song info from miniPlayer
+//                    miniPlayerSongName.text = ""
+//                    miniPlayerArtistName.text = ""
+//                    miniPlayerProgressView.progress = 0
+                    
+                    SearchAudioVC.searchResults.remove(at: row)
                     tableView.reloadData()
                     isNowPlaying = -1
                     SwiftNotificationBanner.presentNotification("Удалено")
@@ -292,6 +299,13 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
                 print(error.localizedDescription)
             }
         }
+        
+        if allowToDeleteFromServer {
+            deleteTrackFromServer(row)
+        }
+    }
+    
+    func deleteTrackFromServer(_ row: Int) {
         let audio = SearchAudioVC.searchResults[row]
         let trackToDelete = VK.API.Audio.delete([.audioId: String(audio.id), .ownerId: String(audio.ownerID)])
         trackToDelete.successBlock = { result in
@@ -594,7 +608,7 @@ extension SearchAudioVC: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            deleteTrack(indexPath.row)
+            deleteSong(indexPath.row)
         }
     }
     
