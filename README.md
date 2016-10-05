@@ -1,5 +1,5 @@
 # VKMusic
-[![VK API](https://img.shields.io/badge/VK_API-5.53-blue.svg?style=flat)](https://vk.com/dev/versions) 
+[![GitHub license](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/WE-St0r/SwiftyVK/master/LICENSE)
 [![Swift](https://img.shields.io/badge/Swift-3.0-orange.svg?style=flat)](https://developer.apple.com/swift/)
 
 
