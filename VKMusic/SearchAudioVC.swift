@@ -288,7 +288,7 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
 //                    miniPlayerSongName.text = ""
 //                    miniPlayerArtistName.text = ""
 //                    miniPlayerProgressView.progress = 0
-                    
+                    //
                     SearchAudioVC.searchResults.remove(at: row)
                     tableView.reloadData()
                     isNowPlaying = -1
