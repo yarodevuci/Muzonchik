@@ -46,7 +46,6 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
     
     weak var refreshControl: UIRefreshControl?
     static var searchResults = [Audio]()
-    static var tempArray = [Audio]()
     var allowToPresent = true
     
     lazy var tapRecognizer: UITapGestureRecognizer = {
@@ -73,7 +72,6 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
         tableView.tableFooterView = UIView()
         searchBar.keyboardAppearance = .dark
         
-        VK.logIn()
         displayMusicList()
         
         NotificationCenter.default.addObserver(self, selector: #selector(playNextSong), name:NSNotification.Name(rawValue: "playNextSong"), object: nil)
@@ -165,6 +163,7 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
         allowToDeleteFromServer = false //Delete local file. Keep audio on VK server
 
         DispatchQueue.main.async(execute: { () -> Void in
+            self.populateBoolArray()
             self.tableView.reloadData()
         })
     }
@@ -186,13 +185,16 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
                 SearchAudioVC.searchResults.append(audio)
             }
             DispatchQueue.main.async(execute: { () -> Void in
+                self.populateBoolArray()
                 self.tableView.reloadData()
                 self.refreshControl?.endRefreshing()
             })
         }
         getAudios.errorBlock = { error in
             DispatchQueue.main.async(execute: { () -> Void in
+                RappleActivityIndicatorView.stopAnimating()
                 self.refreshControl?.endRefreshing() })
+            SwiftNotificationBanner.presentNotification("\(error)")
             print("Get Audios fail with error: \(error)")}
         getAudios.send()
     }
@@ -214,13 +216,16 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
                 SearchAudioVC.searchResults.append(audio)
             }
             DispatchQueue.main.async(execute: { () -> Void in
+                self.populateBoolArray()
                 self.tableView.reloadData()
                 self.refreshControl?.endRefreshing()
             })
         }
         getAudios.errorBlock = { error in
             DispatchQueue.main.async(execute: { () -> Void in
+                RappleActivityIndicatorView.stopAnimating()
                 self.refreshControl?.endRefreshing() })
+            SwiftNotificationBanner.presentNotification("\(error)")
             print("Get Audios fail with error: \(error)")}
         getAudios.send()
     }
@@ -234,39 +239,37 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
         if VK.state == .authorized {
             RappleActivityIndicatorView.startAnimatingWithLabel("Loading...", attributes: RappleModernAttributes)
         }
-        else {
-            RappleActivityIndicatorView.stopAnimating()
-        }
         let getAudios = VK.API.Audio.get()
         getAudios.successBlock = { response in
             SearchAudioVC.searchResults.removeAll()
-            SearchAudioVC.tempArray.removeAll()
             RappleActivityIndicatorView.stopAnimating()
             for data in response["items"] {
                 let audio = Audio(serverData: data.1.object as! [String : AnyObject])
                 SearchAudioVC.searchResults.append(audio)
             }
             DispatchQueue.main.async(execute: { () -> Void in
-                SearchAudioVC.tempArray = SearchAudioVC.searchResults
+                self.populateBoolArray()
                 self.tableView.reloadData()
                 self.refreshControl?.endRefreshing()
-                let cells = [Bool](repeating: false, count: SearchAudioVC.searchResults.count)
-                for i in cells {
-                    self.boolArray.append(i)
-                }
-                
             })
         }
         getAudios.errorBlock = { error in
             DispatchQueue.main.async(execute: { () -> Void in
                 self.refreshControl?.endRefreshing()
-                SwiftNotificationBanner.presentNotification("Ошибка авторизации")
                 RappleActivityIndicatorView.stopAnimating()
+                SwiftNotificationBanner.presentNotification("\(error)")
             })
             print("Get Audios fail with error: \(error)")}
         getAudios.send()
     }
     
+    func populateBoolArray() {
+        boolArray.removeAll()
+        let cells = [Bool](repeating: false, count: SearchAudioVC.searchResults.count)
+        for i in cells {
+            self.boolArray.append(i)
+        }
+    }
     func handleDropdownSelection(index: Int) {
         print("Selected index is \(index)")
         switch index {
@@ -290,15 +293,6 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
             let realm = try! Realm()
             let fileToDelete = realm.objects(SavedAudio.self)
 
-            try! realm.write({ () -> Void in
-                realm.delete(fileToDelete[row])
-            })
-            boolArray[row] = false
-            if player.currentAudio != nil && player.currentAudio == track {
-                miniPlayerView.isHidden = true
-                player.kill()
-            }
-            
             let fileManager = FileManager.default
             let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
             let nsUserDomainMask = FileManager.SearchPathDomainMask.userDomainMask
@@ -308,11 +302,19 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
             
             do {
                 try fileManager.removeItem(atPath: filePath)
-                
+                try! realm.write({ () -> Void in
+                    realm.delete(fileToDelete[row])
+                })
+                boolArray[row] = false
+                if player.currentAudio != nil && player.currentAudio == track {
+                    self.populateBoolArray()
+                    miniPlayerView.isHidden = true
+                    player.kill()
+                }
                 SearchAudioVC.searchResults.remove(at: row)
-                tableView.reloadData()
                 isNowPlaying = -1
                 SwiftNotificationBanner.presentNotification("Удалено")
+                tableView.reloadData()
             } catch let error as NSError {
                 print(error.debugDescription)
             }
@@ -339,7 +341,9 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
             }
         }
         trackToDelete.errorBlock = {error in
+            DispatchQueue.main.async(execute: { () -> Void in
             SwiftNotificationBanner.presentNotification("Не удалось удалить!\nПопробуйте еще раз")
+                })
             print("Deleting Audio Failed\n \(error)")}
         trackToDelete.send()
     }
@@ -390,8 +394,6 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
                 return true
             })
         ]
-        
-        
     }
     
     func searchAudio(searchText:String) {
@@ -556,8 +558,8 @@ extension SearchAudioVC: URLSessionDownloadDelegate {
             if let trackIndex = trackIndexForDownloadTask(downloadTask), let trackCell = tableView.cellForRow(at: IndexPath(row: trackIndex, section: 0)) as? TrackCell {
                 DispatchQueue.main.async(execute: {
                     trackCell.progressView.progress = download.progress
-                    //trackCell.progressLabel.text =  String(format: "%.1f%% of %@",  download.progress * 100, totalSize)
-                    trackCell.progressLabel.text = String(Int(totalBytesExpectedToWrite) * 8 / 1000 / download.realmDuration)
+                    let bitRate = String(Int(totalBytesExpectedToWrite) * 8 / 1000 / download.realmDuration)
+                    trackCell.progressLabel.text =  String(format: "%.1f%% of %@",  download.progress * 100, totalSize) + " \(bitRate)kbps"
                 })
             }
         }
@@ -632,10 +634,8 @@ extension SearchAudioVC: UITableViewDataSource {
         if SearchAudioVC.searchResults.count > 0 {
             tableView.backgroundView = .none
             tableView.separatorStyle = .singleLine
-            tableView.isUserInteractionEnabled = true
             return SearchAudioVC.searchResults.count
         } else {
-            tableView.isUserInteractionEnabled = false
             gF.emptyMessage(message: "Здесь пока ничего нет.", tableView: tableView, view: self.view)
             return 0
         }
@@ -706,7 +706,7 @@ extension SearchAudioVC: NSURLConnectionDataDelegate {
                 print("\(a[i].artist) is \(Int(size) * 8 / 1000 / a[i].duration)kbps")
             }
         }
-        //print("size : \(size)")
+        print("size : \(size)")
     }
 }
 

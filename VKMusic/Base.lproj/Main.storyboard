@@ -89,10 +89,9 @@
                                                         <action selector="cancelTapped:" destination="yMY-jb-9Ol" eventType="touchUpInside" id="sdA-wT-hGk"/>
                                                     </connections>
                                                 </button>
-                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100% of 321.35MB" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WJh-H6-Rqe">
+                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100% of 321.35MB Downloading" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WJh-H6-Rqe">
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="98" id="SI4-qg-EpP"/>
-                                                        <constraint firstAttribute="height" constant="10" id="iGP-GD-HkP"/>
+                                                        <constraint firstAttribute="height" constant="12" id="iGP-GD-HkP"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                     <nil key="highlightedColor"/>
@@ -132,7 +131,7 @@
                                                 <constraint firstItem="sRO-c8-grm" firstAttribute="top" secondItem="mbR-Ty-acn" secondAttribute="topMargin" constant="2" id="VEk-Gl-fUY"/>
                                                 <constraint firstItem="yKt-nu-MtH" firstAttribute="leading" secondItem="mbR-Ty-acn" secondAttribute="leadingMargin" constant="10" id="WmZ-TQ-gmV"/>
                                                 <constraint firstItem="XZH-wh-K30" firstAttribute="baseline" secondItem="M9Y-px-sCv" secondAttribute="baseline" id="XXm-cl-FHi"/>
-                                                <constraint firstItem="WJh-H6-Rqe" firstAttribute="top" secondItem="XZH-wh-K30" secondAttribute="bottom" constant="16" id="ZrS-Gf-ISB"/>
+                                                <constraint firstItem="WJh-H6-Rqe" firstAttribute="top" secondItem="XZH-wh-K30" secondAttribute="bottom" constant="15" id="ZrS-Gf-ISB"/>
                                                 <constraint firstItem="sRO-c8-grm" firstAttribute="trailing" secondItem="M9Y-px-sCv" secondAttribute="leading" constant="-4" id="bx1-LP-DP6"/>
                                                 <constraint firstItem="Axt-bX-K6c" firstAttribute="centerX" secondItem="mbR-Ty-acn" secondAttribute="centerX" id="hBz-49-LyD"/>
                                             </constraints>
