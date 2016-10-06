@@ -161,9 +161,8 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
         }
         self.refreshControl?.removeFromSuperview()
         allowToDeleteFromServer = false //Delete local file. Keep audio on VK server
-
+        
         DispatchQueue.main.async(execute: { () -> Void in
-            self.populateBoolArray()
             self.tableView.reloadData()
         })
     }
@@ -292,7 +291,7 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
             
             let realm = try! Realm()
             let fileToDelete = realm.objects(SavedAudio.self)
-
+            
             let fileManager = FileManager.default
             let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
             let nsUserDomainMask = FileManager.SearchPathDomainMask.userDomainMask
@@ -342,8 +341,8 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
         }
         trackToDelete.errorBlock = {error in
             DispatchQueue.main.async(execute: { () -> Void in
-            SwiftNotificationBanner.presentNotification("Не удалось удалить!\nПопробуйте еще раз")
-                })
+                SwiftNotificationBanner.presentNotification("Не удалось удалить!\nПопробуйте еще раз")
+            })
             print("Deleting Audio Failed\n \(error)")}
         trackToDelete.send()
     }
@@ -524,9 +523,9 @@ extension SearchAudioVC: URLSessionDownloadDelegate {
             }
             do {
                 try fileManager.moveItem(at: location, to: destinationURL)
+                let aD = self.activeDownloads[originalURL]!
+                self.gF.createSavedAudio(title: aD.realmTitle, artist: aD.realmArtist, duration: aD.realmDuration, url: destinationURL)
                 DispatchQueue.main.async(execute: { () -> Void in
-                    let aD = self.activeDownloads[originalURL]!
-                    self.gF.createSavedAudio(title: aD.realmTitle, artist: aD.realmArtist, duration: aD.realmDuration, url: destinationURL)
                     SwiftNotificationBanner.presentNotification("\(self.activeDownloads[originalURL]!.songName)\nЗагрузка завершена")
                     NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "downloadComplete"), object: nil)
                     let url = downloadTask.originalRequest?.url?.absoluteString
@@ -639,7 +638,7 @@ extension SearchAudioVC: UITableViewDataSource {
             gF.emptyMessage(message: "Здесь пока ничего нет.", tableView: tableView, view: self.view)
             return 0
         }
-}
+    }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return allowToDelete
@@ -666,13 +665,13 @@ extension SearchAudioVC: UITableViewDataSource {
         let track = SearchAudioVC.searchResults[indexPath.row]
         cell.artistLabel.text = track.title
         cell.titleLabel.text = track.artist
-    
+        
         let request:NSMutableURLRequest = NSMutableURLRequest(url: NSURL(string: track.url!)! as URL)
         request.httpMethod = "HEAD"
         
         _ = NSURLConnection(request: request as URLRequest, delegate: self)!
         
-       
+        
         //when transition from music player keep bar indicator animating for selected song
         if boolArray[indexPath.row] { cell.musicIndicator.state = .estMusicIndicatorViewStatePlaying }
         else { cell.musicIndicator.state = .estMusicIndicatorViewStateStopped }
