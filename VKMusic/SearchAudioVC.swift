@@ -17,36 +17,36 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var containerView : UIView!
-    @IBOutlet  var miniPlayerView : LineView!
+    @IBOutlet weak var miniPlayerView : UIView!
     @IBOutlet weak var miniPlayerButton : UIButton!
     @IBOutlet weak var miniPlayerArtistName: UILabel!
     @IBOutlet weak var miniPlayerSongName: UILabel!
     @IBOutlet weak var playPauseMiniPlayerButton: UIButton!
     @IBOutlet weak var miniPlayerAlbumCoverImage: UIImageView!
-    @IBOutlet var miniPlayerProgressView: UIProgressView!
-    
+    @IBOutlet weak var miniPlayerProgressView: UIProgressView!
     
     //MARK: Constants
     let player = AudioPlayer.defaultPlayer
     let defaultSession = Foundation.URLSession(configuration: URLSessionConfiguration.default)
     let gF = GlobalFunctions()
     let defaults = UserDefaults.standard
-    
+    //MARK: Variable
+    var menuView: BTNavigationDropdownMenu!
     var activeDownloads = [String: Download]()
     var dataTask: URLSessionDataTask?
     var allowToDelete = true
     var allowToDeleteFromServer = false
-    var isNowPlaying = -1
     var allowToAddAudio = false
+    var allowToPresent = true
+    var isNowPlaying = -1
     var activeDownloadsCount = 0
-    var menuView: BTNavigationDropdownMenu!
     var boolArray = [Bool]()
+    //MARK: Static variable
     static var selectedIndex = 0
     static var trackProgress = Float(0)
-    
-    weak var refreshControl: UIRefreshControl?
     static var searchResults = [Audio]()
-    var allowToPresent = true
+
+    weak var refreshControl: UIRefreshControl?
     
     lazy var tapRecognizer: UITapGestureRecognizer = {
         var recognizer = UITapGestureRecognizer(target:self, action: #selector(dismissKeyboard))
@@ -86,6 +86,7 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
         gF.animator.interactiveType = .none
         self.present(gF.modalVC, animated: true, completion: nil)
     }
+    //MARK: instance methods
     
     //refresh control
     func createRefreshControl() {
@@ -108,7 +109,6 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
             SearchAudioVC.selectedIndex = SearchAudioVC.selectedIndex - 1
         }
         let rowToSelect = NSIndexPath(row: SearchAudioVC.selectedIndex, section: 0)
-        print(rowToSelect.row)
         self.tableView.selectRow(at: rowToSelect as IndexPath, animated: true, scrollPosition: UITableViewScrollPosition.none)
         self.tableView(self.tableView, didSelectRowAt: rowToSelect as IndexPath)
         allowToPresent = true
@@ -120,7 +120,6 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
             SearchAudioVC.selectedIndex = -1
         }
         let rowToSelect = NSIndexPath(row: SearchAudioVC.selectedIndex + 1, section: 0)
-        print(rowToSelect.row)
         self.tableView.selectRow(at: rowToSelect as IndexPath, animated: true, scrollPosition: UITableViewScrollPosition.none)
         self.tableView(self.tableView, didSelectRowAt: rowToSelect as IndexPath)
         allowToPresent = true
@@ -666,10 +665,10 @@ extension SearchAudioVC: UITableViewDataSource {
         cell.artistLabel.text = track.title
         cell.titleLabel.text = track.artist
         
-        let request:NSMutableURLRequest = NSMutableURLRequest(url: NSURL(string: track.url!)! as URL)
-        request.httpMethod = "HEAD"
-        
-        _ = NSURLConnection(request: request as URLRequest, delegate: self)!
+//        let request:NSMutableURLRequest = NSMutableURLRequest(url: NSURL(string: track.url!)! as URL)
+//        request.httpMethod = "HEAD"
+//        
+//        _ = NSURLConnection(request: request as URLRequest, delegate: self)!
         
         
         //when transition from music player keep bar indicator animating for selected song
@@ -698,14 +697,14 @@ extension SearchAudioVC: UITableViewDataSource {
 extension SearchAudioVC: NSURLConnectionDataDelegate {
     func connection(_ connection: NSURLConnection, didReceive response: URLResponse)
     {
-        let a = SearchAudioVC.searchResults
-        let size = response.expectedContentLength
-        for i in 0..<SearchAudioVC.searchResults.count {
-            if a[i].url! == String(describing: response.url!) {
-                print("\(a[i].artist) is \(Int(size) * 8 / 1000 / a[i].duration)kbps")
-            }
-        }
-        print("size : \(size)")
+//        let a = SearchAudioVC.searchResults
+//        let size = response.expectedContentLength
+//        for i in 0..<SearchAudioVC.searchResults.count {
+//            if a[i].url! == String(describing: response.url!) {
+//                print("\(a[i].artist) is \(Int(size) * 8 / 1000 / a[i].duration)kbps")
+//            }
+//        }
+//        print("size : \(size)")
     }
 }
 
@@ -731,12 +730,14 @@ extension SearchAudioVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         //set true for selected cell
-        boolArray[indexPath.row] = true
         for (i, _) in boolArray.enumerated() {
             if i != indexPath.row {
                 boolArray[i] = false
+                tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
+            } else {
+                boolArray[i] = true
+                tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
             }
-            tableView.reloadData()
         }
         
         miniPlayerView.isHidden = false

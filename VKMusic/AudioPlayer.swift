@@ -126,7 +126,6 @@ class AudioPlayer{
         NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "playNextSong"), object: nil)
     }
     
-    
     func kill() {
         if player != nil {
             killTimeObserver()

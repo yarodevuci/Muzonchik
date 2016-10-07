@@ -22,7 +22,7 @@ class GlobalFunctions {
     var animator : ARNTransitionAnimator!
     var modalVC : AudioPlayerVC!
     
-        
+    //Set up MiniPlayer Transition
     func setupAnimator(vc: UIViewController, miniPlayerView: UIView, view: UIView, cView: UIView, tableView: UITableView) {
         
         miniPlayerView.isHidden = true
@@ -157,20 +157,9 @@ class GlobalFunctions {
         self.modalVC.transitioningDelegate = self.animator
     }
     
-    func addBlurEffectToView(view: UIView) {
-        let effect = UIBlurEffect(style: .light)
-        let blurView = UIVisualEffectView(effect: effect)
-        blurView.frame = view.bounds
-        view.addSubview(blurView)
-        view.sendSubview(toBack: blurView)
-    }
-    
-    func CGRectMake(_ x: CGFloat, _ y: CGFloat, _ width: CGFloat, _ height: CGFloat) -> CGRect {
-        return CGRect(x: x, y: y, width: width, height: height)
-    }
-    
+    //TableView Empty state
     func emptyMessage(message:String, tableView: UITableView, view: UIView) {
-        let messageLabel = UILabel(frame: CGRectMake(0, -view.bounds.size.height / 2, view.bounds.size.width, view.bounds.size.height))
+        let messageLabel = UILabel(frame: CGRect(x: 0, y: -view.bounds.size.height / 2, width: view.bounds.size.width, height: view.bounds.size.height))
         messageLabel.text = message
         messageLabel.textColor = UIColor.black
         messageLabel.numberOfLines = 0;
@@ -181,7 +170,7 @@ class GlobalFunctions {
         tableView.backgroundView = messageLabel
         tableView.separatorStyle = .none
     }
-    
+    //Save audio info to Realm
     func createSavedAudio(title: String, artist: String, duration: Int, url: URL) {
         let savedAudio = SavedAudio()
         savedAudio.title = title
@@ -189,13 +178,8 @@ class GlobalFunctions {
         savedAudio.duration = duration
         savedAudio.url = url.absoluteString
         
-        print(savedAudio.url)
         let realm = try! Realm()
-        try! realm.write {
-            realm.add(savedAudio)
-        }
+        try! realm.write { realm.add(savedAudio)}
     }
-
-   
 }
 

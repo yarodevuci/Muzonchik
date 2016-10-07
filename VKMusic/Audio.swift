@@ -3,8 +3,6 @@
 //  VKMusic
 //
 
-import Foundation
-
 func ==(lhs: Audio, rhs: Audio) -> Bool {
     return lhs.url == rhs.url
 }

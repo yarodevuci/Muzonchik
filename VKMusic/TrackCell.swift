@@ -29,7 +29,7 @@ class TrackCell: MGSwipeTableCell {
     @IBAction func cancelTapped(_ sender: AnyObject) {
         delegat?.cancelTapped(self)
     }
-    
+    //Disabled. Use swipe guesture to download songs 
     @IBAction func downloadTapped(_ sender: AnyObject) {
         //delegate?.downloadTapped(self)
     }

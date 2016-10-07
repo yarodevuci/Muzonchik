@@ -23,14 +23,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
         backgroundSessionCompletionHandler = completionHandler
     }
-    
+    //iOS 8 and lower
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         VK.processURL_old(url: url, sourceApplication: sourceApplication)
         return true
     }
     //iOS 9 and higher ..
-    func application(app: UIApplication, openURL url: URL, options: [String : AnyObject]) -> Bool {
-        VK.processURL(url: url, options: options)
+    func application(app: UIApplication, openURL url: URL, _ options: [String : AnyObject]) -> Bool {
+        if #available(iOS 9.0, *) {
+            VK.processURL(url: url, options: options)
+        } 
         return true
     }
     

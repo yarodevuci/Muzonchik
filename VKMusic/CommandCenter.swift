@@ -23,13 +23,11 @@ class CommandCenter: NSObject {
     deinit { NotificationCenter.default.removeObserver(self) }
     
     func setAudioSeccion() {
-        let audioSeccion = AVAudioSession.sharedInstance()
-        do {
-            try audioSeccion.setCategory("AVAudioSessionCategoryPlayback", with: .defaultToSpeaker)
-            try audioSeccion.setActive(true)
-        } catch {
-            print("ERROR setAudioSeccion")
+        do { try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, with: .defaultToSpeaker)
+            do { try AVAudioSession.sharedInstance().setActive(true) }
+            catch let error as NSError { print(error.localizedDescription) }
         }
+        catch let error as NSError { print(error.localizedDescription) }
     }
     
     //MARK: - Remote Command Center
@@ -50,7 +48,7 @@ class CommandCenter: NSObject {
     }
     
     @objc fileprivate func remoteCommandNext() {
-       player.next()
+        player.next()
     }
     
     @objc fileprivate func remoteCommandPrevious() {

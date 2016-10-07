@@ -24,8 +24,8 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     @IBOutlet weak var durationSliderYConstraint: NSLayoutConstraint!
     @IBOutlet weak var artistNameBottonLayoutConstraint: NSLayoutConstraint!
     @IBOutlet weak var albumCoverHeightConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var volumeBar: MPVolumeView!
+    
     //MARK: Varriables
     static var musicToPlay = [Audio]()
     static var indexToPlay = 0
