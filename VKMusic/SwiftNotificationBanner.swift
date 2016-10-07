@@ -2,7 +2,7 @@
 //  SwiftNotificationBanner.swift
 //  SwiftNotificationBannerDemo
 //
-//  Created by Zel Marko on 09/08/15.
+//  Created by Yaroslav on 10/02/16.
 //  Copyright (c) 2015 Zel Marko. All rights reserved.
 //
 
@@ -13,11 +13,9 @@ class SwiftNotificationBanner: NSObject {
     class func presentNotification(_ title: String) {
         
         SwiftNotificationBanner().present(title)
-        
     }
     
     func present(_ title: String) {
-        
         let bannerView = SwiftNotificationBannerView(frame: CGRect(x: 0, y: -65.0, width: UIScreen.main.bounds.width, height: 65.0))
         bannerView.messageLabel.text = title
         
@@ -39,7 +37,5 @@ class SwiftNotificationBanner: NSObject {
                         bannerView.removeFromSuperview()
                 })
         })
-
     }
-   
 }

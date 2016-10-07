@@ -158,6 +158,7 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
             let object = downloadedAudioFiles[i]
             SearchAudioVC.searchResults.append(Audio(url: object.url, title: object.title, artist: object.artist, duration: object.duration))
         }
+        populateBoolArray()
         self.refreshControl?.removeFromSuperview()
         allowToDeleteFromServer = false //Delete local file. Keep audio on VK server
         
@@ -191,9 +192,10 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
         getAudios.errorBlock = { error in
             DispatchQueue.main.async(execute: { () -> Void in
                 RappleActivityIndicatorView.stopAnimating()
-                self.refreshControl?.endRefreshing() })
-            SwiftNotificationBanner.presentNotification("\(error)")
-            print("Get Audios fail with error: \(error)")}
+                self.refreshControl?.endRefreshing()
+                SwiftNotificationBanner.presentNotification("\(error.desc)")
+            })
+            print("Get Audios fail with error: \(error.desc)")}
         getAudios.send()
     }
     
@@ -222,9 +224,10 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
         getAudios.errorBlock = { error in
             DispatchQueue.main.async(execute: { () -> Void in
                 RappleActivityIndicatorView.stopAnimating()
-                self.refreshControl?.endRefreshing() })
-            SwiftNotificationBanner.presentNotification("\(error)")
-            print("Get Audios fail with error: \(error)")}
+                self.refreshControl?.endRefreshing()
+                SwiftNotificationBanner.presentNotification("\(error.desc)")
+            })
+            print("Get Audios fail with error: \(error.desc)")}
         getAudios.send()
     }
     
@@ -255,9 +258,9 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
             DispatchQueue.main.async(execute: { () -> Void in
                 self.refreshControl?.endRefreshing()
                 RappleActivityIndicatorView.stopAnimating()
-                SwiftNotificationBanner.presentNotification("\(error)")
+                SwiftNotificationBanner.presentNotification("\(error.desc)")
             })
-            print("Get Audios fail with error: \(error)")}
+            print("Get Audios fail with error: \(error.desc)")}
         getAudios.send()
     }
     
@@ -695,6 +698,7 @@ extension SearchAudioVC: UITableViewDataSource {
 }
 
 extension SearchAudioVC: NSURLConnectionDataDelegate {
+    //Disabled for now 
     func connection(_ connection: NSURLConnection, didReceive response: URLResponse)
     {
 //        let a = SearchAudioVC.searchResults
