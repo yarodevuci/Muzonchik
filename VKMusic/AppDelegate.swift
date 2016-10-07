@@ -28,6 +28,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         VK.processURL_old(url: url, sourceApplication: sourceApplication)
         return true
     }
+    //iOS 9 and higher ..
+    func application(app: UIApplication, openURL url: URL, options: [String : AnyObject]) -> Bool {
+        VK.processURL(url: url, options: options)
+        return true
+    }
     
     
     func applicationWillResignActive(_ application: UIApplication) {
