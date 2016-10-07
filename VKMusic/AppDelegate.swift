@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     //iOS 9 and higher ..
-    func application(app: UIApplication, openURL url: URL, _ options: [String : AnyObject]) -> Bool {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         if #available(iOS 9.0, *) {
             VK.processURL(url: url, options: options)
         } 
