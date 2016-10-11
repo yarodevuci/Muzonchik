@@ -698,7 +698,7 @@ extension SearchAudioVC: UITableViewDataSource {
 }
 
 extension SearchAudioVC: NSURLConnectionDataDelegate {
-    //Disabled for now 
+    //Disabled for now
     func connection(_ connection: NSURLConnection, didReceive response: URLResponse)
     {
 //        let a = SearchAudioVC.searchResults
