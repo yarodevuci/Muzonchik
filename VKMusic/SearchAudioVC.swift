@@ -408,6 +408,7 @@ class SearchAudioVC: UIViewController, MGSwipeTableCellDelegate {
                 SearchAudioVC.searchResults.append(audio)
             }
             DispatchQueue.main.async(execute: { () -> Void in
+                self.populateBoolArray()
                 self.tableView.reloadData()
             })
         }
@@ -593,9 +594,6 @@ extension SearchAudioVC: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         allowToAddAudio = true
-        for (i, _) in boolArray.enumerated() {
-            boolArray[i] = false
-        }
         view.endEditing(true)
         searchBar.showsCancelButton = false
         if !searchBar.text!.isEmpty {
