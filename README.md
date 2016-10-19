@@ -14,6 +14,14 @@
 <br>
 
 <pre>
+Features: 
+✔ UI Design that is native to official VK app
+✔ Downloading music with swipe to the right guesture
+✔ Simplified music player interface
+✔ Mini Player at the bottom indicates current track info
+✔ Music artworks
+✔ Music Info on Lock Screen
+ 
 Фишки:
 ✔ Дизайн приближенный к родному приложению ВК 
 ✔ Загрузка музыки путем свайпа вправо
@@ -23,7 +31,9 @@
 ✔ Отображение проигрываемой музыки на закрытом экране
 
 
-
+If you have any comments, concerns, feauture request or bugs that needs to be fixed let me know.
+Also, if you need signed .ipa file that you can share with you friends let me know
+My VK page https://vk.com/kotobaron
 
 
 
