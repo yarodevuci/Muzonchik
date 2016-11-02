@@ -1,3 +1,50 @@
+2.0.3 Release notes (2016-10-27)
+=============================================================
+
+This release adds binary versions of Swift 3.0.1 frameworks built with Xcode 8.1
+GM seed.
+
+### API breaking changes
+
+* None.
+
+### Enhancements
+
+* None.
+
+### Bugfixes
+
+* Fix a `BadVersion` exception caused by a race condition when delivering
+  collection change notifications.
+* Fix an assertion failure when additional model classes are added and
+  `deleteRealmIfMigrationNeeded` is enabled.
+* Fix a `BadTransactLog` exception when deleting an `RLMResults` in a synced
+  Realm.
+* Fix an assertion failure when a write transaction is in progress at the point
+  of process termination.
+* Fix a crash that could occur when working with a `RLMLinkingObject` property
+  of an unmanaged object.
+
+2.0.2 Release notes (2016-10-05)
+=============================================================
+
+This release is not protocol-compatible with previous version of the Realm
+Mobile Platform.
+
+### API breaking changes
+
+* Rename Realm Swift's `User` to `SyncUser` to make clear that it relates to the
+  Realm Mobile Platform, and to avoid potential conflicts with other `User` types.
+
+### Bugfixes
+
+* Fix Realm headers to be compatible with pre-C++11 dialects of Objective-C++.
+* Fix incorrect merging of RLMArray/List changes when objects with the same
+  primary key are created on multiple devices.
+* Fix bad transaction log errors after deleting objects on a different device.
+* Fix a BadVersion error when a background worker finishes running while older
+  results from that worker are being delivered to a different thread.
+
 2.0.1 Release notes (2016-09-29)
 =============================================================
 

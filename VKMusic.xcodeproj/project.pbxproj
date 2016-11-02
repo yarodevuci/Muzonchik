@@ -18,13 +18,9 @@
 		C45FF80E1D9135A4001637A7 /* AudioPlayerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45FF80D1D9135A4001637A7 /* AudioPlayerVC.swift */; };
 		C45FF8101D91377A001637A7 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45FF80F1D91377A001637A7 /* AudioPlayer.swift */; };
 		C45FF8121D9137DC001637A7 /* CommandCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45FF8111D9137DC001637A7 /* CommandCenter.swift */; };
-		C475CA5E1DA52F63009C8674 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C475CA5C1DA52F63009C8674 /* Realm.framework */; };
-		C475CA5F1DA52F63009C8674 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C475CA5D1DA52F63009C8674 /* RealmSwift.framework */; };
 		C475CA661DA53131009C8674 /* SavedAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = C475CA651DA53131009C8674 /* SavedAudio.swift */; };
 		C475CA671DA536D9009C8674 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C475CA5C1DA52F63009C8674 /* Realm.framework */; };
-		C475CA681DA536D9009C8674 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C475CA5C1DA52F63009C8674 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C475CA691DA536D9009C8674 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C475CA5D1DA52F63009C8674 /* RealmSwift.framework */; };
-		C475CA6A1DA536D9009C8674 /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C475CA5D1DA52F63009C8674 /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C47D51B71D8FE33700968226 /* SwiftNotificationBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47D51B41D8FE33700968226 /* SwiftNotificationBanner.swift */; };
 		C47D51B81D8FE33700968226 /* SwiftNotificationBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47D51B51D8FE33700968226 /* SwiftNotificationBannerView.swift */; };
 		C47D51B91D8FE33700968226 /* SwiftNotificationBannerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C47D51B61D8FE33700968226 /* SwiftNotificationBannerView.xib */; };
@@ -36,6 +32,8 @@
 		C498CB6D1D9CFD7000B73FF1 /* BTNavigationDropdownMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C498CB6B1D9CFD7000B73FF1 /* BTNavigationDropdownMenu.swift */; };
 		C498CB741D9D0CBD00B73FF1 /* ARNTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C498CB731D9D0CBD00B73FF1 /* ARNTransitionAnimator.swift */; };
 		C498CB761D9ED52D00B73FF1 /* GlobalFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C498CB751D9ED52D00B73FF1 /* GlobalFunctions.swift */; };
+		C49F98EC1DCAA3B900D4C5CF /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C49F98EA1DCAA3B900D4C5CF /* Realm.framework */; };
+		C49F98ED1DCAA3B900D4C5CF /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C49F98EB1DCAA3B900D4C5CF /* RealmSwift.framework */; };
 		C4CC8D8A1D8A7F8600BF68A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CC8D891D8A7F8600BF68A1 /* AppDelegate.swift */; };
 		C4CC8D8F1D8A7F8600BF68A1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4CC8D8D1D8A7F8600BF68A1 /* Main.storyboard */; };
 		C4CC8D911D8A7F8600BF68A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4CC8D901D8A7F8600BF68A1 /* Assets.xcassets */; };
@@ -50,8 +48,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C475CA6A1DA536D9009C8674 /* RealmSwift.framework in Embed Frameworks */,
-				C475CA681DA536D9009C8674 /* Realm.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -76,8 +72,8 @@
 		C45FF80D1D9135A4001637A7 /* AudioPlayerVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayerVC.swift; sourceTree = "<group>"; };
 		C45FF80F1D91377A001637A7 /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		C45FF8111D9137DC001637A7 /* CommandCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandCenter.swift; sourceTree = "<group>"; };
-		C475CA5C1DA52F63009C8674 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
-		C475CA5D1DA52F63009C8674 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
+		C475CA5C1DA52F63009C8674 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = /Users/Yaroslav/Documents/XCodeProjects/VKMusic2/VKMusic/Realm.framework; sourceTree = "<absolute>"; };
+		C475CA5D1DA52F63009C8674 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = /Users/Yaroslav/Documents/XCodeProjects/VKMusic2/VKMusic/RealmSwift.framework; sourceTree = "<absolute>"; };
 		C475CA651DA53131009C8674 /* SavedAudio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedAudio.swift; sourceTree = "<group>"; };
 		C47D51B41D8FE33700968226 /* SwiftNotificationBanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftNotificationBanner.swift; sourceTree = "<group>"; };
 		C47D51B51D8FE33700968226 /* SwiftNotificationBannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftNotificationBannerView.swift; sourceTree = "<group>"; };
@@ -93,6 +89,8 @@
 		C498CB6B1D9CFD7000B73FF1 /* BTNavigationDropdownMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTNavigationDropdownMenu.swift; sourceTree = "<group>"; };
 		C498CB731D9D0CBD00B73FF1 /* ARNTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARNTransitionAnimator.swift; sourceTree = "<group>"; };
 		C498CB751D9ED52D00B73FF1 /* GlobalFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalFunctions.swift; sourceTree = "<group>"; };
+		C49F98EA1DCAA3B900D4C5CF /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
+		C49F98EB1DCAA3B900D4C5CF /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
 		C4CC8D861D8A7F8600BF68A1 /* VKMusic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VKMusic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4CC8D891D8A7F8600BF68A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C4CC8D8E1D8A7F8600BF68A1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -107,11 +105,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C49F98EC1DCAA3B900D4C5CF /* Realm.framework in Frameworks */,
+				C49F98ED1DCAA3B900D4C5CF /* RealmSwift.framework in Frameworks */,
 				C475CA671DA536D9009C8674 /* Realm.framework in Frameworks */,
 				C475CA691DA536D9009C8674 /* RealmSwift.framework in Frameworks */,
-				C475CA5E1DA52F63009C8674 /* Realm.framework in Frameworks */,
 				AECDB2F9E98AE2A09F75A7C7 /* Pods_VKMusic.framework in Frameworks */,
-				C475CA5F1DA52F63009C8674 /* RealmSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,8 +178,8 @@
 		C475CA601DA52F6A009C8674 /* Realm */ = {
 			isa = PBXGroup;
 			children = (
-				C475CA5C1DA52F63009C8674 /* Realm.framework */,
-				C475CA5D1DA52F63009C8674 /* RealmSwift.framework */,
+				C49F98EA1DCAA3B900D4C5CF /* Realm.framework */,
+				C49F98EB1DCAA3B900D4C5CF /* RealmSwift.framework */,
 			);
 			name = Realm;
 			sourceTree = "<group>";
