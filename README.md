@@ -34,6 +34,7 @@ Features:
 If you have any comments, concerns, feauture request or bugs that needs to be fixed let me know.
 Also, if you need signed .ipa file that you can share with you friends let me know
 My VK page https://vk.com/kotobaron
+My FB page https://www.facebook.com/profile.php?id=100000512514710
 
 
 
