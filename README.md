@@ -15,6 +15,7 @@
 
 <pre>
 Features: 
+✔ Now with English translation 
 ✔ UI Design that is native to official VK app
 ✔ Downloading music with swipe to the right guesture
 ✔ Simplified music player interface
