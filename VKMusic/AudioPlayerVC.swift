@@ -50,7 +50,7 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         
         NotificationCenter.default.addObserver(self, selector: #selector(updatePlayButton), name:NSNotification.Name(rawValue: "SwapPlayButtonImage"), object: nil)
         
-        if UIScreen.main.bounds.size.width == 375 {
+        if UIScreen.main.bounds.size.width == 375 { //if iPhone 6
             durationSliderYConstraint.constant = 370
             artistNameBottonLayoutConstraint.constant = 200
             albumCoverHeightConstraint.constant = 330
