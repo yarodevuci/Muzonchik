@@ -56,6 +56,14 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
             albumCoverHeightConstraint.constant = 330
             view.setNeedsLayout()
         }
+        
+        if UIScreen.main.bounds.size.height == 480 { //if iPhone 4
+            albumCoverHeightConstraint.constant = 230
+            durationSliderYConstraint.constant = 270
+            artistNameBottonLayoutConstraint.constant = 130
+            view.setNeedsLayout()
+        }
+        
         player.delegate = self
         durationSlider.setThumbImage(UIImage(named: "circle"), for: UIControlState.normal)
         durationSlider.setThumbImage(UIImage(named: "circle"), for: UIControlState.highlighted)
@@ -169,7 +177,7 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         self.time = Float(time)
         //DownloadsTabVC.a = "\(durationString(Int(time))) / \(currentAudioDuration)"
         let progressValue = Float(time) / Float(durationNumber)
-        SearchAudioVC.trackProgress = progressValue
+        MainScreen.trackProgress = progressValue
         
         //NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "reloadTableView"), object: nil)
         currenTimeLabel.text? = durationString(Int(time))
@@ -177,7 +185,7 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         durationSlider.value = Float(time)
         
         let rootViewController = UIApplication.shared.keyWindow?.rootViewController
-        if let sa = rootViewController as? SearchAudioVC { sa.miniPlayerProgressView.progress = progressValue }
+        if let sa = rootViewController as? MainScreen { sa.miniPlayerProgressView.progress = progressValue }
     }
     
     

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5B3949CD1D8D10AA00A20E7E /* SearchAudioVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3949CC1D8D10AA00A20E7E /* SearchAudioVC.swift */; };
+		5B3949CD1D8D10AA00A20E7E /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3949CC1D8D10AA00A20E7E /* MainScreen.swift */; };
 		5B3949CF1D8D12DB00A20E7E /* TrackCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3949CE1D8D12DB00A20E7E /* TrackCell.swift */; };
 		5B3949D11D8D146500A20E7E /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3949D01D8D146500A20E7E /* Download.swift */; };
 		AECDB2F9E98AE2A09F75A7C7 /* Pods_VKMusic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88A37A02EE51CC4F04541D31 /* Pods_VKMusic.framework */; };
@@ -57,7 +57,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5B3949CC1D8D10AA00A20E7E /* SearchAudioVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchAudioVC.swift; sourceTree = "<group>"; };
+		5B3949CC1D8D10AA00A20E7E /* MainScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
 		5B3949CE1D8D12DB00A20E7E /* TrackCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackCell.swift; sourceTree = "<group>"; };
 		5B3949D01D8D146500A20E7E /* Download.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Download.swift; sourceTree = "<group>"; };
 		64C8E23131DCFDFB29EADEF8 /* Pods-VKMusic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VKMusic.release.xcconfig"; path = "Pods/Target Support Files/Pods-VKMusic/Pods-VKMusic.release.xcconfig"; sourceTree = "<group>"; };
@@ -118,7 +118,7 @@
 		5B3949CB1D8D0F2600A20E7E /* MainScreen */ = {
 			isa = PBXGroup;
 			children = (
-				5B3949CC1D8D10AA00A20E7E /* SearchAudioVC.swift */,
+				5B3949CC1D8D10AA00A20E7E /* MainScreen.swift */,
 				5B3949D01D8D146500A20E7E /* Download.swift */,
 				5B3949CE1D8D12DB00A20E7E /* TrackCell.swift */,
 			);
@@ -417,7 +417,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C48A9AAC1D8A9929006B3C64 /* Audio.swift in Sources */,
-				5B3949CD1D8D10AA00A20E7E /* SearchAudioVC.swift in Sources */,
+				5B3949CD1D8D10AA00A20E7E /* MainScreen.swift in Sources */,
 				C45FF8101D91377A001637A7 /* AudioPlayer.swift in Sources */,
 				C4444E791DA2867300160F1F /* ESTMusicIndicatorView.swift in Sources */,
 				C4444E7F1DA3868200160F1F /* CircleProgressView.swift in Sources */,

@@ -11,10 +11,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Search AudioVC-->
+        <!--Main Screen-->
         <scene sceneID="0nO-Sa-gzY">
             <objects>
-                <viewController storyboardIdentifier="SearchAudioVC" id="NdM-N6-ndb" customClass="SearchAudioVC" customModule="VKMusic" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SearchAudioVC" id="NdM-N6-ndb" customClass="MainScreen" customModule="VKMusic" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="8yv-nz-dQI"/>
                         <viewControllerLayoutGuide type="bottom" id="03C-iJ-b3l"/>
@@ -165,7 +165,7 @@
                                     <outlet property="delegate" destination="NdM-N6-ndb" id="yMP-9F-c3T"/>
                                 </connections>
                             </tableView>
-                            <searchBar contentMode="redraw" text="" placeholder="Поиск" translatesAutoresizingMaskIntoConstraints="NO" id="bBS-C7-hYh">
+                            <searchBar contentMode="redraw" text="" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="bBS-C7-hYh">
                                 <rect key="frame" x="0.0" y="64" width="320" height="44"/>
                                 <color key="barTintColor" red="0.89652705192565918" green="0.9136357307434082" blue="0.92819893360137939" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="words" keyboardAppearance="alert" returnKeyType="search"/>

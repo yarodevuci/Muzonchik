@@ -107,7 +107,7 @@ class AudioPlayer{
     
     func setAlbumImageForMiniPlayer(image: UIImage) {
         let rootViewController = UIApplication.shared.keyWindow?.rootViewController
-        if let sa = rootViewController as? SearchAudioVC { sa.miniPlayerAlbumCoverImage.image = image }
+        if let sa = rootViewController as? MainScreen { sa.miniPlayerAlbumCoverImage.image = image }
     }
     
     func play() { player.play() }
