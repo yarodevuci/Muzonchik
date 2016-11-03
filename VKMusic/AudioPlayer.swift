@@ -122,6 +122,10 @@ class AudioPlayer{
         }
     }
     
+    func getCurrentTime() -> Double {
+        return player.currentTime().seconds
+    }
+    
     func next() {
         NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "playNextSong"), object: nil)
     }

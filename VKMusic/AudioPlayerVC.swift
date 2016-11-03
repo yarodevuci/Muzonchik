@@ -67,7 +67,7 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         
         let view = volumeBar.subviews.first as? UISlider
         view?.setThumbImage(UIImage(named: "circle"), for: UIControlState.normal)
-        view?.setMinimumTrackImage(getImageWithColor(color: UIColor(red:0.30, green:0.31, blue:0.32, alpha:1.0), size: CGSize(width: 1, height: 1)), for: UIControlState.normal)
+        view?.setMinimumTrackImage(getImageWithColor(color: UIColor(red:0.93, green:0.33, blue:0.40, alpha:1.0), size: CGSize(width: 1, height: 1)), for: UIControlState.normal)
     }
 
     
@@ -161,10 +161,11 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     
     //MARK: - AudioPlayerDelegate
     func audioDidChangeTime(_ time: Int64) {
-
-        activityIndicator.stopAnimating()
-        playButton.isHidden = false
-
+        //Unhide play button and hide activity indicator
+        if player.getCurrentTime() > 0 {
+            activityIndicator.stopAnimating()
+            playButton.isHidden = false
+        }
         self.time = Float(time)
         //DownloadsTabVC.a = "\(durationString(Int(time))) / \(currentAudioDuration)"
         let progressValue = Float(time) / Float(durationNumber)
