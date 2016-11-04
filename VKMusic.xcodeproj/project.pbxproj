@@ -22,7 +22,6 @@
 		C47D51B71D8FE33700968226 /* SwiftNotificationBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47D51B41D8FE33700968226 /* SwiftNotificationBanner.swift */; };
 		C47D51B81D8FE33700968226 /* SwiftNotificationBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47D51B51D8FE33700968226 /* SwiftNotificationBannerView.swift */; };
 		C47D51B91D8FE33700968226 /* SwiftNotificationBannerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C47D51B61D8FE33700968226 /* SwiftNotificationBannerView.xib */; };
-		C47D51BB1D8FFFDE00968226 /* RappleActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47D51BA1D8FFFDE00968226 /* RappleActivityIndicatorView.swift */; };
 		C4850B0A1DA1C8CE004AFF81 /* MGSwipeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C4850B071DA1C8CE004AFF81 /* MGSwipeButton.m */; };
 		C4850B0B1DA1C8CF004AFF81 /* MGSwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4850B091DA1C8CE004AFF81 /* MGSwipeTableCell.m */; };
 		C48A9AAC1D8A9929006B3C64 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48A9AAB1D8A9929006B3C64 /* Audio.swift */; };
@@ -78,7 +77,6 @@
 		C47D51B41D8FE33700968226 /* SwiftNotificationBanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftNotificationBanner.swift; sourceTree = "<group>"; };
 		C47D51B51D8FE33700968226 /* SwiftNotificationBannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftNotificationBannerView.swift; sourceTree = "<group>"; };
 		C47D51B61D8FE33700968226 /* SwiftNotificationBannerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SwiftNotificationBannerView.xib; sourceTree = "<group>"; };
-		C47D51BA1D8FFFDE00968226 /* RappleActivityIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RappleActivityIndicatorView.swift; sourceTree = "<group>"; };
 		C4850B051DA1C8CE004AFF81 /* VKMusic-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VKMusic-Bridging-Header.h"; sourceTree = "<group>"; };
 		C4850B061DA1C8CE004AFF81 /* MGSwipeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSwipeButton.h; sourceTree = "<group>"; };
 		C4850B071DA1C8CE004AFF81 /* MGSwipeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSwipeButton.m; sourceTree = "<group>"; };
@@ -276,7 +274,6 @@
 				C48A9AAB1D8A9929006B3C64 /* Audio.swift */,
 				C4CC8D891D8A7F8600BF68A1 /* AppDelegate.swift */,
 				C4CC8D9B1D8A813300BF68A1 /* VKDelegateImpl.swift */,
-				C47D51BA1D8FFFDE00968226 /* RappleActivityIndicatorView.swift */,
 				C498CB751D9ED52D00B73FF1 /* GlobalFunctions.swift */,
 				C475CA651DA53131009C8674 /* SavedAudio.swift */,
 			);
@@ -421,7 +418,6 @@
 				C45FF8101D91377A001637A7 /* AudioPlayer.swift in Sources */,
 				C4444E791DA2867300160F1F /* ESTMusicIndicatorView.swift in Sources */,
 				C4444E7F1DA3868200160F1F /* CircleProgressView.swift in Sources */,
-				C47D51BB1D8FFFDE00968226 /* RappleActivityIndicatorView.swift in Sources */,
 				C4CC8D9C1D8A813300BF68A1 /* VKDelegateImpl.swift in Sources */,
 				C47D51B81D8FE33700968226 /* SwiftNotificationBannerView.swift in Sources */,
 				C498CB6D1D9CFD7000B73FF1 /* BTNavigationDropdownMenu.swift in Sources */,

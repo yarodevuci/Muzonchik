@@ -26,6 +26,7 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     @IBOutlet weak var miniPlayerProgressView: UIProgressView!
     
     //MARK: Constants
+    var activityView = UIView()
     let player = AudioPlayer.defaultPlayer
     let defaultSession = Foundation.URLSession(configuration: URLSessionConfiguration.default)
     let gF = GlobalFunctions()
@@ -38,7 +39,7 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     var allowToDeleteFromServer = false
     var allowToAddAudio = false
     var allowToPresent = true
-    var isNowPlaying = -1
+    var isNowPlayingIndex = -1
     var activeDownloadsCount = 0
     var boolArray = [Bool]()
     //MARK: Static variable
@@ -99,9 +100,7 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
         self.refreshControl = refreshControl
     }
     
-    func updateProgress() {
-        tableView.reloadData()
-    }
+    func updateProgress() { tableView.reloadData() }
     
     func playPreviousSong() {
         allowToPresent = false
@@ -152,6 +151,7 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     
     func displayDownloadedSongsOnly() {
         allowToDelete = true
+        self.isNowPlayingIndex = -1
         let realm = try! Realm()
         let downloadedAudioFiles = realm.objects(SavedAudio.self)
         MainScreen.searchResults.removeAll()
@@ -172,14 +172,13 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
         self.refreshControl?.removeFromSuperview()
         allowToDelete = false
         allowToAddAudio = true
+        self.isNowPlayingIndex = -1
         
         let getAudios = VK.API.Audio.getRecommendations([.targetAudio: "3970872_117703755", .shuffle: "1", .count: "500"])
-        
-        RappleActivityIndicatorView.startAnimatingWithLabel("Loading...", attributes: RappleModernAttributes)
+        startActivityIndicator(withLabel: "Loading...")
         
         getAudios.successBlock = { response in
             MainScreen.searchResults.removeAll()
-            RappleActivityIndicatorView.stopAnimating()
             for data in response["items"] {
                 let audio = Audio(serverData: data.1.object as! [String : AnyObject])
                 MainScreen.searchResults.append(audio)
@@ -188,11 +187,12 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
                 self.populateBoolArray()
                 self.tableView.reloadData()
                 self.refreshControl?.endRefreshing()
+                self.removeActivityView()
             })
         }
         getAudios.errorBlock = { error in
             DispatchQueue.main.async(execute: { () -> Void in
-                RappleActivityIndicatorView.stopAnimating()
+                self.removeActivityView()
                 self.refreshControl?.endRefreshing()
                 SwiftNotificationBanner.presentNotification("\(error.desc)")
             })
@@ -201,17 +201,16 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     }
     
     func displayPopularMusic() {
+        self.isNowPlayingIndex = -1
         allowToDelete = false
         allowToAddAudio = true
         self.refreshControl?.removeFromSuperview()
         
         let getAudios = VK.API.Audio.getPopular([.count: "500"])
-        
-        RappleActivityIndicatorView.startAnimatingWithLabel("Loading...", attributes: RappleModernAttributes)
+        startActivityIndicator(withLabel: "Loading...")
         
         getAudios.successBlock = { response in
             MainScreen.searchResults.removeAll()
-            RappleActivityIndicatorView.stopAnimating()
             for data in response {
                 let audio = Audio(serverData: data.1.object as! [String : AnyObject])
                 MainScreen.searchResults.append(audio)
@@ -220,11 +219,12 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
                 self.populateBoolArray()
                 self.tableView.reloadData()
                 self.refreshControl?.endRefreshing()
+                self.removeActivityView()
             })
         }
         getAudios.errorBlock = { error in
             DispatchQueue.main.async(execute: { () -> Void in
-                RappleActivityIndicatorView.stopAnimating()
+                self.removeActivityView()
                 self.refreshControl?.endRefreshing()
                 SwiftNotificationBanner.presentNotification("\(error.desc)")
             })
@@ -233,18 +233,18 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     }
     
     func displayMusicList() {
+        self.isNowPlayingIndex = -1
         if refreshControl == nil { createRefreshControl() }
         allowToDelete = true
         allowToAddAudio = false
         allowToDeleteFromServer = true
         
         if VK.state == .authorized {
-           RappleActivityIndicatorView.startAnimatingWithLabel("Loading...", attributes: RappleModernAttributes)
+            startActivityIndicator(withLabel: "Loading...")
         }
         let getAudios = VK.API.Audio.get()
         getAudios.successBlock = { response in
             MainScreen.searchResults.removeAll()
-            RappleActivityIndicatorView.stopAnimating()
             for data in response["items"] {
                 let audio = Audio(serverData: data.1.object as! [String : AnyObject])
                 MainScreen.searchResults.append(audio)
@@ -253,12 +253,13 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
                 self.populateBoolArray()
                 self.tableView.reloadData()
                 self.refreshControl?.endRefreshing()
+                self.removeActivityView()
             })
         }
         getAudios.errorBlock = { error in
             DispatchQueue.main.async(execute: { () -> Void in
                 self.refreshControl?.endRefreshing()
-                RappleActivityIndicatorView.stopAnimating()
+                self.removeActivityView()
                 SwiftNotificationBanner.presentNotification("\(error.desc)")
                 self.displayDownloadedSongsOnly()
                 self.menuView.removeFromSuperview()
@@ -317,7 +318,7 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
                     player.kill()
                 }
                 MainScreen.searchResults.remove(at: row)
-                isNowPlaying = -1
+                isNowPlayingIndex = -1
                 SwiftNotificationBanner.presentNotification("Deleted")
                 tableView.reloadData()
             } catch let error as NSError {
@@ -341,7 +342,7 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
                     MainScreen.searchResults.remove(at: row)
                     self.tableView.reloadData()
                     SwiftNotificationBanner.presentNotification("Deleted")
-                    self.isNowPlaying = -1
+                    self.isNowPlayingIndex = -1
                 })
             }
         }
@@ -402,11 +403,11 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     }
     
     func searchAudio(searchText:String) {
-        RappleActivityIndicatorView.startAnimatingWithLabel("Searching for \(searchText)", attributes: RappleModernAttributes)
+        startActivityIndicator(withLabel: "Searching for \(searchText)")
         let getAudios = VK.API.Audio.search([.searchOwn: "0", .q: searchText, .count: "300", .sort: "2", .autoComplete: "1"])
         getAudios.successBlock = { response in
+            self.isNowPlayingIndex = -1
             MainScreen.searchResults.removeAll()
-            RappleActivityIndicatorView.stopAnimating()
             for data in response["items"] {
                 let audio = Audio(serverData: data.1.object as! [String : AnyObject])
                 MainScreen.searchResults.append(audio)
@@ -414,6 +415,7 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
             DispatchQueue.main.async(execute: { () -> Void in
                 self.populateBoolArray()
                 self.tableView.reloadData()
+                self.removeActivityView()
             })
         }
         getAudios.errorBlock = {error in
@@ -494,6 +496,91 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
             }
         }
         return nil
+    }
+    
+    func startActivityIndicator(withLabel: String) {
+        activityView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height))
+        activityView.backgroundColor = UIColor.black
+        activityView.alpha = 0.8
+        
+        let activityLable = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 30))
+        let x = view.center.x
+        let y = (view.frame.size.height / 2) + 40
+        activityLable.center = CGPoint(x: x, y: y)
+        activityLable.textColor = UIColor.white
+        activityLable.font = UIFont.systemFont(ofSize: 18)
+        activityLable.textAlignment = .center
+        activityLable.numberOfLines = 0
+        activityLable.lineBreakMode = .byWordWrapping
+        activityLable.text = withLabel
+        activityView.addSubview(activityLable)
+        
+        //Cancel UIButton
+        let activityButton = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 40))
+        activityButton.setTitleColor(UIColor.red, for: .normal)
+        activityButton.titleLabel?.font =  UIFont.systemFont(ofSize: 20)
+        activityButton.setTitle("Cancel", for: .normal)
+        activityButton.center = CGPoint(x: x, y: view.frame.size.height - 80)
+        
+        activityButton.addTarget(self, action: #selector(removeActivityView), for: .touchUpInside)
+        activityView.addSubview(activityButton)
+        
+        let r = CGFloat(30)
+        let h = 2 * r + 20
+        let cd = (h - 10) / 2
+        
+        var center = view.center
+        center.y -= CGFloat(cd)
+        let circle1 = UIBezierPath(arcCenter: center, radius: r, startAngle: CGFloat(-M_PI_2), endAngle:CGFloat(3 * M_PI_2), clockwise: true)
+        _ = rotatingCircle(circle: circle1)
+        
+        let circle2 = UIBezierPath(arcCenter: center, radius: r, startAngle: CGFloat(M_PI_2), endAngle:CGFloat(5 * M_PI_2), clockwise: true)
+        _ = rotatingCircle(circle: circle2)
+        
+        view.addSubview(activityView)
+
+    }
+    
+    func rotatingCircle(circle: UIBezierPath) -> CAShapeLayer {
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = circle.cgPath
+        shapeLayer.fillColor = nil
+        shapeLayer.strokeColor = UIColor.white.cgColor
+        shapeLayer.lineWidth = 5.0
+        activityView.layer.addSublayer(shapeLayer)
+        
+        let strokeEnd = CABasicAnimation(keyPath: "strokeEnd")
+        strokeEnd.fromValue = 0.0
+        strokeEnd.toValue = 1.0
+        strokeEnd.duration = 1.0
+        strokeEnd.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        
+        let endGroup = CAAnimationGroup()
+        endGroup.duration = 1.3
+        endGroup.repeatCount = MAXFLOAT
+        endGroup.animations = [strokeEnd]
+        
+        let strokeStart = CABasicAnimation(keyPath: "strokeStart")
+        strokeStart.beginTime = 0.3
+        strokeStart.fromValue = 0.0
+        strokeStart.toValue = 1.0
+        strokeStart.duration = 1.0
+        strokeStart.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        
+        let startGroup = CAAnimationGroup()
+        startGroup.duration = 1.3
+        startGroup.repeatCount = MAXFLOAT
+        startGroup.animations = [strokeStart]
+        
+        shapeLayer.add(endGroup, forKey: "end")
+        shapeLayer.add(startGroup, forKey: "start")
+        
+        return shapeLayer
+    }
+    
+    func removeActivityView() {
+        print("Remove me ")
+        activityView.removeFromSuperview()
     }
     
     
@@ -753,13 +840,13 @@ extension MainScreen: UITableViewDelegate {
         miniPlayerArtistName.text = MainScreen.searchResults[indexPath.row].artist
         miniPlayerSongName.text = MainScreen.searchResults[indexPath.row].title
         
-        if isNowPlaying != indexPath.row {
+        if isNowPlayingIndex != indexPath.row {
             miniPlayerProgressView.progress = 0
             player.setPlayList(MainScreen.searchResults)
             AudioPlayerVC.musicToPlay = MainScreen.searchResults
             AudioPlayerVC.indexToPlay = indexPath.row
             AudioPlayer.index = indexPath.row
-            isNowPlaying = indexPath.row
+            isNowPlayingIndex = indexPath.row
             let track = MainScreen.searchResults[(indexPath as NSIndexPath).row]
             
             if localFileExistsForTrack(track) {
