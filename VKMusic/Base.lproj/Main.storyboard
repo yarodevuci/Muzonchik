@@ -43,7 +43,7 @@
                                         <rect key="frame" x="0.0" y="28" width="320" height="63"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yMY-jb-9Ol" id="mbR-Ty-acn">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="62"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="62.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Artist" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sRO-c8-grm">
@@ -541,9 +541,6 @@
                             <constraint firstAttribute="trailingMargin" secondItem="rJQ-Is-QU6" secondAttribute="trailing" constant="6" id="wGe-Ah-FkT"/>
                             <constraint firstItem="K7n-yC-sJE" firstAttribute="top" secondItem="9C7-9n-uIW" secondAttribute="bottom" constant="60" id="yZP-aL-HPR"/>
                         </constraints>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="5oh-mX-19q" appends="YES" id="XMe-cy-KKQ"/>
-                        </connections>
                     </view>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
@@ -562,11 +559,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sRG-Kd-eUK" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <panGestureRecognizer minimumNumberOfTouches="1" id="5oh-mX-19q">
-                    <connections>
-                        <action selector="handleSwipe:" destination="nQy-n9-NN1" id="Cd9-RF-WfB"/>
-                    </connections>
-                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="8763.75" y="1543.3098591549297"/>
         </scene>
