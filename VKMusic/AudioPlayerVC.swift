@@ -82,7 +82,7 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     @IBAction func adjustDuration(_ sender: AnyObject) {
         player.pause()
         currenTimeLabel.text? = durationString(Int(durationSlider.value))
-        playButton.setImage(UIImage(named: "Play"), for: UIControlState())
+      //  playButton.setImage(UIImage(named: "Play"), for: UIControlState())
     }
     
     @IBAction func tapToDismiss(_ sender: AnyObject) {
@@ -95,7 +95,7 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         let value = self.durationSlider.value
         let time = CMTime(value: Int64(value), timescale: 1)
         player.seekToTime(time)
-        playButton.setImage(UIImage(named: "Pause"), for: UIControlState())
+       // playButton.setImage(UIImage(named: "Pause"), for: UIControlState())
         player.play()
     }
     
