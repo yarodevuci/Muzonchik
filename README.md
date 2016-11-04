@@ -3,6 +3,7 @@
 [![Swift](https://img.shields.io/badge/Swift-3.0.1-orange.svg?style=flat)](https://developer.apple.com/swift/)
 [![VK API](https://img.shields.io/badge/VK_API-5.53-blue.svg?style=flat)](https://vk.com/dev/versions)
 
+
 <br>
 <img height="350" src="https://github.com/yarodevuci/VKMusic/blob/master/animated.gif?raw=true" />
 <img height="350" src="https://github.com/yarodevuci/VKMusic/blob/master/Splash.png?raw=true" />
@@ -14,6 +15,9 @@
 <br>
 
 <pre>
+
+<span class="badge-paypal"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JAGFP3M6BG7LN" title="Donate to this project using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="PayPal Donation Button" /></a></span>
+
 Features: 
 ✔ Now with English translation 
 ✔ UI Design that is native to official VK app
