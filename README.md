@@ -6,13 +6,12 @@
 <span class="badge-paypal"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JAGFP3M6BG7LN" title="Donate to this project using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="PayPal Donation Button" /></a></span>
 
 <br>
-<img height="350" src="https://github.com/yarodevuci/VKMusic/blob/master/animated.gif?raw=true" />
-<img height="350" src="https://github.com/yarodevuci/VKMusic/blob/master/Splash.png?raw=true" />
-<img height="350" src="https://github.com/yarodevuci/VKMusic/blob/master/DropDownMenu.png?raw=true" />
-<img height="350" src="https://github.com/yarodevuci/VKMusic/blob/master/Player.png?raw=true" />
-<img height="350" src="https://github.com/yarodevuci/VKMusic/blob/master/AudioList.png?raw=true" />
-<img height="350" ![animated](animated.gif "animated") />
-
+<img height="450" src="https://github.com/yarodevuci/VKMusic/blob/master/animated.gif?raw=true" />
+<img height="450" src="https://github.com/yarodevuci/VKMusic/blob/master/Splash.png?raw=true" />
+<img height="450" src="https://github.com/yarodevuci/VKMusic/blob/master/DropDownMenu.png?raw=true" />
+<img height="450" src="https://github.com/yarodevuci/VKMusic/blob/master/Player.png?raw=true" />
+<img height="450" src="https://github.com/yarodevuci/VKMusic/blob/master/AudioList.png?raw=true" />
+<img height="450" ![animated](animated.gif "animated") />
 <br>
 
 <pre>
