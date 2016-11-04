@@ -83,8 +83,6 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateProgress), name:NSNotification.Name(rawValue: "reloadTableView"), object: nil)
         
-        _ = VK.API.Stats.trackVisitor()
-
     }
     
     @IBAction func tapMiniPlayerButton() {

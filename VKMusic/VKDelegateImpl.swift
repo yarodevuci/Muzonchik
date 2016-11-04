@@ -25,6 +25,8 @@ class VKDelegateImpl : VKDelegate {
     func vkDidAuthorizeWith(parameters: Dictionary<String, String>) {
         print(parameters)
         print("access_token: \(parameters["access_token"]!)")
+        _ = VK.API.Stats.trackVisitor([.token : parameters["access_token"]! ])
+
     }
     
     func vkDidUnauthorize() {}
