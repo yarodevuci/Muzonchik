@@ -26,7 +26,6 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     @IBOutlet weak var miniPlayerProgressView: UIProgressView!
     
     //MARK: Constants
-    var activityView = UIView()
     let player = AudioPlayer.defaultPlayer
     let defaultSession = Foundation.URLSession(configuration: URLSessionConfiguration.default)
     let gF = GlobalFunctions()
@@ -35,6 +34,7 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     var menuView: BTNavigationDropdownMenu!
     var activeDownloads = [String: Download]()
     var dataTask: URLSessionDataTask?
+    var activityView = UIView()
     var allowToDelete = true
     var allowToDeleteFromServer = false
     var allowToAddAudio = false
@@ -728,14 +728,7 @@ extension MainScreen: TrackCellDelegate {
 
 extension MainScreen: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if MainScreen.searchResults.count > 0 {
-            tableView.backgroundView = .none
-            tableView.separatorStyle = .singleLine
-            return MainScreen.searchResults.count
-        } else {
-            gF.emptyMessage(message: "Nothing here yet.", tableView: tableView, view: self.view)
-            return 0
-        }
+        return MainScreen.searchResults.count
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

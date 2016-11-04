@@ -158,19 +158,6 @@ class GlobalFunctions {
         self.modalVC.transitioningDelegate = self.animator
     }
     
-    //TableView Empty state
-    func emptyMessage(message:String, tableView: UITableView, view: UIView) {
-        let messageLabel = UILabel(frame: CGRect(x: 0, y: -view.bounds.size.height / 2, width: view.bounds.size.width, height: view.bounds.size.height))
-        messageLabel.text = message
-        messageLabel.textColor = UIColor.black
-        messageLabel.numberOfLines = 0;
-        messageLabel.textAlignment = .center
-        messageLabel.font = UIFont(name: "TrebuchetMS", size: 22)
-        messageLabel.sizeToFit()
-        
-        tableView.backgroundView = messageLabel
-        tableView.separatorStyle = .none
-    }
     //Save audio info to Realm
     func createSavedAudio(title: String, artist: String, duration: Int, url: URL) {
         let savedAudio = SavedAudio()
