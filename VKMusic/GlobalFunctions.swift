@@ -11,7 +11,8 @@ import UIKit
 import RealmSwift
 
 class GlobalFunctions {
-    
+    //Dropdown menu color
+    static let dropDownMenuColor = UIColor(red:0.87, green:0.87, blue:0.87, alpha:1.0)
     //VK Blue Color
     static let vkNavBarColor = UIColor(red:0.35, green:0.52, blue:0.71, alpha:1.0)
     //Blue color

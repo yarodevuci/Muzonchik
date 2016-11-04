@@ -72,6 +72,8 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
         _ = self.downloadsSession
         tableView.tableFooterView = UIView()
         searchBar.keyboardAppearance = .dark
+        let cancelButtonAttributes: NSDictionary = [NSForegroundColorAttributeName: UIColor.white]
+        UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes as? [String : AnyObject], for: .normal)
         
         displayMusicList()
         
@@ -131,8 +133,9 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     func setupDropdownMenu(title: String) {
         let items = ["My music", "Downloaded", "Suggested", "Popular"]
         menuView = BTNavigationDropdownMenu(containerView: self.view, title: title, items: items as [AnyObject])
+        menuView.cellSeparatorColor = GlobalFunctions.dropDownMenuColor
         menuView.cellHeight = 50
-        menuView.cellBackgroundColor = UIColor(red:0.87, green:0.87, blue:0.87, alpha:1.0)
+        menuView.cellBackgroundColor = GlobalFunctions.dropDownMenuColor
         menuView.cellSelectionColor = GlobalFunctions.vkNavBarColor
         menuView.shouldKeepSelectedCellColor = false
         menuView.cellTextLabelColor = UIColor.black
@@ -277,7 +280,7 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
         }
     }
     func handleDropdownSelection(index: Int) {
-        print("Selected index is \(index)")
+        view.endEditing(true)
         switch index {
         case 0:
             displayMusicList()
@@ -420,6 +423,7 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
         }
         getAudios.errorBlock = {error in
             DispatchQueue.main.async(execute: { () -> Void in
+                self.removeActivityView()
                 SwiftNotificationBanner.presentNotification("Error searching audio")
                 print("searchAudio fail\n \(error)")
             })
@@ -581,6 +585,9 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     func removeActivityView() {
         print("Remove me ")
         activityView.removeFromSuperview()
+        if refreshControl != nil {
+            refreshControl?.endRefreshing()
+        }
     }
     
     
