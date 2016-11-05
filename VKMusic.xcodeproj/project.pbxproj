@@ -27,7 +27,6 @@
 		C48A9AAC1D8A9929006B3C64 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48A9AAB1D8A9929006B3C64 /* Audio.swift */; };
 		C498CB6C1D9CFD7000B73FF1 /* BTNavigationDropdownMenu.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C498CB6A1D9CFD7000B73FF1 /* BTNavigationDropdownMenu.bundle */; };
 		C498CB6D1D9CFD7000B73FF1 /* BTNavigationDropdownMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C498CB6B1D9CFD7000B73FF1 /* BTNavigationDropdownMenu.swift */; };
-		C498CB741D9D0CBD00B73FF1 /* ARNTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C498CB731D9D0CBD00B73FF1 /* ARNTransitionAnimator.swift */; };
 		C498CB761D9ED52D00B73FF1 /* GlobalFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C498CB751D9ED52D00B73FF1 /* GlobalFunctions.swift */; };
 		C49F98F51DCAA79500D4C5CF /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C49F98EA1DCAA3B900D4C5CF /* Realm.framework */; };
 		C49F98F71DCAA7C300D4C5CF /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C49F98EB1DCAA3B900D4C5CF /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -85,7 +84,6 @@
 		C48A9AAB1D8A9929006B3C64 /* Audio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
 		C498CB6A1D9CFD7000B73FF1 /* BTNavigationDropdownMenu.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = BTNavigationDropdownMenu.bundle; sourceTree = "<group>"; };
 		C498CB6B1D9CFD7000B73FF1 /* BTNavigationDropdownMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTNavigationDropdownMenu.swift; sourceTree = "<group>"; };
-		C498CB731D9D0CBD00B73FF1 /* ARNTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARNTransitionAnimator.swift; sourceTree = "<group>"; };
 		C498CB751D9ED52D00B73FF1 /* GlobalFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalFunctions.swift; sourceTree = "<group>"; };
 		C49F98EA1DCAA3B900D4C5CF /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		C49F98EB1DCAA3B900D4C5CF /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
@@ -188,7 +186,6 @@
 				C475CA601DA52F6A009C8674 /* Realm */,
 				C4D47B051DA3B27800244086 /* Other */,
 				C4850B041DA1C8B2004AFF81 /* MGSwipeTableCell */,
-				C498CB6E1D9D0BFC00B73FF1 /* MusicPlayerTransition */,
 				C498CB691D9CFD4D00B73FF1 /* DropDownMenu */,
 				C47D51AD1D8FE2D700968226 /* SwiftNotificationBanner */,
 				C4444E751DA2865A00160F1F /* ESTMusicIndicator */,
@@ -226,14 +223,6 @@
 				C498CB6B1D9CFD7000B73FF1 /* BTNavigationDropdownMenu.swift */,
 			);
 			name = DropDownMenu;
-			sourceTree = "<group>";
-		};
-		C498CB6E1D9D0BFC00B73FF1 /* MusicPlayerTransition */ = {
-			isa = PBXGroup;
-			children = (
-				C498CB731D9D0CBD00B73FF1 /* ARNTransitionAnimator.swift */,
-			);
-			name = MusicPlayerTransition;
 			sourceTree = "<group>";
 		};
 		C4CC8D7D1D8A7F8600BF68A1 = {
@@ -426,7 +415,6 @@
 				C4850B0A1DA1C8CE004AFF81 /* MGSwipeButton.m in Sources */,
 				C45FF80E1D9135A4001637A7 /* AudioPlayerVC.swift in Sources */,
 				C498CB761D9ED52D00B73FF1 /* GlobalFunctions.swift in Sources */,
-				C498CB741D9D0CBD00B73FF1 /* ARNTransitionAnimator.swift in Sources */,
 				C4CC8D8A1D8A7F8600BF68A1 /* AppDelegate.swift in Sources */,
 				C4444E781DA2867300160F1F /* ESTMusicIndicatorContentView.swift in Sources */,
 				5B3949CF1D8D12DB00A20E7E /* TrackCell.swift in Sources */,

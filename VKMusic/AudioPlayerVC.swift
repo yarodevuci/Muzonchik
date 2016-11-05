@@ -37,7 +37,6 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     var currentAudioDuration = ""
     var durationNumber: Float = 1
     var time = Float(0)
-    var tapCloseButtonActionHandler : ((Void) -> Void)?
     
     
     //MARK: Override preferredStatusBarStyle
@@ -76,6 +75,9 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         let view = volumeBar.subviews.first as? UISlider
         view?.setThumbImage(UIImage(named: "circle"), for: UIControlState.normal)
         view?.setMinimumTrackImage(getImageWithColor(color: UIColor(red:0.33, green:0.33, blue:0.33, alpha:1.0), size: CGSize(width: 1, height: 1)), for: UIControlState.normal)
+        
+        albumCoverImage.image = AudioPlayerVC.albumImage
+        
     }
 
     
@@ -86,7 +88,6 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     }
     
     @IBAction func tapToDismiss(_ sender: AnyObject) {
-        self.tapCloseButtonActionHandler?()
         self.dismiss(animated: true, completion: nil)
     }
     

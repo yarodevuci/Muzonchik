@@ -24,9 +24,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="PJc-zv-6gn">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                            </containerView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s17-GW-RnV" userLabel="NavigationView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
                                 <color key="backgroundColor" red="0.27058823529411763" green="0.40000000000000002" blue="0.55686274509803924" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -43,7 +40,7 @@
                                         <rect key="frame" x="0.0" y="28" width="320" height="63"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yMY-jb-9Ol" id="mbR-Ty-acn">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="62.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="63"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Artist" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sRO-c8-grm">
@@ -245,7 +242,7 @@
                                     <button clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jXV-05-oVW">
                                         <rect key="frame" x="0.0" y="0.0" width="234" height="55"/>
                                         <connections>
-                                            <action selector="tapMiniPlayerButton" destination="NdM-N6-ndb" eventType="touchUpInside" id="zTR-Uj-Tzq"/>
+                                            <segue destination="nQy-n9-NN1" kind="show" identifier="showAudioVC" id="LII-oF-6Vg"/>
                                         </connections>
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="music_plate" translatesAutoresizingMaskIntoConstraints="NO" id="iiZ-qv-tfr">
@@ -293,24 +290,19 @@
                             <constraint firstItem="bBS-C7-hYh" firstAttribute="width" secondItem="md2-6F-H6J" secondAttribute="width" id="3Kc-zw-qVf"/>
                             <constraint firstItem="wpI-ze-hWc" firstAttribute="bottom" secondItem="Pbz-Yg-r90" secondAttribute="top" constant="55" id="AJT-CC-hZi"/>
                             <constraint firstItem="s17-GW-RnV" firstAttribute="centerX" secondItem="md2-6F-H6J" secondAttribute="centerX" id="DRa-b8-ZlR"/>
-                            <constraint firstItem="wpI-ze-hWc" firstAttribute="trailing" secondItem="PJc-zv-6gn" secondAttribute="trailing" id="Gde-pX-aIZ"/>
                             <constraint firstItem="Pbz-Yg-r90" firstAttribute="width" secondItem="md2-6F-H6J" secondAttribute="width" id="Hc1-Yu-yOg"/>
-                            <constraint firstItem="wpI-ze-hWc" firstAttribute="leading" secondItem="PJc-zv-6gn" secondAttribute="leading" id="JLt-QP-47J"/>
                             <constraint firstItem="wpI-ze-hWc" firstAttribute="centerX" secondItem="md2-6F-H6J" secondAttribute="centerX" id="O4J-YX-39Z"/>
                             <constraint firstItem="wpI-ze-hWc" firstAttribute="width" secondItem="md2-6F-H6J" secondAttribute="width" id="Po6-wl-2oh"/>
                             <constraint firstItem="s17-GW-RnV" firstAttribute="top" secondItem="8yv-nz-dQI" secondAttribute="bottom" constant="-20" id="SKe-7C-sQu"/>
                             <constraint firstItem="Pbz-Yg-r90" firstAttribute="centerX" secondItem="md2-6F-H6J" secondAttribute="centerX" id="Ukj-ni-0jf"/>
-                            <constraint firstItem="PJc-zv-6gn" firstAttribute="bottom" secondItem="03C-iJ-b3l" secondAttribute="top" id="dk8-3e-ySD"/>
                             <constraint firstItem="bBS-C7-hYh" firstAttribute="centerX" secondItem="md2-6F-H6J" secondAttribute="centerX" id="gex-dp-N50"/>
                             <constraint firstItem="wpI-ze-hWc" firstAttribute="top" secondItem="bBS-C7-hYh" secondAttribute="bottom" id="j4g-2H-vrN"/>
                             <constraint firstItem="s17-GW-RnV" firstAttribute="width" secondItem="md2-6F-H6J" secondAttribute="width" id="j5u-1F-Mdq"/>
-                            <constraint firstItem="PJc-zv-6gn" firstAttribute="top" secondItem="md2-6F-H6J" secondAttribute="top" id="nXo-C8-2VH"/>
                             <constraint firstItem="03C-iJ-b3l" firstAttribute="top" secondItem="Pbz-Yg-r90" secondAttribute="bottom" id="wCD-2K-MUR"/>
                             <constraint firstItem="bBS-C7-hYh" firstAttribute="top" secondItem="s17-GW-RnV" secondAttribute="bottom" constant="-1" id="ymD-hc-NII"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="containerView" destination="PJc-zv-6gn" id="eR6-og-Lw0"/>
                         <outlet property="miniPlayerAlbumCoverImage" destination="iiZ-qv-tfr" id="grb-Rh-2ZN"/>
                         <outlet property="miniPlayerArtistName" destination="bRD-z5-SH5" id="kEb-7V-iKV"/>
                         <outlet property="miniPlayerButton" destination="jXV-05-oVW" id="kwz-Ec-ouq"/>
@@ -324,7 +316,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MF4-GU-uWA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8113.125" y="1545.4225352112676"/>
+            <point key="canvasLocation" x="7823" y="1543"/>
         </scene>
         <!--Audio PlayerVC-->
         <scene sceneID="o16-2T-JVs">
@@ -475,10 +467,10 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="giz-st-WXQ" userLabel="dismissButton">
-                                <rect key="frame" x="135" y="20" width="50" height="20"/>
+                                <rect key="frame" x="110" y="10" width="100" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="50" id="ZgU-Wb-aNg"/>
-                                    <constraint firstAttribute="height" constant="20" id="ysE-zx-S4M"/>
+                                    <constraint firstAttribute="width" constant="100" id="ZgU-Wb-aNg"/>
+                                    <constraint firstAttribute="height" constant="40" id="ysE-zx-S4M"/>
                                 </constraints>
                                 <state key="normal">
                                     <color key="titleColor" red="0.1019607843" green="0.1019607843" blue="0.1019607843" alpha="1" colorSpace="calibratedRGB"/>
@@ -514,7 +506,7 @@
                             <constraint firstItem="K7n-yC-sJE" firstAttribute="top" secondItem="j7d-cP-D0K" secondAttribute="bottom" constant="60" id="ErU-ED-cby"/>
                             <constraint firstItem="K7n-yC-sJE" firstAttribute="top" secondItem="1Ln-AZ-wXg" secondAttribute="bottom" constant="145" id="Hlm-UX-nrV"/>
                             <constraint firstItem="8ci-fh-805" firstAttribute="centerX" secondItem="xFM-HM-qvC" secondAttribute="centerX" id="JDJ-33-45S"/>
-                            <constraint firstItem="giz-st-WXQ" firstAttribute="top" secondItem="t2p-lA-vjo" secondAttribute="bottom" id="LzM-mQ-EXw"/>
+                            <constraint firstItem="giz-st-WXQ" firstAttribute="top" secondItem="t2p-lA-vjo" secondAttribute="bottom" constant="-10" id="LzM-mQ-EXw"/>
                             <constraint firstItem="jMv-VO-FGg" firstAttribute="centerX" secondItem="xFM-HM-qvC" secondAttribute="centerX" id="Men-3y-GUT"/>
                             <constraint firstItem="K7n-yC-sJE" firstAttribute="top" secondItem="sr2-4f-4sx" secondAttribute="centerY" constant="21" id="PST-in-VSN"/>
                             <constraint firstItem="5ib-Xb-yNI" firstAttribute="leading" secondItem="xFM-HM-qvC" secondAttribute="leadingMargin" constant="6" id="RnD-lP-e5A"/>

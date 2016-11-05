@@ -71,12 +71,10 @@ class AudioPlayer{
         
         currentAudio = currentPlayList[AudioPlayer.index]
         
-        player = AVPlayer(url: audioURL)
-        player.volume = 1
+        let playerItem = AVPlayerItem(url: audioURL)
+        player = AVPlayer(playerItem:playerItem)
         player.play()
         addTimeObeserver()
-        
-        let playerItem = AVPlayerItem(url: audioURL)
         
         DispatchQueue.main.async {
             AudioPlayerVC.albumImage = UIImage(named: "music_plate")

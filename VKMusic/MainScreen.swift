@@ -65,8 +65,8 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
         //Set up the navigation dropdown menu
         setupDropdownMenu(title: "My music")
         //Set up miniPlayerView
-        gF.setupAnimator(vc: self, miniPlayerView: miniPlayerView, view: self.view, cView: containerView, tableView: tableView)
-        
+        miniPlayerView.isHidden = true
+       
         createRefreshControl()
         
         _ = self.downloadsSession
@@ -85,10 +85,6 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
         
     }
     
-    @IBAction func tapMiniPlayerButton() {
-        gF.animator.interactiveType = .none
-        self.present(gF.modalVC, animated: true, completion: nil)
-    }
     //MARK: instance methods
     
     //refresh control
@@ -861,8 +857,7 @@ extension MainScreen: UITableViewDelegate {
         
         if allowToPresent {
             allowToPresent = false
-            self.gF.animator.interactiveType = .none
-            self.present(self.gF.modalVC, animated: true, completion: nil)
+            performSegue(withIdentifier:"showAudioVC", sender: self)
         }
         
     }
