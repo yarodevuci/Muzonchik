@@ -20,6 +20,8 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var albumCoverImage: UIImageView!
+    @IBOutlet weak var playerBackgroundImage: UIImageView!
+    
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var durationSliderYConstraint: NSLayoutConstraint!
     @IBOutlet weak var artistNameBottonLayoutConstraint: NSLayoutConstraint!
@@ -37,10 +39,6 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     var currentAudioDuration = ""
     var durationNumber: Float = 1
     var time = Float(0)
-    
-    
-    //MARK: Override preferredStatusBarStyle
-    override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,7 +75,7 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         view?.setMinimumTrackImage(getImageWithColor(color: UIColor(red:0.33, green:0.33, blue:0.33, alpha:1.0), size: CGSize(width: 1, height: 1)), for: UIControlState.normal)
         
         albumCoverImage.image = AudioPlayerVC.albumImage
-        
+        playerBackgroundImage.image = AudioPlayerVC.albumImage
     }
 
     
@@ -105,11 +103,11 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "SwapMinPlayerPlayButtonImage"), object: nil)
         
         let button = sender as! UIButton
-        if button.imageView?.image == UIImage(named: "Play") {
-            button.setImage(UIImage(named: "Pause"), for: UIControlState())
+        if button.imageView?.image == UIImage(named: "MusicPlayer_Play") {
+            button.setImage(UIImage(named: "MusicPlayer_Pause"), for: UIControlState())
             player.play()
         } else {
-            button.setImage(UIImage(named: "Play"), for: UIControlState())
+            button.setImage(UIImage(named: "MusicPlayer_Play"), for: UIControlState())
             player.pause()
         }
     }
@@ -126,6 +124,7 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     }
     
     func getAlbumCover() {
+        playerBackgroundImage.image = AudioPlayerVC.albumImage
         self.albumCoverImage.image = AudioPlayerVC.albumImage
     }
     
@@ -152,9 +151,9 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
             currenTimeLabel.text? = "0:00"
             durationSlider.maximumValue = Float((audio.duration))
             durationSlider.value = 0
-            playButton.setImage(UIImage(named: "Pause"), for: UIControlState())
             
             playButton.isHidden = true
+            playButton.setImage(UIImage(named: "MusicPlayer_Pause"), for: UIControlState())
             activityIndicator.startAnimating()
         }
     }
@@ -195,12 +194,12 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     }
     
     func updatePlayButton() {
-        if playButton.imageView?.image == UIImage(named: "Play") {
-            playButton.setImage(UIImage(named: "Pause"), for: UIControlState())
+        if playButton.imageView?.image == UIImage(named: "MusicPlayer_Play") {
+            playButton.setImage(UIImage(named: "MusicPlayer_Pause"), for: UIControlState())
             player.play()
         }
         else {
-            playButton.setImage(UIImage(named: "Play"), for: UIControlState())
+            playButton.setImage(UIImage(named: "MusicPlayer_Play"), for: UIControlState())
             player.pause()
         }
     }

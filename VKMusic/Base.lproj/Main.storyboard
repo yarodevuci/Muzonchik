@@ -40,7 +40,7 @@
                                         <rect key="frame" x="0.0" y="28" width="320" height="63"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yMY-jb-9Ol" id="mbR-Ty-acn">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="63"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="62"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Artist" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sRO-c8-grm">
@@ -191,13 +191,13 @@
                                         <color key="trackTintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     </progressView>
                                     <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artist Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bRD-z5-SH5">
-                                        <rect key="frame" x="55" y="10.5" width="189" height="18.5"/>
+                                        <rect key="frame" x="55" y="10.5" width="196" height="18.5"/>
                                         <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="16"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Song Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I7H-Il-wBu" customClass="MarqueeLabel">
-                                        <rect key="frame" x="55" y="30" width="189" height="15"/>
+                                        <rect key="frame" x="55" y="30" width="196" height="15"/>
                                         <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="13"/>
                                         <color key="textColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -218,29 +218,29 @@
                                         </userDefinedRuntimeAttributes>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gy6-91-UTJ">
-                                        <rect key="frame" x="244" y="16.5" width="22" height="22"/>
+                                        <rect key="frame" x="251" y="15.5" width="25" height="25"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="22" id="TAd-wj-2JU"/>
-                                            <constraint firstAttribute="height" constant="22" id="kOj-bG-WIn"/>
+                                            <constraint firstAttribute="width" constant="25" id="TAd-wj-2JU"/>
+                                            <constraint firstAttribute="height" constant="25" id="kOj-bG-WIn"/>
                                         </constraints>
-                                        <state key="normal" image="Pause"/>
+                                        <state key="normal" image="MiniPlayer_Pause"/>
                                         <connections>
                                             <action selector="tapPlayPauseMiniPlayer:" destination="NdM-N6-ndb" eventType="touchUpInside" id="cEE-EO-nMT"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ze1-e7-bBR" userLabel="NextSong">
-                                        <rect key="frame" x="281" y="0.0" width="24" height="55"/>
+                                        <rect key="frame" x="286" y="14.5" width="26" height="26"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="55" id="kqd-NV-mOg"/>
-                                            <constraint firstAttribute="width" constant="24" id="qbU-cI-bBt"/>
+                                            <constraint firstAttribute="height" constant="26" id="kqd-NV-mOg"/>
+                                            <constraint firstAttribute="width" constant="26" id="qbU-cI-bBt"/>
                                         </constraints>
-                                        <state key="normal" image="Fast Forward"/>
+                                        <state key="normal" image="MiniPlayer_Forward"/>
                                         <connections>
                                             <action selector="tapNextOnMiniPlayer:" destination="NdM-N6-ndb" eventType="touchUpInside" id="ryY-32-w2m"/>
                                         </connections>
                                     </button>
                                     <button clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jXV-05-oVW">
-                                        <rect key="frame" x="0.0" y="0.0" width="234" height="55"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="241" height="55"/>
                                         <connections>
                                             <segue destination="nQy-n9-NN1" kind="show" identifier="showAudioVC" id="LII-oF-6Vg"/>
                                         </connections>
@@ -268,7 +268,7 @@
                                     <constraint firstItem="I7H-Il-wBu" firstAttribute="trailing" secondItem="Gy6-91-UTJ" secondAttribute="leading" id="egP-LY-tWR"/>
                                     <constraint firstItem="PBJ-Up-xMR" firstAttribute="width" secondItem="Pbz-Yg-r90" secondAttribute="width" id="fbR-Cb-b1h"/>
                                     <constraint firstItem="zf5-iu-DJQ" firstAttribute="centerY" secondItem="Pbz-Yg-r90" secondAttribute="centerY" id="giu-kb-Le0"/>
-                                    <constraint firstItem="Gy6-91-UTJ" firstAttribute="trailing" secondItem="Ze1-e7-bBR" secondAttribute="leading" constant="-15" id="ilV-Bv-j1M"/>
+                                    <constraint firstItem="Gy6-91-UTJ" firstAttribute="trailing" secondItem="Ze1-e7-bBR" secondAttribute="leading" constant="-10" id="ilV-Bv-j1M"/>
                                     <constraint firstItem="jXV-05-oVW" firstAttribute="centerY" secondItem="Pbz-Yg-r90" secondAttribute="centerY" id="kch-zG-kCb"/>
                                     <constraint firstItem="Gy6-91-UTJ" firstAttribute="centerY" secondItem="Pbz-Yg-r90" secondAttribute="centerY" id="lWL-QW-W7S"/>
                                     <constraint firstItem="I7H-Il-wBu" firstAttribute="top" secondItem="bRD-z5-SH5" secondAttribute="bottom" constant="1" id="mj4-Ep-WN9"/>
@@ -280,7 +280,7 @@
                                     <constraint firstItem="bRD-z5-SH5" firstAttribute="centerY" secondItem="Pbz-Yg-r90" secondAttribute="centerY" constant="-8" id="six-9V-qJJ"/>
                                     <constraint firstItem="zf5-iu-DJQ" firstAttribute="height" secondItem="Pbz-Yg-r90" secondAttribute="height" id="tMu-vM-3rM"/>
                                     <constraint firstItem="PBJ-Up-xMR" firstAttribute="centerX" secondItem="Pbz-Yg-r90" secondAttribute="centerX" id="v0e-qr-dvs"/>
-                                    <constraint firstAttribute="trailing" secondItem="Ze1-e7-bBR" secondAttribute="trailing" constant="15" id="vwd-b4-Kzg"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ze1-e7-bBR" secondAttribute="trailing" constant="8" id="vwd-b4-Kzg"/>
                                     <constraint firstItem="zf5-iu-DJQ" firstAttribute="width" secondItem="Pbz-Yg-r90" secondAttribute="width" id="wEu-zn-NKr"/>
                                     <constraint firstItem="iiZ-qv-tfr" firstAttribute="leading" secondItem="Pbz-Yg-r90" secondAttribute="leading" constant="5" id="xuN-2k-zWI"/>
                                 </constraints>
@@ -330,7 +330,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="demoAlbum" translatesAutoresizingMaskIntoConstraints="NO" id="T1q-gR-b1T">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="demoAlbum" translatesAutoresizingMaskIntoConstraints="NO" id="T1q-gR-b1T" userLabel="BackgroundImage">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
                             <visualEffectView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BEl-3X-Wu2">
@@ -392,13 +392,21 @@
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jMv-VO-FGg">
                                 <rect key="frame" x="140" y="468" width="40" height="40"/>
-                                <state key="normal" image="Pause"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="JpX-KD-pAq"/>
+                                    <constraint firstAttribute="width" constant="40" id="ybe-mJ-k19"/>
+                                </constraints>
+                                <state key="normal" image="MusicPlayer_Pause"/>
                                 <connections>
                                     <action selector="tapPlayPauseButton:" destination="nQy-n9-NN1" eventType="touchUpInside" id="36R-v2-FJy"/>
                                 </connections>
                             </button>
                             <activityIndicatorView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="8ci-fh-805">
-                                <rect key="frame" x="150" y="478" width="20" height="20"/>
+                                <rect key="frame" x="140" y="468" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="1hN-oT-Pvo"/>
+                                    <constraint firstAttribute="width" constant="40" id="KBw-dZ-ff0"/>
+                                </constraints>
                                 <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </activityIndicatorView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ib-Xb-yNI">
@@ -413,14 +421,14 @@
                                 <color key="textColor" red="0.57254904510000004" green="0.57254904510000004" blue="0.57254904510000004" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="maxVolume" translatesAutoresizingMaskIntoConstraints="NO" id="Jhd-ke-Goz">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="max_Volume" translatesAutoresizingMaskIntoConstraints="NO" id="Jhd-ke-Goz">
                                 <rect key="frame" x="274.5" y="538.5" width="15" height="15"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="15" id="9IL-WH-Huo"/>
                                     <constraint firstAttribute="height" constant="15" id="YVp-7r-a8s"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Low Volume" translatesAutoresizingMaskIntoConstraints="NO" id="uTk-QY-nNU">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="min_Volume" translatesAutoresizingMaskIntoConstraints="NO" id="uTk-QY-nNU">
                                 <rect key="frame" x="37.5" y="541" width="8" height="10"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="8" id="XtA-bv-xLk"/>
@@ -433,7 +441,7 @@
                                     <constraint firstAttribute="width" constant="40" id="M9P-XE-07x"/>
                                     <constraint firstAttribute="height" constant="40" id="owZ-KS-zoc"/>
                                 </constraints>
-                                <state key="normal" image="Rewind"/>
+                                <state key="normal" image="MusicPlayer_Rewind"/>
                                 <connections>
                                     <action selector="tapPreviousSong:" destination="nQy-n9-NN1" eventType="touchUpInside" id="Xg0-Xh-w6j"/>
                                 </connections>
@@ -444,7 +452,7 @@
                                     <constraint firstAttribute="height" constant="40" id="Un6-GA-Iee"/>
                                     <constraint firstAttribute="width" constant="40" id="lbt-U0-duR"/>
                                 </constraints>
-                                <state key="normal" image="Fast Forward"/>
+                                <state key="normal" image="MusicPlayer_Forward"/>
                                 <connections>
                                     <action selector="tapNextSong:" destination="nQy-n9-NN1" eventType="touchUpInside" id="JRY-tN-1fR"/>
                                 </connections>
@@ -494,7 +502,7 @@
                             <constraint firstItem="1Ln-AZ-wXg" firstAttribute="width" secondItem="xFM-HM-qvC" secondAttribute="width" constant="-20" id="5l2-ta-nx3"/>
                             <constraint firstItem="K7n-yC-sJE" firstAttribute="top" secondItem="T1q-gR-b1T" secondAttribute="bottom" id="5oF-9v-WH6"/>
                             <constraint firstItem="98e-K3-B7E" firstAttribute="centerX" secondItem="xFM-HM-qvC" secondAttribute="centerX" id="5x2-fj-EW1"/>
-                            <constraint firstItem="K7n-yC-sJE" firstAttribute="top" secondItem="8ci-fh-805" secondAttribute="bottom" constant="70" id="6JF-AS-DCh"/>
+                            <constraint firstItem="K7n-yC-sJE" firstAttribute="top" secondItem="8ci-fh-805" secondAttribute="bottom" constant="60" id="6JF-AS-DCh"/>
                             <constraint firstItem="qsp-Wz-Gn7" firstAttribute="centerX" secondItem="xFM-HM-qvC" secondAttribute="centerX" id="79M-at-zOR"/>
                             <constraint firstItem="BEl-3X-Wu2" firstAttribute="centerY" secondItem="xFM-HM-qvC" secondAttribute="centerY" id="7gc-lx-DvV"/>
                             <constraint firstItem="rJQ-Is-QU6" firstAttribute="top" secondItem="qsp-Wz-Gn7" secondAttribute="bottom" constant="-1" id="8Ll-CX-ZTP"/>
@@ -546,6 +554,7 @@
                         <outlet property="durationSlider" destination="qsp-Wz-Gn7" id="t8Y-qw-3ez"/>
                         <outlet property="durationSliderYConstraint" destination="8aE-hU-nxk" id="d0z-ZS-0F0"/>
                         <outlet property="playButton" destination="jMv-VO-FGg" id="Is4-Z5-XN5"/>
+                        <outlet property="playerBackgroundImage" destination="T1q-gR-b1T" id="tH8-Xa-YRP"/>
                         <outlet property="songNameLabel" destination="98e-K3-B7E" id="475-QR-x8d"/>
                         <outlet property="volumeBar" destination="sr2-4f-4sx" id="S9h-hN-Dyf"/>
                     </connections>
@@ -556,13 +565,15 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Fast Forward" width="24" height="15"/>
-        <image name="Low Volume" width="53" height="75"/>
-        <image name="Pause" width="40" height="40"/>
-        <image name="Rewind" width="24" height="15"/>
+        <image name="MiniPlayer_Forward" width="48" height="48"/>
+        <image name="MiniPlayer_Pause" width="48" height="48"/>
+        <image name="MusicPlayer_Forward" width="28" height="17"/>
+        <image name="MusicPlayer_Pause" width="19" height="25"/>
+        <image name="MusicPlayer_Rewind" width="28" height="17"/>
         <image name="arrowDown" width="75" height="23"/>
         <image name="demoAlbum" width="1024" height="1024"/>
-        <image name="maxVolume" width="71" height="58"/>
+        <image name="max_Volume" width="71" height="58"/>
+        <image name="min_Volume" width="53" height="75"/>
         <image name="music_plate" width="128" height="126"/>
     </resources>
 </document>

@@ -352,11 +352,11 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     }
     
     func updatePlayButton() {
-        if playPauseMiniPlayerButton.imageView?.image == UIImage(named: "Play") {
-            playPauseMiniPlayerButton.setImage(UIImage(named: "Pause"), for: UIControlState())
+        if playPauseMiniPlayerButton.imageView?.image == UIImage(named: "MiniPlayer_Play") {
+            playPauseMiniPlayerButton.setImage(UIImage(named: "MiniPlayer_Pause"), for: UIControlState())
         }
         else {
-            playPauseMiniPlayerButton.setImage(UIImage(named: "Play"), for: UIControlState())
+            playPauseMiniPlayerButton.setImage(UIImage(named: "MiniPlayer_Play"), for: UIControlState())
         }
     }
     
@@ -829,7 +829,7 @@ extension MainScreen: UITableViewDelegate {
         
         miniPlayerView.isHidden = false
         MainScreen.selectedIndex = indexPath.row
-        playPauseMiniPlayerButton?.setImage(UIImage(named: "Pause"), for: UIControlState())
+        playPauseMiniPlayerButton?.setImage(UIImage(named: "MiniPlayer_Pause"), for: UIControlState())
         
         miniPlayerArtistName.text = MainScreen.searchResults[indexPath.row].artist
         miniPlayerSongName.text = MainScreen.searchResults[indexPath.row].title
