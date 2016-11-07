@@ -32,20 +32,22 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     static var musicToPlay = [Audio]()
     static var indexToPlay = 0
     static var albumImage = UIImage(named: "music_plate")
-
-    let defaults = UserDefaults.standard
+    static var time = Float(0)
+    static var currentTimeForAudio = ""
+    static var playButtonImageName = "MusicPlayer_Pause"
+    
+    
     let player = AudioPlayer.defaultPlayer
     
     var currentAudioDuration = ""
     var durationNumber: Float = 1
-    var time = Float(0)
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        NotificationCenter.default.addObserver(self, selector: #selector(getAlbumCover), name:NSNotification.Name(rawValue: "albumCoverImageRetrieved"), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(updatePlayButton), name:NSNotification.Name(rawValue: "SwapPlayButtonImage"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(getAlbumCover), name:NSNotification.Name(rawValue: "albumCoverImageRetrieved"), object: nil)
         
         if UIScreen.main.bounds.size.width == 375 { //if iPhone 6
             durationSliderYConstraint.constant = 370
@@ -77,12 +79,14 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         albumCoverImage.image = AudioPlayerVC.albumImage
         playerBackgroundImage.image = AudioPlayerVC.albumImage
     }
-
+    
     
     @IBAction func adjustDuration(_ sender: AnyObject) {
         player.pause()
         currenTimeLabel.text? = durationString(Int(durationSlider.value))
-      //  playButton.setImage(UIImage(named: "Play"), for: UIControlState())
+        playButton.setImage(UIImage(named: "MusicPlayer_Play"), for: UIControlState())
+        AudioPlayerVC.playButtonImageName = "MusicPlayer_Play"
+        MainScreen.mPlayerPlayButtonImageName = "MiniPlayer_Play"
     }
     
     @IBAction func tapToDismiss(_ sender: AnyObject) {
@@ -94,32 +98,27 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         let value = self.durationSlider.value
         let time = CMTime(value: Int64(value), timescale: 1)
         player.seekToTime(time)
-       // playButton.setImage(UIImage(named: "Pause"), for: UIControlState())
+        playButton.setImage(UIImage(named: "MusicPlayer_Pause"), for: UIControlState())
+        AudioPlayerVC.playButtonImageName = "MusicPlayer_Pause"
+        MainScreen.mPlayerPlayButtonImageName = "MiniPlayer_Pause"
         player.play()
     }
     
     
     @IBAction func tapPlayPauseButton(_ sender: AnyObject) {
-        NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "SwapMinPlayerPlayButtonImage"), object: nil)
-        
-        let button = sender as! UIButton
-        if button.imageView?.image == UIImage(named: "MusicPlayer_Play") {
-            button.setImage(UIImage(named: "MusicPlayer_Pause"), for: UIControlState())
-            player.play()
-        } else {
-            button.setImage(UIImage(named: "MusicPlayer_Play"), for: UIControlState())
-            player.pause()
-        }
+        updatePlayButton()
     }
     
     
     @IBAction func tapNextSong(_ sender: AnyObject) {
-        updatePlayButton()
+        AudioPlayerVC.playButtonImageName = "MusicPlayer_Pause"
+        MainScreen.mPlayerPlayButtonImageName = "MiniPlayer_Pause"
         player.next()
     }
     
     @IBAction func tapPreviousSong(_ sender: AnyObject) {
-        updatePlayButton()
+        AudioPlayerVC.playButtonImageName = "MusicPlayer_Pause"
+        MainScreen.mPlayerPlayButtonImageName = "MiniPlayer_Pause"
         player.previous()
     }
     
@@ -148,13 +147,16 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
             currentAudioDuration = durationString(audio.duration)
             durationNumber = Float(audio.duration)
             durationLabel.text? = "-\(durationString(audio.duration))"
-            currenTimeLabel.text? = "0:00"
-            durationSlider.value = 0
+            currenTimeLabel.text? = durationString(Int(AudioPlayerVC.time))
             durationSlider.maximumValue = Float(audio.duration)
+            durationSlider.setValue(AudioPlayerVC.time, animated: false)
             
-            playButton.isHidden = true
-            playButton.setImage(UIImage(named: "MusicPlayer_Pause"), for: UIControlState())
-            activityIndicator.startAnimating()
+            
+            playButton.setImage(UIImage(named: AudioPlayerVC.playButtonImageName), for: UIControlState())
+            if player.getCurrentTime() == 0 {
+                playButton.isHidden = true
+                activityIndicator.startAnimating()
+            }
         }
     }
     
@@ -174,7 +176,7 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
             activityIndicator.stopAnimating()
             playButton.isHidden = false
         }
-        self.time = Float(time)
+        AudioPlayerVC.time = Float(time)
         //DownloadsTabVC.a = "\(durationString(Int(time))) / \(currentAudioDuration)"
         let progressValue = Float(time) / Float(durationNumber)
         MainScreen.trackProgress = progressValue
@@ -190,16 +192,21 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     
     
     func playerWillPlayNexAudio() {
+        currenTimeLabel.text? = "0:00"
+        AudioPlayerVC.time = 0
         setInfo(fromIndex: AudioPlayerVC.indexToPlay)
     }
     
     func updatePlayButton() {
         if playButton.imageView?.image == UIImage(named: "MusicPlayer_Play") {
             playButton.setImage(UIImage(named: "MusicPlayer_Pause"), for: UIControlState())
+            AudioPlayerVC.playButtonImageName = "MusicPlayer_Pause"
+            MainScreen.mPlayerPlayButtonImageName = "MiniPlayer_Pause"
             player.play()
-        }
-        else {
+        } else {
             playButton.setImage(UIImage(named: "MusicPlayer_Play"), for: UIControlState())
+            AudioPlayerVC.playButtonImageName = "MusicPlayer_Play"
+            MainScreen.mPlayerPlayButtonImageName = "MiniPlayer_Play"
             player.pause()
         }
     }

@@ -46,6 +46,7 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     static var selectedIndex = 0
     static var trackProgress = Float(0)
     static var searchResults = [Audio]()
+    static var mPlayerPlayButtonImageName = "MiniPlayer_Pause"
 
     weak var refreshControl: UIRefreshControl?
     
@@ -79,10 +80,12 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
         
         NotificationCenter.default.addObserver(self, selector: #selector(playNextSong), name:NSNotification.Name(rawValue: "playNextSong"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(playPreviousSong), name:NSNotification.Name(rawValue: "playPreviousSong"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(updatePlayButton), name:NSNotification.Name(rawValue: "SwapMinPlayerPlayButtonImage"), object: nil)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(updateProgress), name:NSNotification.Name(rawValue: "reloadTableView"), object: nil)
-        
+    }
+    //MARK: Override viewWillAppear
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        playPauseMiniPlayerButton?.setImage(UIImage(named: MainScreen.mPlayerPlayButtonImageName), for: UIControlState())
     }
     
     //MARK: instance methods
@@ -112,6 +115,7 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     }
     
     func playNextSong() {
+        AudioPlayerVC.playButtonImageName = "MusicPlayer_Pause"
         allowToPresent = false
         if MainScreen.selectedIndex == (MainScreen.searchResults.count - 1) {
             MainScreen.selectedIndex = -1
@@ -353,16 +357,19 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     
     func updatePlayButton() {
         if playPauseMiniPlayerButton.imageView?.image == UIImage(named: "MiniPlayer_Play") {
+            AudioPlayerVC.playButtonImageName = "MusicPlayer_Pause"
+            player.play()
             playPauseMiniPlayerButton.setImage(UIImage(named: "MiniPlayer_Pause"), for: UIControlState())
         }
         else {
+            player.pause()
+            AudioPlayerVC.playButtonImageName = "MusicPlayer_Play"
             playPauseMiniPlayerButton.setImage(UIImage(named: "MiniPlayer_Play"), for: UIControlState())
         }
     }
     
     //MARK: IBAction
     @IBAction func tapPlayPauseMiniPlayer(_ sender: AnyObject) {
-        NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "SwapPlayButtonImage"), object: nil)
         updatePlayButton()
     }
     
@@ -816,6 +823,7 @@ extension MainScreen: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        AudioPlayerVC.playButtonImageName = "MusicPlayer_Pause"
         //set true for selected cell
         for (i, _) in boolArray.enumerated() {
             if i != indexPath.row {
