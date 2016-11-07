@@ -67,6 +67,27 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         durationSlider.setThumbImage(UIImage(named: "circle"), for: UIControlState.normal)
         durationSlider.setThumbImage(UIImage(named: "circle"), for: UIControlState.highlighted)
         self.setInfo(fromIndex: AudioPlayerVC.indexToPlay)
+        
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture))
+        swipeDown.direction = UISwipeGestureRecognizerDirection.down
+        self.view.addGestureRecognizer(swipeDown)
+    }
+    
+    func respondToSwipeGesture(gesture: UIGestureRecognizer) {
+        if let swipeGesture = gesture as? UISwipeGestureRecognizer {
+            switch swipeGesture.direction {
+            case UISwipeGestureRecognizerDirection.right:
+                print("Swiped right")
+            case UISwipeGestureRecognizerDirection.down:
+                dismiss(animated: true, completion: nil)
+            case UISwipeGestureRecognizerDirection.left:
+                print("Swiped left")
+            case UISwipeGestureRecognizerDirection.up:
+                print("Swiped up")
+            default:
+                break
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
