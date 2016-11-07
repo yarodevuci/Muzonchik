@@ -142,15 +142,15 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     fileprivate func setInfo(fromIndex: Int) {
         if AudioPlayerVC.musicToPlay.count != 0 {
             let audio = AudioPlayerVC.musicToPlay[AudioPlayerVC.indexToPlay]
-            artistNameLabel.text? = (audio.artist)
+            artistNameLabel.text? = audio.artist
             
-            songNameLabel.text? = (audio.title)
-            currentAudioDuration = durationString((audio.duration))
+            songNameLabel.text? = audio.title
+            currentAudioDuration = durationString(audio.duration)
             durationNumber = Float(audio.duration)
-            durationLabel.text? = "-\(durationString((audio.duration)))"
+            durationLabel.text? = "-\(durationString(audio.duration))"
             currenTimeLabel.text? = "0:00"
-            durationSlider.maximumValue = Float((audio.duration))
             durationSlider.value = 0
+            durationSlider.maximumValue = Float(audio.duration)
             
             playButton.isHidden = true
             playButton.setImage(UIImage(named: "MusicPlayer_Pause"), for: UIControlState())
