@@ -555,7 +555,7 @@
 				INFOPLIST_FILE = VKMusic/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = vk.time.test.VKMusic;
+				PRODUCT_BUNDLE_IDENTIFIER = vk.VKMusic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "VKMusic/VKMusic-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -579,7 +579,7 @@
 				INFOPLIST_FILE = VKMusic/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = vk.time.test.VKMusic;
+				PRODUCT_BUNDLE_IDENTIFIER = vk.VKMusic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "VKMusic/VKMusic-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
