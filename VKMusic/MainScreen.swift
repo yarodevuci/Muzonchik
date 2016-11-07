@@ -47,7 +47,7 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     static var trackProgress = Float(0)
     static var searchResults = [Audio]()
     static var mPlayerPlayButtonImageName = "MiniPlayer_Pause"
-
+    
     weak var refreshControl: UIRefreshControl?
     
     lazy var tapRecognizer: UITapGestureRecognizer = {
@@ -67,7 +67,7 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
         setupDropdownMenu(title: "My music")
         //Set up miniPlayerView
         miniPlayerView.isHidden = true
-       
+        
         createRefreshControl()
         
         _ = self.downloadsSession
@@ -295,8 +295,8 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     
     func deleteSong(_ row: Int) {
         let track = MainScreen.searchResults[row]
+        
         if localFileExistsForTrack(track) {
-            
             let realm = try! Realm()
             let fileToDelete = realm.objects(SavedAudio.self)
             
@@ -312,25 +312,24 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
                 try! realm.write({ () -> Void in
                     realm.delete(fileToDelete[row])
                 })
-                boolArray[row] = false
                 if player.currentAudio != nil && player.currentAudio == track {
-                    self.populateBoolArray()
                     miniPlayerView.isHidden = true
                     player.kill()
                 }
-                MainScreen.searchResults.remove(at: row)
                 isNowPlayingIndex = -1
-                SwiftNotificationBanner.presentNotification("Deleted")
-                tableView.reloadData()
             } catch let error as NSError {
                 print(error.debugDescription)
             }
         }
-        
         if allowToDeleteFromServer {
-            boolArray[row] = false
             deleteTrackFromServer(row)
         }
+        
+        boolArray[row] = false
+        MainScreen.searchResults.remove(at: row)
+        tableView.reloadData()
+        self.populateBoolArray()
+        SwiftNotificationBanner.presentNotification("Deleted")
     }
     
     func deleteTrackFromServer(_ row: Int) {
@@ -340,8 +339,6 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
             if result.intValue == 1 {
                 DispatchQueue.main.async(execute: { () -> Void in
                     self.player.pause()
-                    MainScreen.searchResults.remove(at: row)
-                    self.tableView.reloadData()
                     SwiftNotificationBanner.presentNotification("Deleted")
                     self.isNowPlayingIndex = -1
                 })
@@ -543,7 +540,7 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
         _ = rotatingCircle(circle: circle2)
         
         view.addSubview(activityView)
-
+        
     }
     
     func rotatingCircle(circle: UIBezierPath) -> CAShapeLayer {
@@ -758,10 +755,10 @@ extension MainScreen: UITableViewDataSource {
         cell.artistLabel.text = track.title
         cell.titleLabel.text = track.artist
         
-//        let request:NSMutableURLRequest = NSMutableURLRequest(url: NSURL(string: track.url!)! as URL)
-//        request.httpMethod = "HEAD"
-//        
-//        _ = NSURLConnection(request: request as URLRequest, delegate: self)!
+        //        let request:NSMutableURLRequest = NSMutableURLRequest(url: NSURL(string: track.url!)! as URL)
+        //        request.httpMethod = "HEAD"
+        //
+        //        _ = NSURLConnection(request: request as URLRequest, delegate: self)!
         
         
         //when transition from music player keep bar indicator animating for selected song
@@ -791,14 +788,14 @@ extension MainScreen: NSURLConnectionDataDelegate {
     //Disabled for now
     func connection(_ connection: NSURLConnection, didReceive response: URLResponse)
     {
-//        let a = SearchAudioVC.searchResults
-//        let size = response.expectedContentLength
-//        for i in 0..<SearchAudioVC.searchResults.count {
-//            if a[i].url! == String(describing: response.url!) {
-//                print("\(a[i].artist) is \(Int(size) * 8 / 1000 / a[i].duration)kbps")
-//            }
-//        }
-//        print("size : \(size)")
+        //        let a = SearchAudioVC.searchResults
+        //        let size = response.expectedContentLength
+        //        for i in 0..<SearchAudioVC.searchResults.count {
+        //            if a[i].url! == String(describing: response.url!) {
+        //                print("\(a[i].artist) is \(Int(size) * 8 / 1000 / a[i].duration)kbps")
+        //            }
+        //        }
+        //        print("size : \(size)")
     }
 }
 
