@@ -14,10 +14,13 @@
 <img height="450" ![animated](animated.gif "animated") />
 <br>
 
-<pre>
 
+
+## If you like the project and would like to see more updates and bug fixes down the line I would really appreciate some donations! Support Developers. 
 <span class="badge-paypal"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JAGFP3M6BG7LN" title="Donate to this project using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="PayPal Donation Button" /></a></span>
 
+
+<pre>
 Features: 
 ✔ Now with English translation 
 ✔ UI Design that is native to official VK app
