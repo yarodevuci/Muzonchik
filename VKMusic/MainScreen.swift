@@ -178,27 +178,28 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
         let getAudios = VK.API.Audio.getRecommendations([.targetAudio: "3970872_117703755", .shuffle: "1", .count: "500"])
         startActivityIndicator(withLabel: "Loading...")
         
-        getAudios.successBlock = { response in
-            MainScreen.searchResults.removeAll()
-            for data in response["items"] {
-                let audio = Audio(serverData: data.1.object as! [String : AnyObject])
-                MainScreen.searchResults.append(audio)
-            }
-            DispatchQueue.main.async(execute: { () -> Void in
-                self.populateBoolArray()
-                self.tableView.reloadData()
-                self.refreshControl?.endRefreshing()
-                self.removeActivityView()
-            })
-        }
-        getAudios.errorBlock = { error in
-            DispatchQueue.main.async(execute: { () -> Void in
-                self.removeActivityView()
-                self.refreshControl?.endRefreshing()
-                SwiftNotificationBanner.presentNotification("\(error.desc)")
-            })
-            print("Get Audios fail with error: \(error.desc)")}
-        getAudios.send()
+        getAudios.send (
+            onSuccess:  { response in
+                MainScreen.searchResults.removeAll()
+                for data in response["items"] {
+                    let audio = Audio(serverData: data.1.object as! [String : AnyObject])
+                    MainScreen.searchResults.append(audio)
+                }
+                DispatchQueue.main.async(execute: { () -> Void in
+                    self.populateBoolArray()
+                    self.tableView.reloadData()
+                    self.refreshControl?.endRefreshing()
+                    self.removeActivityView()
+                })
+        },
+            onError: { error in
+                DispatchQueue.main.async(execute: { () -> Void in
+                    self.removeActivityView()
+                    self.refreshControl?.endRefreshing()
+                    SwiftNotificationBanner.presentNotification("\(error.localizedDescription)")
+                })
+                print("Get Audios fail with error: \(error.localizedDescription)")
+        })
     }
     
     func displayPopularMusic() {
@@ -210,27 +211,28 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
         let getAudios = VK.API.Audio.getPopular([.count: "500"])
         startActivityIndicator(withLabel: "Loading...")
         
-        getAudios.successBlock = { response in
-            MainScreen.searchResults.removeAll()
-            for data in response {
-                let audio = Audio(serverData: data.1.object as! [String : AnyObject])
-                MainScreen.searchResults.append(audio)
-            }
-            DispatchQueue.main.async(execute: { () -> Void in
-                self.populateBoolArray()
-                self.tableView.reloadData()
-                self.refreshControl?.endRefreshing()
-                self.removeActivityView()
-            })
-        }
-        getAudios.errorBlock = { error in
-            DispatchQueue.main.async(execute: { () -> Void in
-                self.removeActivityView()
-                self.refreshControl?.endRefreshing()
-                SwiftNotificationBanner.presentNotification("\(error.desc)")
-            })
-            print("Get Audios fail with error: \(error.desc)")}
-        getAudios.send()
+        getAudios.send(
+            onSuccess:  { response in
+                MainScreen.searchResults.removeAll()
+                for data in response {
+                    let audio = Audio(serverData: data.1.object as! [String : AnyObject])
+                    MainScreen.searchResults.append(audio)
+                }
+                DispatchQueue.main.async(execute: { () -> Void in
+                    self.populateBoolArray()
+                    self.tableView.reloadData()
+                    self.refreshControl?.endRefreshing()
+                    self.removeActivityView()
+                })
+        },
+            onError: { error in
+                DispatchQueue.main.async(execute: { () -> Void in
+                    self.removeActivityView()
+                    self.refreshControl?.endRefreshing()
+                    SwiftNotificationBanner.presentNotification("\(error.localizedDescription)")
+                })
+                print("Get Audios fail with error: \(error.localizedDescription)")
+        })
     }
     
     func displayMusicList() {
@@ -243,31 +245,32 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
         if VK.state == .authorized {
             startActivityIndicator(withLabel: "Loading...")
         }
-        let getAudios = VK.API.Audio.get()
-        getAudios.successBlock = { response in
-            MainScreen.searchResults.removeAll()
-            for data in response["items"] {
-                let audio = Audio(serverData: data.1.object as! [String : AnyObject])
-                MainScreen.searchResults.append(audio)
-            }
-            DispatchQueue.main.async(execute: { () -> Void in
-                self.populateBoolArray()
-                self.tableView.reloadData()
-                self.refreshControl?.endRefreshing()
-                self.removeActivityView()
-            })
-        }
-        getAudios.errorBlock = { error in
-            DispatchQueue.main.async(execute: { () -> Void in
-                self.refreshControl?.endRefreshing()
-                self.removeActivityView()
-                SwiftNotificationBanner.presentNotification("\(error.desc)")
-                self.displayDownloadedSongsOnly()
-                self.menuView.removeFromSuperview()
-                self.setupDropdownMenu(title: "Downloaded")
-            })
-            print("Get Audios fail with error: \(error.desc)")}
-        getAudios.send()
+        VK.API.Audio.get().send(
+            
+            onSuccess: { response in
+                MainScreen.searchResults.removeAll()
+                for data in response["items"] {
+                    let audio = Audio(serverData: data.1.object as! [String : AnyObject])
+                    MainScreen.searchResults.append(audio)
+                }
+                DispatchQueue.main.async(execute: { () -> Void in
+                    self.populateBoolArray()
+                    self.tableView.reloadData()
+                    self.refreshControl?.endRefreshing()
+                    self.removeActivityView()
+                })
+        },
+            onError: { error in
+                DispatchQueue.main.async(execute: { () -> Void in
+                    self.refreshControl?.endRefreshing()
+                    self.removeActivityView()
+                    SwiftNotificationBanner.presentNotification("\(error.localizedDescription)")
+                    self.displayDownloadedSongsOnly()
+                    self.menuView.removeFromSuperview()
+                    self.setupDropdownMenu(title: "Downloaded")
+                })
+                print("Get Audios fail with error: \(error.localizedDescription)")
+        })
     }
     
     func populateBoolArray() {
@@ -334,22 +337,23 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     
     func deleteTrackFromServer(_ row: Int) {
         let audio = MainScreen.searchResults[row]
-        let trackToDelete = VK.API.Audio.delete([.audioId: String(audio.id), .ownerId: String(audio.ownerID)])
-        trackToDelete.successBlock = { result in
-            if result.intValue == 1 {
+        
+        VK.API.Audio.delete([.audioId: String(audio.id), .ownerId: String(audio.ownerID)]).send(
+            onSuccess: { result in
+                if result.intValue == 1 {
+                    DispatchQueue.main.async(execute: { () -> Void in
+                        self.player.pause()
+                        SwiftNotificationBanner.presentNotification("Deleted")
+                        self.isNowPlayingIndex = -1
+                    })
+                }
+        },
+            onError: {error in
                 DispatchQueue.main.async(execute: { () -> Void in
-                    self.player.pause()
-                    SwiftNotificationBanner.presentNotification("Deleted")
-                    self.isNowPlayingIndex = -1
+                    SwiftNotificationBanner.presentNotification("Deleting Audio Failed!\nTry again")
                 })
-            }
-        }
-        trackToDelete.errorBlock = {error in
-            DispatchQueue.main.async(execute: { () -> Void in
-                SwiftNotificationBanner.presentNotification("Deleting Audio Failed!\nTry again")
-            })
-            print("Deleting Audio Failed\n \(error)")}
-        trackToDelete.send()
+                print("Deleting Audio Failed\n \(error.localizedDescription)")
+        })
     }
     
     func updatePlayButton() {
@@ -405,28 +409,28 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     
     func searchAudio(searchText:String) {
         startActivityIndicator(withLabel: "Searching for \(searchText)")
-        let getAudios = VK.API.Audio.search([.searchOwn: "0", .q: searchText, .count: "300", .sort: "2", .autoComplete: "1"])
-        getAudios.successBlock = { response in
-            self.isNowPlayingIndex = -1
-            MainScreen.searchResults.removeAll()
-            for data in response["items"] {
-                let audio = Audio(serverData: data.1.object as! [String : AnyObject])
-                MainScreen.searchResults.append(audio)
-            }
-            DispatchQueue.main.async(execute: { () -> Void in
-                self.populateBoolArray()
-                self.tableView.reloadData()
-                self.removeActivityView()
-            })
-        }
-        getAudios.errorBlock = {error in
-            DispatchQueue.main.async(execute: { () -> Void in
-                self.removeActivityView()
-                SwiftNotificationBanner.presentNotification("Error searching audio")
-                print("searchAudio fail\n \(error)")
-            })
-        }
-        getAudios.send()
+        
+        VK.API.Audio.search([.searchOwn: "0", .q: searchText, .count: "300", .sort: "2", .autoComplete: "1"]).send(
+            onSuccess: { response in
+                self.isNowPlayingIndex = -1
+                MainScreen.searchResults.removeAll()
+                for data in response["items"] {
+                    let audio = Audio(serverData: data.1.object as! [String : AnyObject])
+                    MainScreen.searchResults.append(audio)
+                }
+                DispatchQueue.main.async(execute: { () -> Void in
+                    self.populateBoolArray()
+                    self.tableView.reloadData()
+                    self.removeActivityView()
+                })
+        },
+            onError: { error in
+                DispatchQueue.main.async(execute: { () -> Void in
+                    self.removeActivityView()
+                    SwiftNotificationBanner.presentNotification("Error searching audio")
+                    print("searchAudio fail\n \(error.localizedDescription)")
+                })
+        })
     }
     
     func dismissKeyboard() {

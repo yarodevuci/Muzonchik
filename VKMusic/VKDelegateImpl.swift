@@ -1,23 +1,23 @@
 import SwiftyVK
 import UIKit
 
-class VKDelegateImpl : VKDelegate {
+class VKDelegateImpl:  VKDelegate {
     
     let appID = "5631246"
-    let scope = [VK.Scope.audio,.offline]
+    let scope: Set<VK.Scope> = [.offline, .audio] 
     let window : AnyObject
     
     init(window_: AnyObject) {
-        VK.defaults.logToConsole = false
+        
         window = window_
-        VK.configure(appID: appID, delegate: self)
+        VK.configure(withAppId: appID, delegate: self)
     }
-    
-    func vkAutorizationFailedWith(error: VK.Error) {
+
+    func vkAutorizationFailedWith(error: AuthError) {
         print("Autorization failed with error: \n\(error)")
     }
     
-    func vkWillAuthorize() -> [VK.Scope] {
+    func vkWillAuthorize() -> Set<VK.Scope> {
         print("\nWill Authorize Scope: \(scope)\n")
         return scope
     }

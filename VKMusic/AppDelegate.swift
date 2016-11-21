@@ -25,13 +25,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     //iOS 8 and lower
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        VK.processURL_old(url: url, sourceApplication: sourceApplication)
+        VK.process(url: url, sourceApplication: sourceApplication)
         return true
     }
     //iOS 9 and higher ..
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         if #available(iOS 9.0, *) {
-            VK.processURL(url: url, options: options)
+            VK.process(url: url, options: options)
         } 
         return true
     }
