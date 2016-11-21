@@ -4,15 +4,13 @@ import UIKit
 class VKDelegateImpl:  VKDelegate {
     
     let appID = "5631246"
-    let scope: Set<VK.Scope> = [.offline, .audio] 
-    let window : AnyObject
+    let scope: Set<VK.Scope> = [.offline, .audio]
     
-    init(window_: AnyObject) {
+    init() {
         
-        window = window_
         VK.configure(withAppId: appID, delegate: self)
     }
-
+    
     func vkAutorizationFailedWith(error: AuthError) {
         print("Autorization failed with error: \n\(error)")
     }
@@ -26,7 +24,7 @@ class VKDelegateImpl:  VKDelegate {
         print(parameters)
         print("access_token: \(parameters["access_token"]!)")
         _ = VK.API.Stats.trackVisitor([.token : parameters["access_token"]! ])
-
+        
     }
     
     func vkDidUnauthorize() {}
@@ -36,6 +34,7 @@ class VKDelegateImpl:  VKDelegate {
     }
     
     func vkWillPresentView() -> UIViewController {
-        return (self.window as! UIWindow).rootViewController!
+        return UIApplication.shared.delegate!.window!!.rootViewController!
     }
+    
 }

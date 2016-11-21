@@ -13,10 +13,13 @@ import SwiftyVK
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
+    var vkDelegateReference : VKDelegate?
+
     var backgroundSessionCompletionHandler: (() -> Void)?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        _ = VKDelegateImpl(window_: window!)
+        vkDelegateReference = VKDelegateImpl()
+        //_ = VKDelegateImpl(window_: window!)
         return true
     }
     
