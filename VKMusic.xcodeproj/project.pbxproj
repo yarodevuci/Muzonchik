@@ -17,8 +17,6 @@
 		C45FF80E1D9135A4001637A7 /* AudioPlayerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45FF80D1D9135A4001637A7 /* AudioPlayerVC.swift */; };
 		C45FF8101D91377A001637A7 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45FF80F1D91377A001637A7 /* AudioPlayer.swift */; };
 		C45FF8121D9137DC001637A7 /* CommandCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C45FF8111D9137DC001637A7 /* CommandCenter.swift */; };
-		C4654DE71DE38DE800EBD4D5 /* SwiftyVK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4654DE21DE38DC600EBD4D5 /* SwiftyVK.framework */; };
-		C4654DE81DE38DE800EBD4D5 /* SwiftyVK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C4654DE21DE38DC600EBD4D5 /* SwiftyVK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C475CA661DA53131009C8674 /* SavedAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = C475CA651DA53131009C8674 /* SavedAudio.swift */; };
 		C47D51B71D8FE33700968226 /* SwiftNotificationBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47D51B41D8FE33700968226 /* SwiftNotificationBanner.swift */; };
 		C47D51B81D8FE33700968226 /* SwiftNotificationBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47D51B51D8FE33700968226 /* SwiftNotificationBannerView.swift */; };
@@ -69,41 +67,6 @@
 			remoteGlobalIDString = A2527D551BD1134500F65412;
 			remoteInfo = "SwiftyVKResources-iOS";
 		};
-		C4654DDF1DE38DC600EBD4D5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C4654DD71DE38DC600EBD4D5 /* SwiftyVK.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A2EB6EA81BD180E9008E7D86;
-			remoteInfo = "SwiftyVK-OSX";
-		};
-		C4654DE11DE38DC600EBD4D5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C4654DD71DE38DC600EBD4D5 /* SwiftyVK.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A2EB6E9B1BD180DD008E7D86;
-			remoteInfo = "SwiftyVK-iOS";
-		};
-		C4654DE31DE38DC600EBD4D5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C4654DD71DE38DC600EBD4D5 /* SwiftyVK.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A2527D4B1BD1130D00F65412;
-			remoteInfo = "SwiftyVKResources-OSX";
-		};
-		C4654DE51DE38DC600EBD4D5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C4654DD71DE38DC600EBD4D5 /* SwiftyVK.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A2527D551BD1134500F65412;
-			remoteInfo = "SwiftyVKResources-iOS";
-		};
-		C4654DE91DE38DE800EBD4D5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C4654DD71DE38DC600EBD4D5 /* SwiftyVK.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = A2EB6E9A1BD180DD008E7D86;
-			remoteInfo = "SwiftyVK-iOS";
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -113,7 +76,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C4654DE81DE38DE800EBD4D5 /* SwiftyVK.framework in Embed Frameworks */,
 				C49F98F91DCAA7C600D4C5CF /* Realm.framework in Embed Frameworks */,
 				C49F98F71DCAA7C300D4C5CF /* RealmSwift.framework in Embed Frameworks */,
 			);
@@ -135,7 +97,6 @@
 		C45FF80F1D91377A001637A7 /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		C45FF8111D9137DC001637A7 /* CommandCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandCenter.swift; sourceTree = "<group>"; };
 		C4654DC71DE38DB900EBD4D5 /* SwiftyVK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftyVK.xcodeproj; path = VKMusic/Library/SwiftyVK.xcodeproj; sourceTree = "<group>"; };
-		C4654DD71DE38DC600EBD4D5 /* SwiftyVK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftyVK.xcodeproj; path = VKMusic/Library/SwiftyVK.xcodeproj; sourceTree = "<group>"; };
 		C475CA651DA53131009C8674 /* SavedAudio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedAudio.swift; sourceTree = "<group>"; };
 		C47D51B41D8FE33700968226 /* SwiftNotificationBanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftNotificationBanner.swift; sourceTree = "<group>"; };
 		C47D51B51D8FE33700968226 /* SwiftNotificationBannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftNotificationBannerView.swift; sourceTree = "<group>"; };
@@ -166,7 +127,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4654DE71DE38DE800EBD4D5 /* SwiftyVK.framework in Frameworks */,
 				C49F98F51DCAA79500D4C5CF /* Realm.framework in Frameworks */,
 				C49F98F81DCAA7C600D4C5CF /* Realm.framework in Frameworks */,
 			);
@@ -234,17 +194,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C4654DD81DE38DC600EBD4D5 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C4654DE01DE38DC600EBD4D5 /* SwiftyVK.framework */,
-				C4654DE21DE38DC600EBD4D5 /* SwiftyVK.framework */,
-				C4654DE41DE38DC600EBD4D5 /* SwiftyVKResources-OSX.bundle */,
-				C4654DE61DE38DC600EBD4D5 /* SwiftyVKResources-iOS.bundle */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		C475CA601DA52F6A009C8674 /* Realm */ = {
 			isa = PBXGroup;
 			children = (
@@ -302,7 +251,6 @@
 		C4CC8D7D1D8A7F8600BF68A1 = {
 			isa = PBXGroup;
 			children = (
-				C4654DD71DE38DC600EBD4D5 /* SwiftyVK.xcodeproj */,
 				C4CC8D881D8A7F8600BF68A1 /* VKMusic */,
 				C4CC8D871D8A7F8600BF68A1 /* Products */,
 				BA02850FD7841EC50B6A37DF /* Frameworks */,
@@ -359,7 +307,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				C4654DEA1DE38DE800EBD4D5 /* PBXTargetDependency */,
 			);
 			name = VKMusic;
 			productName = VKMusic;
@@ -378,7 +325,7 @@
 				TargetAttributes = {
 					C4CC8D851D8A7F8600BF68A1 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = 252SH26L2W;
+						DevelopmentTeam = G9CAV2BY5U;
 						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -401,10 +348,6 @@
 			productRefGroup = C4CC8D871D8A7F8600BF68A1 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
-				{
-					ProductGroup = C4654DD81DE38DC600EBD4D5 /* Products */;
-					ProjectRef = C4654DD71DE38DC600EBD4D5 /* SwiftyVK.xcodeproj */;
-				},
 				{
 					ProductGroup = C4654DC81DE38DB900EBD4D5 /* Products */;
 					ProjectRef = C4654DC71DE38DB900EBD4D5 /* SwiftyVK.xcodeproj */;
@@ -444,34 +387,6 @@
 			fileType = wrapper.cfbundle;
 			path = "SwiftyVKResources-iOS.bundle";
 			remoteRef = C4654DD51DE38DB900EBD4D5 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C4654DE01DE38DC600EBD4D5 /* SwiftyVK.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SwiftyVK.framework;
-			remoteRef = C4654DDF1DE38DC600EBD4D5 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C4654DE21DE38DC600EBD4D5 /* SwiftyVK.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SwiftyVK.framework;
-			remoteRef = C4654DE11DE38DC600EBD4D5 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C4654DE41DE38DC600EBD4D5 /* SwiftyVKResources-OSX.bundle */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "SwiftyVKResources-OSX.bundle";
-			remoteRef = C4654DE31DE38DC600EBD4D5 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C4654DE61DE38DC600EBD4D5 /* SwiftyVKResources-iOS.bundle */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "SwiftyVKResources-iOS.bundle";
-			remoteRef = C4654DE51DE38DC600EBD4D5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -536,14 +451,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		C4654DEA1DE38DE800EBD4D5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "SwiftyVK-iOS";
-			targetProxy = C4654DE91DE38DE800EBD4D5 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		C4CC8D8D1D8A7F8600BF68A1 /* Main.storyboard */ = {
@@ -664,7 +571,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = 252SH26L2W;
+				DEVELOPMENT_TEAM = G9CAV2BY5U;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/VKMusic",
@@ -687,7 +594,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				DEVELOPMENT_TEAM = 252SH26L2W;
+				DEVELOPMENT_TEAM = G9CAV2BY5U;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/VKMusic",
