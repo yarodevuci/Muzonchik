@@ -7,7 +7,6 @@ class VKDelegateImpl:  VKDelegate {
     let scope: Set<VK.Scope> = [.offline, .audio]
     
     init() {
-        
         VK.configure(withAppId: appID, delegate: self)
     }
     
