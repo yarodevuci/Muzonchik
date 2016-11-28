@@ -9,7 +9,7 @@
 <img height="450" src="https://github.com/yarodevuci/VKMusic/blob/dev/animated.gif?raw=true" />
 <img height="450" src="https://github.com/yarodevuci/VKMusic/blob/dev/Splash.png?raw=true" />
 <img height="450" src="https://github.com/yarodevuci/VKMusic/blob/dev/DropDownMenu.PNG?raw=true" />
-<img height="450" src="https://github.com/yarodevuci/VKMusic/blob/dev/Player.PNG?raw=true" />
+<img height="450" src="https://github.com/yarodevuci/VKMusic/blob/dev/AudioPlayer.png?raw=true" />
 <img height="450" src="https://github.com/yarodevuci/VKMusic/blob/dev/AudioList.PNG?raw=true" />
 <img height="450" ![animated](animated.gif "animated") />
 <br>
