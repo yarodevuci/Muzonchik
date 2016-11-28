@@ -10,6 +10,19 @@ import Foundation
 import UIKit
 import RealmSwift
 
+
+extension Int {
+    
+    var toAudioString: String {
+        let minutes = self / 60
+        let seconds = self - minutes * 60
+        if seconds < 10 {
+            return "\(minutes):0\(seconds)"
+        }
+        return "\(minutes):\(seconds)"
+    }
+}
+
 class GlobalFunctions {
     //Dropdown menu color
     static let dropDownMenuColor = UIColor(red:0.87, green:0.87, blue:0.87, alpha:1.0)

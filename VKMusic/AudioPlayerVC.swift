@@ -104,7 +104,7 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     
     @IBAction func adjustDuration(_ sender: AnyObject) {
         player.pause()
-        currenTimeLabel.text? = durationString(Int(durationSlider.value))
+        currenTimeLabel.text? = Int(durationSlider.value).toAudioString
         playButton.setImage(UIImage(named: "MusicPlayer_Play"), for: UIControlState())
         AudioPlayerVC.playButtonImageName = "MusicPlayer_Play"
         MainScreen.mPlayerPlayButtonImageName = "MiniPlayer_Play"
@@ -147,9 +147,9 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         playerBackgroundImage.image = AudioPlayerVC.albumImage
         self.albumCoverImage.image = AudioPlayerVC.albumImage
     }
-    
+    //For volume bar
     func getImageWithColor(color: UIColor, size: CGSize) -> UIImage {
-        let rect = CGRect(x: 0, y: 0, width: 1, height: 1)  //(0, 0, size.width, size.height)
+        let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
         UIGraphicsBeginImageContextWithOptions(size, false, 0)
         color.setFill()
         UIRectFill(rect)
@@ -165,10 +165,10 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
             artistNameLabel.text? = audio.artist
             
             songNameLabel.text? = audio.title
-            currentAudioDuration = durationString(audio.duration)
+            currentAudioDuration = audio.duration.toAudioString
             durationNumber = Float(audio.duration)
-            durationLabel.text? = "-\(durationString(audio.duration))"
-            currenTimeLabel.text? = durationString(Int(AudioPlayerVC.time))
+            durationLabel.text? = "-\(audio.duration.toAudioString)"
+            currenTimeLabel.text? = Int(AudioPlayerVC.time).toAudioString
             durationSlider.maximumValue = Float(audio.duration)
             durationSlider.setValue(AudioPlayerVC.time, animated: false)
             
@@ -181,15 +181,6 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         }
     }
     
-    fileprivate func durationString(_ duration: Int) -> String {
-        let minutes = duration / 60
-        let seconds = duration - minutes * 60
-        if seconds < 10 {
-            return "\(minutes):0\(seconds)"
-        }
-        return "\(minutes):\(seconds)"
-    }
-    
     //MARK: - AudioPlayerDelegate
     func audioDidChangeTime(_ time: Int64) {
         //Unhide play button and hide activity indicator
@@ -198,13 +189,11 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
             playButton.isHidden = false
         }
         AudioPlayerVC.time = Float(time)
-        //DownloadsTabVC.a = "\(durationString(Int(time))) / \(currentAudioDuration)"
         let progressValue = Float(time) / Float(durationNumber)
         MainScreen.trackProgress = progressValue
         
-        //NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "reloadTableView"), object: nil)
-        currenTimeLabel.text? = durationString(Int(time))
-        durationLabel.text = "-\(durationString(Int(durationNumber) - Int(time)))"
+        currenTimeLabel.text? = Int(time).toAudioString
+        durationLabel.text = "-\((Int(durationNumber) - Int(time)).toAudioString)"
         durationSlider.value = Float(time)
         
         let rootViewController = UIApplication.shared.keyWindow?.rootViewController

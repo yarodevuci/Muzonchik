@@ -756,6 +756,7 @@ extension MainScreen: UITableViewDataSource {
         cell.delegat = self
         
         let track = MainScreen.searchResults[indexPath.row]
+        cell.trackDurationLabel.text = track.duration.toAudioString
         cell.artistLabel.text = track.title
         cell.titleLabel.text = track.artist
         
@@ -777,6 +778,7 @@ extension MainScreen: UITableViewDataSource {
         }
         cell.progressView.isHidden = !showDownloadControls
         cell.progressLabel.isHidden = !showDownloadControls
+        cell.trackDurationLabel.isHidden = showDownloadControls
         
         // If the track is already downloaded, enable cell selection and hide the Download button
         let downloaded = localFileExistsForTrack(track)

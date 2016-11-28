@@ -23,6 +23,7 @@ class TrackCell: MGSwipeTableCell {
     @IBOutlet weak var progressLabel: UILabel!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var downloadButton: UIButton!
+    @IBOutlet weak var trackDurationLabel: UILabel!
     @IBOutlet weak var musicIndicator: ESTMusicIndicatorView!
     
     
