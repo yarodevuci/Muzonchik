@@ -1,5 +1,5 @@
 PODS:
-  - SwiftyVK (2.0.0)
+  - SwiftyVK (2.0.1)
 
 DEPENDENCIES:
   - SwiftyVK (from `https://github.com/WE-St0r/SwiftyVK.git`)
@@ -10,12 +10,12 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   SwiftyVK:
-    :commit: abae3cd1e27e01298f096018c7951d7bdd62e184
+    :commit: e7d649a1ca1b4bad4e5630a750491f7791ea07a7
     :git: https://github.com/WE-St0r/SwiftyVK.git
 
 SPEC CHECKSUMS:
-  SwiftyVK: a6da2aec8b65e131e1fb80b1658a209c62a2f44a
+  SwiftyVK: 555c309aa25aaf24453117c977be85a7b7908075
 
 PODFILE CHECKSUM: e8f8aab5d38ce279135af5c9c65f1c554043d421
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.0.beta.1
