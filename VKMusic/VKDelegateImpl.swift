@@ -3,7 +3,7 @@ import UIKit
 
 class VKDelegateImpl:  VKDelegate {
     
-    let appID = "5631246"
+    let appID = "3087106"
     let scope: Set<VK.Scope> = [.offline, .audio]
     
     init() {
