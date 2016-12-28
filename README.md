@@ -20,7 +20,7 @@
 <span class="badge-paypal"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JAGFP3M6BG7LN" title="Donate to this project using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="PayPal Donation Button" /></a></span>
 
 ## ATTENTION
-The app is currently not getting any audio from VK due restriction. I am looking for other ways to get audio. If anyone got an idea let me know!
+MUSIC IS WORKING FOR NOW
 
 
 <pre>
