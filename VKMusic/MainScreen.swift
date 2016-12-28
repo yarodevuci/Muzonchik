@@ -629,7 +629,7 @@ extension MainScreen: URLSessionDownloadDelegate {
                 let aD = self.activeDownloads[originalURL]!
                 self.gF.createSavedAudio(title: aD.realmTitle, artist: aD.realmArtist, duration: aD.realmDuration, url: destinationURL)
                 DispatchQueue.main.async(execute: { () -> Void in
-                    SwiftNotificationBanner.presentNotification("\(self.activeDownloads[originalURL]!.songName)\nDownload complete")
+                    //SwiftNotificationBanner.presentNotification("\(self.activeDownloads[originalURL]!.songName)\nDownload complete")
                     NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "downloadComplete"), object: nil)
                     let url = downloadTask.originalRequest?.url?.absoluteString
                     self.activeDownloads[url!] = nil
@@ -637,7 +637,7 @@ extension MainScreen: URLSessionDownloadDelegate {
                 })
             } catch let error as NSError {
                 DispatchQueue.main.async(execute: { () -> Void in
-                    SwiftNotificationBanner.presentNotification("\(self.activeDownloads[originalURL]!.songName)\nError downloading")
+                    //SwiftNotificationBanner.presentNotification("\(self.activeDownloads[originalURL]!.songName)\nError downloading")
                     let url = downloadTask.originalRequest?.url?.absoluteString
                     self.activeDownloads[url!] = nil
                 })
