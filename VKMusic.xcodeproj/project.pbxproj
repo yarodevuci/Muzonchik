@@ -30,7 +30,6 @@
 		C498CB761D9ED52D00B73FF1 /* GlobalFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C498CB751D9ED52D00B73FF1 /* GlobalFunctions.swift */; };
 		C49F98F51DCAA79500D4C5CF /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C49F98EA1DCAA3B900D4C5CF /* Realm.framework */; };
 		C49F98F71DCAA7C300D4C5CF /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C49F98EB1DCAA3B900D4C5CF /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		C49F98F81DCAA7C600D4C5CF /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C49F98EA1DCAA3B900D4C5CF /* Realm.framework */; };
 		C49F98F91DCAA7C600D4C5CF /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C49F98EA1DCAA3B900D4C5CF /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C4CC8D8A1D8A7F8600BF68A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CC8D891D8A7F8600BF68A1 /* AppDelegate.swift */; };
 		C4CC8D8F1D8A7F8600BF68A1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4CC8D8D1D8A7F8600BF68A1 /* Main.storyboard */; };
@@ -132,7 +131,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C49F98F51DCAA79500D4C5CF /* Realm.framework in Frameworks */,
-				C49F98F81DCAA7C600D4C5CF /* Realm.framework in Frameworks */,
 				04661B68E9EE97F66FFBE49A /* Pods_VKMusic.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -339,7 +337,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0800;
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Yaroslav Dukal";
 				TargetAttributes = {
 					C4CC8D851D8A7F8600BF68A1 = {
