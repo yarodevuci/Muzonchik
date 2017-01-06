@@ -342,7 +342,7 @@
 				TargetAttributes = {
 					C4CC8D851D8A7F8600BF68A1 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = G9CAV2BY5U;
+						DevelopmentTeam = BC9BB978A8;
 						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -635,7 +635,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = G9CAV2BY5U;
+				DEVELOPMENT_TEAM = BC9BB978A8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/VKMusic",
@@ -662,7 +662,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = G9CAV2BY5U;
+				DEVELOPMENT_TEAM = BC9BB978A8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/VKMusic",

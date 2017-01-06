@@ -251,7 +251,9 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
                 MainScreen.searchResults.removeAll()
                 for data in response["items"] {
                     let audio = Audio(serverData: data.1.object as! [String : AnyObject])
-                    MainScreen.searchResults.append(audio)
+                    if !(audio.url?.isEmpty)! { //Skip audios that missing url to play
+                        MainScreen.searchResults.append(audio)
+                    }
                 }
                 DispatchQueue.main.async(execute: { () -> Void in
                     self.populateBoolArray()
@@ -448,6 +450,11 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     // Called when the Download button for a track is tapped
     func startDownload(_ track: Audio) {
         let urlString = track.url
+        if (urlString?.isEmpty)! {
+            SwiftNotificationBanner.presentNotification("Unable to download. No url")
+            print("No url :(")
+            return
+        }
         let url =  URL(string: urlString!)
         let download = Download(url: urlString!)
         download.downloadTask = self.downloadsSession.downloadTask(with: url!)
@@ -592,7 +599,6 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
         }
     }
     
-    
     //MARK: Override preferredStatusBarStyle
     override var preferredStatusBarStyle: UIStatusBarStyle { return .lightContent }
     
@@ -628,8 +634,11 @@ extension MainScreen: URLSessionDownloadDelegate {
                 try fileManager.moveItem(at: location, to: destinationURL)
                 let aD = self.activeDownloads[originalURL]!
                 self.gF.createSavedAudio(title: aD.realmTitle, artist: aD.realmArtist, duration: aD.realmDuration, url: destinationURL)
+                DispatchQueue.main.async(execute: {
+                    SwiftNotificationBanner.presentNotification("\(self.activeDownloads[originalURL]!.songName)\nDownload complete")
+                })
+                
                 DispatchQueue.main.async(execute: { () -> Void in
-                    //SwiftNotificationBanner.presentNotification("\(self.activeDownloads[originalURL]!.songName)\nDownload complete")
                     NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "downloadComplete"), object: nil)
                     let url = downloadTask.originalRequest?.url?.absoluteString
                     self.activeDownloads[url!] = nil
@@ -637,7 +646,7 @@ extension MainScreen: URLSessionDownloadDelegate {
                 })
             } catch let error as NSError {
                 DispatchQueue.main.async(execute: { () -> Void in
-                    //SwiftNotificationBanner.presentNotification("\(self.activeDownloads[originalURL]!.songName)\nError downloading")
+                    SwiftNotificationBanner.presentNotification("\(self.activeDownloads[originalURL]!.songName)\nError downloading")
                     let url = downloadTask.originalRequest?.url?.absoluteString
                     self.activeDownloads[url!] = nil
                 })
@@ -658,6 +667,7 @@ extension MainScreen: URLSessionDownloadDelegate {
             download.progress = Float(totalBytesWritten)/Float(totalBytesExpectedToWrite)
             let totalSize = ByteCountFormatter.string(fromByteCount: totalBytesExpectedToWrite, countStyle: ByteCountFormatter.CountStyle.binary)
             if let trackIndex = trackIndexForDownloadTask(downloadTask), let trackCell = tableView.cellForRow(at: IndexPath(row: trackIndex, section: 0)) as? TrackCell {
+                
                 DispatchQueue.main.async(execute: {
                     trackCell.progressView.progress = download.progress
                     let bitRate = String(Int(totalBytesExpectedToWrite) * 8 / 1000 / download.realmDuration)
