@@ -1,7 +1,6 @@
 #if os(OSX)
     import Foundation
-#endif
-#if os(iOS)
+#elseif os(iOS)
     import UIKit
 #endif
 
@@ -43,6 +42,12 @@ internal struct Authorizator {
 
         return error
     }
+    
+    
+    
+    internal static func authorizeWith(rawToken: String, expiresIn: Int) {
+        _ = Token(fromRawToken: rawToken, expiresIn: expiresIn)
+    }
 
 
 
@@ -52,10 +57,10 @@ internal struct Authorizator {
         Thread.isMainThread
             ? sheetQueue.async {
                 error = WebPresenter.start(withUrl: url)
-                }
+            }
             : sheetQueue.sync {
                 error = WebPresenter.start(withUrl: url)
-        }
+            }
 
         return error
     }
@@ -88,7 +93,7 @@ internal struct Authorizator {
             return
         }
         
-        error = WebPresenter.start(withUrl: webAuthorizeUrl+paramsUrl)
+        error = WebPresenter.start(withUrl: webAuthorizeUrl + paramsUrl)
     }
 }
 //
@@ -119,7 +124,7 @@ internal struct Authorizator {
 
 
         fileprivate static func startWithApp() {
-            guard let paramsUrl = paramsUrl, let url = URL(string: appAuthorizeUrl+paramsUrl) else {
+            guard let paramsUrl = paramsUrl, let url = URL(string: appAuthorizeUrl + paramsUrl) else {
                 return
             }
             
@@ -137,13 +142,12 @@ internal struct Authorizator {
             
             if app == "com.vk.vkclient" || app == "com.vk.vkhd" || url.scheme == "vk\(appId)" {
                 if url.absoluteString.contains("access_token=") {
-                    _ = Token(urlString: url.absoluteString)
+                    _ = Token(fromResponse: url.absoluteString)
                     WebPresenter.cancel()
                 }
             }
         }
     }
-#endif
 //
 //
 //
@@ -155,7 +159,7 @@ internal struct Authorizator {
 //
 //
 //
-#if os(OSX)
+#elseif os(OSX)
     private typealias OSXAuthorizator = Authorizator
     extension OSXAuthorizator {
         internal static var canAuthorizeWithVkApp: Bool {return false}

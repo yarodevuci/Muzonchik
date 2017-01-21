@@ -5,7 +5,8 @@ import Foundation
 internal final class SendQueue: OperationQueue {
     static let queue = SendQueue()
 
-    private let addingQueue = DispatchQueue(label: "SwiftyVK.SendQueue")
+    private let addingQueue = DispatchQueue(label: "SwiftyVK.addingQueue")
+    private let notApiQueue = DispatchQueue(label: "SwiftyVK.notApiQueue")
     private let runLoopQueue = DispatchQueue(label: "SwiftyVK.runLoopQueue")
 
     private var apiCounter = 0
@@ -29,16 +30,20 @@ internal final class SendQueue: OperationQueue {
             CFRunLoopRun()
         }
     }
+    
 
 
-
-    override func addOperation(_ op: Operation) {
-        super.addOperation(op)
-    }
-
-
-
-    func addApi(_ op: SendTask) {
+    func add(task op: SendTask, api: Bool) {
+        
+        guard api else {
+            notApiQueue.async {
+                VK.Log.put("SendQueue", "send free \(op)")
+                op.start()
+            }
+            
+            return
+        }
+        
         addingQueue.async {
             if !VK.config.useSendLimit || self.apiCounter < VK.config.sendLimit {
                 self.apiCounter += 1
@@ -54,14 +59,8 @@ internal final class SendQueue: OperationQueue {
 
 
 
-    func addNotApi(_ op: SendTask) {
-        VK.Log.put("SendQueue", "send free \(op)")
-        addOperation(op)
-    }
-
-
-
-    @objc private func dropCounter() {
+    @objc
+    private func dropCounter() {
         addingQueue.async {
             guard !self.waited.isEmpty || self.apiCounter > 0 else {
                 return

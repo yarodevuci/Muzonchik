@@ -50,19 +50,19 @@ internal struct UrlFabric {
 
 
     private static func craeteWith(apiMethod: String, parameters: [VK.Arg: String], httpMethod: HttpMethod) -> URLRequest {
-        let paramStr = stringFrom(parameters: parameters)
+        let query = createQueryFrom(parameters: parameters)
 
         var req = URLRequest(url: emptyUrl, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 0)
         req.httpMethod = httpMethod.rawValue
 
         if httpMethod == .GET {
-            req.url = URL(string: methodUrl + apiMethod + "?" + paramStr)
+            req.url = URL(string: methodUrl + apiMethod + "?" + query)
         }
         else {
             req.url = URL(string: methodUrl + apiMethod)
             let charset = String(CFStringConvertEncodingToIANACharSetName(CFStringConvertNSStringEncodingToEncoding(String.Encoding.utf8.rawValue)))
             req.setValue("application/x-www-form-urlencoded; charset=\(charset)", forHTTPHeaderField: "Content-Type")
-            req.httpBody = paramStr.data(using: .utf8)
+            req.httpBody = query.data(using: .utf8)
         }
 
         return req
@@ -106,33 +106,35 @@ internal struct UrlFabric {
         req.httpBody = body as Data
         return req
     }
-
-
-
-    private static func stringFrom(parameters: [VK.Arg : String]) -> String {
+    
+    
+    
+    internal static func createQueryFrom(parameters: [VK.Arg : String]) -> String {
         let paramArray = NSMutableArray()
-
+        
         for (name, value) in parameters {
-            paramArray.add("\(name.rawValue)=\(value)")
+            if let encodedValue = value.addingPercentEncoding(withAllowedCharacters: .urlQueryParametersAllowed) {
+                paramArray.add("\(name.rawValue)=\(encodedValue)")
+            }
         }
-
+        
         paramArray.add("v=\(VK.config.apiVersion)")
         paramArray.add("https=1")
-
+        
         if let token = Token.get() {
             paramArray.add("access_token=\(token)")
         }
-
+        
         if let lang = VK.config.language {
             paramArray.add("lang=\(lang)")
         }
-
+        
         if let sid = sharedCaptchaAnswer?["captcha_sid"], let key = sharedCaptchaAnswer?["captcha_key"] {
             paramArray.add("captcha_sid=\(sid)")
             paramArray.add("captcha_key=\(key)")
             sharedCaptchaAnswer = nil
         }
-
-        return paramArray.componentsJoined(by: "&").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        
+        return paramArray.componentsJoined(by: "&")
     }
 }

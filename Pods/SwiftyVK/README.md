@@ -1,4 +1,4 @@
-# SwiftyVK [![Swift](https://img.shields.io/badge/Swift-3.0.1-orange.svg?style=flat)](https://developer.apple.com/swift/) [![VK API](https://img.shields.io/badge/VK_API-5.60-blue.svg?style=flat)](https://vk.com/dev/versions) [![Platform](https://img.shields.io/cocoapods/p/SwiftyVK.svg?style=flat)](http://cocoadocs.org/docsets/SwiftyVK) [![Build Status](https://travis-ci.org/WE-St0r/SwiftyVK.svg?branch=swift-3-v2)](https://travis-ci.org/WE-St0r/SwiftyVK) [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/SwiftyVK.svg?style=flat)](https://cocoapods.org/pods/SwiftyVK) [![Carthage Compatible](https://img.shields.io/badge/Carthage-✔️-brightgreen.svg)](https://github.com/WE-St0r/SwiftyVK) [![GitHub license](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/WE-St0r/SwiftyVK/master/LICENSE)
+# SwiftyVK [![Swift](https://img.shields.io/badge/Swift-3.0.1-orange.svg?style=flat)](https://developer.apple.com/swift/) [![VK API](https://img.shields.io/badge/VK_API-5.62-blue.svg?style=flat)](https://vk.com/dev/versions) [![Platform](https://img.shields.io/cocoapods/p/SwiftyVK.svg?style=flat)](http://cocoadocs.org/docsets/SwiftyVK) [![Build Status](https://travis-ci.org/WE-St0r/SwiftyVK.svg?branch=swift-3-v2)](https://travis-ci.org/WE-St0r/SwiftyVK) [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/SwiftyVK.svg?style=flat)](https://cocoapods.org/pods/SwiftyVK) [![Carthage Compatible](https://img.shields.io/badge/Carthage-✔️-brightgreen.svg)](https://github.com/WE-St0r/SwiftyVK) [![GitHub license](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/WE-St0r/SwiftyVK/master/LICENSE)
 
 SwiftyVK makes it easy to interact with social network "VKontakte" API for iOS and OSX.
 
@@ -149,10 +149,11 @@ For authorization with official VK application for iOS, you need:
 
 * Set `App Bundle ID for iOS` to your `App Bundle` in Xcode -> Target -> Bundle Identifier (e.g. com.developer.applicationName)
 
-*3. Add this code to appDelegate*
+*3. Add this code to AppDelegate*
 ```swift
 func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-    VK.process(url: url, options: options)
+    let app = options[.sourceApplication] as? String
+    VK.process(url: url, sourceApplication: app)
     return true
 }
 ```

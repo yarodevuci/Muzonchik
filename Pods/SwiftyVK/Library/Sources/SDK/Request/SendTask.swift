@@ -16,21 +16,14 @@ internal final class SendTask: Operation {
 
 
     override var description: String {
-        return "send task #\(delegate.id)-\(id)"
+        return "task #\(delegate.id)-\(id)"
     }
 
 
 
     static func createWith(id: Int, config: RequestConfig, delegate: RequestInstance) -> SendTask {
         let operation = SendTask(id: id, config: config, delegate: delegate)
-
-
-        if config.api {
-            SendQueue.queue.addApi(operation)
-        }
-        else {
-            SendQueue.queue.addNotApi(operation)
-        }
+        SendQueue.queue.add(task: operation, api: config.api)
         return operation
     }
 
@@ -44,7 +37,6 @@ internal final class SendTask: Operation {
         super.init()
 //        VK.Log.put("Life", "init \(self)")
     }
-
 
 
 

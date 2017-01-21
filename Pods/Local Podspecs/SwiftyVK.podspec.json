@@ -1,6 +1,6 @@
 {
   "name": "SwiftyVK",
-  "version": "2.0.1",
+  "version": "2.0.4",
   "summary": "SwiftyVK makes it easy to interact with social network VKontakte API for iOS and OSX",
   "homepage": "https://github.com/WE-St0r/SwiftyVK",
   "authors": {
@@ -16,7 +16,7 @@
   },
   "source": {
     "git": "https://github.com/WE-St0r/SwiftyVK.git",
-    "tag": "2.0.1"
+    "tag": "2.0.4"
   },
   "source_files": "Library/Sources/**/*.*",
   "ios": {

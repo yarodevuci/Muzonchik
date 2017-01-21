@@ -1,19 +1,18 @@
 import Foundation
 #if os(iOS)
     import UIKit
-#endif
-#if os(OSX)
+#elseif os(OSX)
     import Cocoa
 #endif
 
 
 
-private var lpQueue = DispatchQueue(label: "VKLongPollQueue")
+private var lpQueue = DispatchQueue(label: "VKLongPoolQueue")
 
 
 
-private typealias VK_LongPool = VK
-extension VK_LongPool {
+private typealias VKLongPool = VK
+extension VKLongPool {
     /**
      Long pool client. More - https://vk.com/dev/using_longpoll
      * To start and stop the server, use the start() and stop() functions
@@ -33,13 +32,13 @@ extension VK_LongPool {
         public static func start() {
             lpQueue.async {
                 guard VK.state == .authorized && !isActive else {
-                    // VK.Log.put("LongPool", "User is not authorized or LongPool is active yet")
+                     VK.Log.put("LongPool", "User is not authorized or LongPool is active yet")
                     return}
                 isActive = true
                 keyIsExpired = true
                 getServer()
                 observer = LPObserver()
-                // VK.Log.put("LongPool", "Stared")
+                 VK.Log.put("LongPool", "Stared")
             }
         }
 
@@ -50,29 +49,29 @@ extension VK_LongPool {
             lpQueue.async {
                 observer = nil
                 isActive = false
-                // VK.Log.put("LongPool", "Stopped")
+                 VK.Log.put("LongPool", "Stopped")
             }
         }
 
 
 
         private static func getServer() {
-            var req = VK.API.Messages.getLongPollServer([VK.Arg.useSsl : "0", VK.Arg.needPts : "1"])
+            var req = VK.API.Messages.getLongPollServer([VK.Arg.useSsl: "0", VK.Arg.needPts: "1"])
             req.catchErrors = false
             req.maxAttempts = 1
 
-            // VK.Log.put("LongPool", "Getting server with request \(req.id)")
+             VK.Log.put("LongPool", "Getting server with \(req)")
             req.send(
                 onSuccess: {response in
-                    // VK.Log.put("LongPool", "get server with request \(req.id)")
+                     VK.Log.put("LongPool", "get server with \(req)")
                     lpKey = response["key"].stringValue
                     server = response["server"].stringValue
                     ts = response["ts"].stringValue
                     keyIsExpired = false
                     update()
             },
-                onError: {error in
-                    // VK.Log.put("LongPool", "Error get server with request \(req.id)")
+                onError: {_ in
+                     VK.Log.put("LongPool", "Error get server with \(req)")
                     Thread.sleep(forTimeInterval: 10)
                     getServer()
             }
@@ -96,10 +95,10 @@ extension VK_LongPool {
                 req.timeout = 30
                 req.maxAttempts = 1
 
-                // VK.Log.put("LongPool", "Send with request \(req.id)")
+                 VK.Log.put("LongPool", "Send with \(req)")
                 req.send(
                     onSuccess: {response in
-                        // VK.Log.put("LongPool", "Received response with request \(req.id)")
+                         VK.Log.put("LongPool", "Received response with \(req)")
 
                         ts = response["ts"].stringValue
                         parse(response["updates"].array)
@@ -109,8 +108,8 @@ extension VK_LongPool {
                             : observer?.connectionRestore()
                         update()
                 },
-                    onError: {error in
-                        // VK.Log.put("LongPool", "Received error with request \(req.id)")
+                    onError: {_ in
+                         VK.Log.put("LongPool", "Received error with \(req)")
 
                         observer?.connectionLost()
                         Thread.sleep(forTimeInterval: 10)
@@ -272,14 +271,12 @@ internal final class LPObserver: NSObject {
     internal override init() {
         super.init()
 
-        // VK.Log.put("LongPool", "Init observer")
+         VK.Log.put("LongPool", "Init observer")
 
         #if os(OSX)
             NSWorkspace.shared().notificationCenter.addObserver(self, selector: #selector(connectionLostForce), name:NSNotification.Name.NSWorkspaceScreensDidSleep, object: nil)
             NSWorkspace.shared().notificationCenter.addObserver(self, selector: #selector(connectionRestoreForce), name:NSNotification.Name.NSWorkspaceScreensDidWake, object: nil)
-        #endif
-
-        #if os(iOS)
+        #elseif os(iOS)
             let reachability = Reachability()
             NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged), name: ReachabilityChangedNotification, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(connectionLostForce), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
@@ -291,7 +288,8 @@ internal final class LPObserver: NSObject {
 
 
     #if os(iOS)
-    @objc private func reachabilityChanged(note: NSNotification) {
+    @objc
+    private func reachabilityChanged(note: NSNotification) {
         if let reachability = note.object as? Reachability {
             reachability.isReachable ? connectionRestore() : connectionLost()
         }
@@ -300,8 +298,8 @@ internal final class LPObserver: NSObject {
 
 
 
-
-    @objc private func connectionRestoreForce() {
+    @objc
+    private func connectionRestoreForce() {
         lpQueue.async {
             VK.LP.isActive = true
             VK.LP.update()
@@ -309,7 +307,8 @@ internal final class LPObserver: NSObject {
     }
 
 
-    @objc private func connectionLostForce() {
+    @objc
+    private func connectionLostForce() {
         lpQueue.async {
             VK.LP.isActive = false
             self.connectionLost()
@@ -322,7 +321,7 @@ internal final class LPObserver: NSObject {
 
         if connected == true {
             connected = false
-            // VK.Log.put("LongPool", "Connection lost")
+             VK.Log.put("LongPool", "Connection lost")
             NotificationCenter.default.post(name: VK.LP.notifications.connectinDidLost, object: nil)
         }
     }
@@ -333,13 +332,13 @@ internal final class LPObserver: NSObject {
 
         if connected == false {
             connected = true
-            // VK.Log.put("LongPool", "Connection restored")
+             VK.Log.put("LongPool", "Connection restored")
             NotificationCenter.default.post(name: VK.LP.notifications.connectinDidRestore, object: nil)
         }
     }
 
 
     deinit {
-        // VK.Log.put("LongPool", "Deinit observer")
+         VK.Log.put("LongPool", "Deinit observer")
     }
 }
