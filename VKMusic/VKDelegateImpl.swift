@@ -3,7 +3,8 @@ import UIKit
 
 class VKDelegateImpl:  VKDelegate {
     
-    let appID = "3087106"
+   // let appID = "3087106"
+    let appID = "3502561" //Windows phone
     let scope: Set<VK.Scope> = [.offline, .audio]
     
     init() {
