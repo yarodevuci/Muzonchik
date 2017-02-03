@@ -19,6 +19,8 @@
 ## If you like the project and would like to see more updates and bug fixes down the line I would really appreciate some donations! Support Developers. 
 <span class="badge-paypal"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JAGFP3M6BG7LN" title="Donate to this project using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="PayPal Donation Button" /></a></span>
 
+## Check out my new app Shadow Chat on the App Store https://itunes.apple.com/us/app/shadow-meet-people-chat-anonymously/id1187144458?mt=8
+
 ## ATTENTION
 MUSIC IS WORKING FOR NOW
 
