@@ -20,17 +20,18 @@ public protocol RequestExecution {
 
 internal final class RequestInstance: Operation, RequestExecution {
 
-    fileprivate static let apiQueue: OperationQueue = {
+    fileprivate static let orderedQueue: OperationQueue = {
        let q = OperationQueue()
         q.qualityOfService = QualityOfService.userInitiated
         q.maxConcurrentOperationCount = 1
         return q
     }()
     
-    fileprivate static let notApiQueue: OperationQueue = {
+    // almost unlimited (:
+    fileprivate static let unorderedQueue: OperationQueue = {
         let q = OperationQueue()
         q.qualityOfService = QualityOfService.userInitiated
-        q.maxConcurrentOperationCount = 1
+        q.maxConcurrentOperationCount = 100
         return q
     }()
 
@@ -52,7 +53,7 @@ internal final class RequestInstance: Operation, RequestExecution {
     override var description: String {
         return "request #\(id)"
     }
-
+    
 
 
     static func createWith(
@@ -62,7 +63,11 @@ internal final class RequestInstance: Operation, RequestExecution {
         progressBlock: VK.ProgressBlock?
         ) -> RequestExecution {
         let instance = RequestInstance(config: config, successBlock: successBlock, errorBlock: errorBlock, progressBlock: progressBlock)
-        (config.api ? apiQueue : notApiQueue).addOperation(instance)
+        
+        VK.config.useSendLimit && config.api
+            ? orderedQueue.addOperation(instance)
+            : unorderedQueue.addOperation(instance)
+        
         return instance
     }
 
@@ -115,8 +120,6 @@ internal final class RequestInstance: Operation, RequestExecution {
 // MARK: - Send request & handle response
 extension RequestInstance {
 
-
-
     func send() {
         guard !self.isCancelled else {return}
 
@@ -125,7 +128,6 @@ extension RequestInstance {
             execute(error: error)
             return
         }
-
 
         sendAttempts += 1
         VK.Log.put(self, "send \(sendAttempts) of \(config.maxAttempts) times")
@@ -169,8 +171,6 @@ extension RequestInstance {
 
 // MARK: - Process result
 extension RequestInstance {
-
-
 
     fileprivate func processResult() {
         if let response = result.response {

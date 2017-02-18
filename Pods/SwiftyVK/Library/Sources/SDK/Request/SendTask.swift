@@ -1,9 +1,9 @@
 import Foundation
 
 
-
-private let session = URLSession(configuration: .default, delegate: nil, delegateQueue: nil)
-
+private let sessionConfig = URLSessionConfiguration.default
+private let session = URLSession(configuration: sessionConfig, delegate: nil, delegateQueue: nil)
+private let sendTaskQueue = DispatchQueue(label: "SwiftyVK.SendTaskQueue")
 
 
 internal final class SendTask: Operation {
@@ -61,14 +61,20 @@ internal final class SendTask: Operation {
                 self.delegate.handle(error: RequestError.unexpectedResponse)
             }
         }
-
-        let urlRequest = UrlFabric.createWith(config: config)
-        self.task = session.dataTask(with: urlRequest, completionHandler: completeon)
-
-        task.addObserver(self, forKeyPath: #keyPath(URLSessionTask.countOfBytesReceived), options: .new, context: nil)
-        task.addObserver(self, forKeyPath: #keyPath(URLSessionTask.countOfBytesSent), options: .new, context: nil)
-
-        task.resume()
+        
+        sendTaskQueue.sync {
+            sessionConfig.timeoutIntervalForRequest = config.timeout
+            sessionConfig.timeoutIntervalForResource = config.timeout
+            
+            let urlRequest = UrlFabric.createWith(config: config)
+            self.task = session.dataTask(with: urlRequest, completionHandler: completeon)
+            
+            task.addObserver(self, forKeyPath: #keyPath(URLSessionTask.countOfBytesReceived), options: .new, context: nil)
+            task.addObserver(self, forKeyPath: #keyPath(URLSessionTask.countOfBytesSent), options: .new, context: nil)
+            
+            task.resume()
+        }
+        
         semaphore.wait()
     }
 

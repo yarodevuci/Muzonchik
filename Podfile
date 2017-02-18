@@ -7,4 +7,6 @@ target 'VKMusic' do
 
   # Pods for VKMusic
 pod 'SwiftyVK', :git => 'https://github.com/WE-St0r/SwiftyVK.git'
+pod 'RealmSwift'
+
 end
