@@ -6,7 +6,6 @@ target 'VKMusic' do
   use_frameworks!
 
   # Pods for VKMusic
-pod 'SwiftyVK', :git => 'https://github.com/WE-St0r/SwiftyVK.git'
-pod 'RealmSwift'
+  pod 'RealmSwift'
 
 end

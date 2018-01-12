@@ -10,9 +10,9 @@ import Foundation
 import RealmSwift
 
 class SavedAudio: Object {
-    dynamic var url         = ""
-    dynamic var title       = ""
-    dynamic var artist      = ""
-    dynamic var duration    = 0
+    @objc dynamic var url         = ""
+    @objc dynamic var title       = ""
+    @objc dynamic var artist      = ""
+    @objc dynamic var duration    = 0
 }
 

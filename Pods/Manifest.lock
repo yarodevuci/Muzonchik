@@ -1,21 +1,17 @@
 PODS:
-  - SwiftyVK (2.0.4)
+  - Realm (3.0.2):
+    - Realm/Headers (= 3.0.2)
+  - Realm/Headers (3.0.2)
+  - RealmSwift (3.0.2):
+    - Realm (= 3.0.2)
 
 DEPENDENCIES:
-  - SwiftyVK (from `https://github.com/WE-St0r/SwiftyVK.git`)
-
-EXTERNAL SOURCES:
-  SwiftyVK:
-    :git: https://github.com/WE-St0r/SwiftyVK.git
-
-CHECKOUT OPTIONS:
-  SwiftyVK:
-    :commit: a0229f765efa772cd4d3466a78257e8812b6f5c5
-    :git: https://github.com/WE-St0r/SwiftyVK.git
+  - RealmSwift
 
 SPEC CHECKSUMS:
-  SwiftyVK: e841fff2efaf716a408d51e592bfd2e702ffe9de
+  Realm: 6f23fd1f178a09342eac21bfa7c2bf4312a7a180
+  RealmSwift: 695393add1b8f9d5fa75dd16e6355cf3935f71e2
 
-PODFILE CHECKSUM: e8f8aab5d38ce279135af5c9c65f1c554043d421
+PODFILE CHECKSUM: 70214cf07528bbb6b2109c04f127a9d37ee86dba
 
-COCOAPODS: 1.2.0.beta.3
+COCOAPODS: 1.4.0.rc.1

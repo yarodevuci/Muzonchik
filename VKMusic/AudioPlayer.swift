@@ -88,7 +88,7 @@ class AudioPlayer{
             let metadataList = playerItem.asset.metadata
             if metadataList.count != 0 {
                 for item in metadataList {
-                    if item.commonKey == "artwork" {
+                    if item.commonKey!.rawValue == "artwork" {
                         print("image Found")
                         DispatchQueue.main.async {
                             AudioPlayerVC.albumImage = UIImage(data: item.value as! Data)!
