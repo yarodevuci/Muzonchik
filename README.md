@@ -7,7 +7,6 @@
 
 <div
 <img height="450" src="https://github.com/yarodevuci/VKMusic/blob/master/animated.gif?raw=true" />
-<img height="450" src="https://github.com/yarodevuci/VKMusic/blob/master/Splash.png?raw=true" />
 <img height="450" src="https://github.com/yarodevuci/VKMusic/blob/master/DropDownMenu.PNG?raw=true" />
 <img height="450" src="https://github.com/yarodevuci/VKMusic/blob/master/AudioPlayer.png?raw=true" />
 <img height="450" src="https://github.com/yarodevuci/VKMusic/blob/master/AudioList.PNG?raw=true" />
