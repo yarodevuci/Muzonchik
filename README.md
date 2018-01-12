@@ -5,15 +5,14 @@
 
 <span class="badge-paypal"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JAGFP3M6BG7LN" title="Donate to this project using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="PayPal Donation Button" /></a></span>
 
-<br>
+<div
 <img height="450" src="https://github.com/yarodevuci/VKMusic/blob/master/animated.gif?raw=true" />
 <img height="450" src="https://github.com/yarodevuci/VKMusic/blob/master/Splash.png?raw=true" />
 <img height="450" src="https://github.com/yarodevuci/VKMusic/blob/master/DropDownMenu.PNG?raw=true" />
 <img height="450" src="https://github.com/yarodevuci/VKMusic/blob/master/AudioPlayer.png?raw=true" />
 <img height="450" src="https://github.com/yarodevuci/VKMusic/blob/master/AudioList.PNG?raw=true" />
 <img height="450" ![animated](animated.gif "animated") />
-<br>
-
+<div/>
 ## If you like the project and would like to see more updates and bug fixes down the line I would really appreciate some donations! Support Developers. 
 <span class="badge-paypal"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JAGFP3M6BG7LN" title="Donate to this project using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="PayPal Donation Button" /></a></span>
 
