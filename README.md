@@ -14,21 +14,17 @@
 <img height="450" ![animated](animated.gif "animated") />
 <br>
 
-
-
 ## If you like the project and would like to see more updates and bug fixes down the line I would really appreciate some donations! Support Developers. 
 <span class="badge-paypal"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JAGFP3M6BG7LN" title="Donate to this project using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="PayPal Donation Button" /></a></span>
 
-## Check out my new app Shadow Chat on the App Store https://itunes.apple.com/us/app/shadow-meet-people-chat-anonymously/id1187144458?mt=8
+## Check out my new app Eclipse Chat on the App Store https://itunes.apple.com/us/app/shadow-meet-people-chat-anonymously/id1187144458?mt=8
 
 ## ATTENTION
-MUSIC IS WORKING FOR NOW
+VK Library was removed due to the fact that music is no longer working in the VK. So you can use this library as a template that needs Music API library... 
 
 
 <pre>
 Features: 
-✔ Now with English translation 
-✔ UI Design that is native to official VK app
 ✔ Downloading music with swipe to the right guesture
 ✔ Simplified music player interface
 ✔ Mini Player at the bottom indicates current track info
@@ -47,30 +43,3 @@ Features:
 If you have any comments, concerns, feauture request or bugs that needs to be fixed let me know.
 Also, if you need signed .ipa file that you can share with you friends let me know
 My VK page https://vk.com/kotobaron
-My FB page https://www.facebook.com/profile.php?id=100000512514710
-
-
-
-##License
-
-The MIT License (MIT)
-
-Copyright (c) 2016 Yaroslav Dukal @Gold_Mafia
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
