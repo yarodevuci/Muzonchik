@@ -88,13 +88,15 @@ class AudioPlayer{
             let metadataList = playerItem.asset.metadata
             if metadataList.count != 0 {
                 for item in metadataList {
-                    if item.commonKey!.rawValue == "artwork" {
-                        print("image Found")
-                        DispatchQueue.main.async {
-                            AudioPlayerVC.albumImage = UIImage(data: item.value as! Data)!
-                            self.setAlbumImageForMiniPlayer(image: UIImage(data: item.value as! Data)!)
-                            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "albumCoverImageRetrieved"), object: nil)
-                            CommandCenter.defaultCenter.setNowPlayingInfo()
+                    if let i = item.commonKey {
+                        if i.rawValue == "artwork" {
+                            print("image Found")
+                            DispatchQueue.main.async {
+                                AudioPlayerVC.albumImage = UIImage(data: item.value as! Data)!
+                                self.setAlbumImageForMiniPlayer(image: UIImage(data: item.value as! Data)!)
+                                NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "albumCoverImageRetrieved"), object: nil)
+                                CommandCenter.defaultCenter.setNowPlayingInfo()
+                            }
                         }
                     }
                 }

@@ -7,5 +7,7 @@ target 'VKMusic' do
 
   # Pods for VKMusic
   pod 'RealmSwift'
+  pod 'SwiftSoup'
+
 
 end

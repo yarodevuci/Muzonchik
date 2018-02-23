@@ -9,6 +9,7 @@
 import UIKit
 import MediaPlayer
 import RealmSwift
+import SwiftSoup
 
 class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     
@@ -128,7 +129,7 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     
     //Set up the navigation dropdown menu
     func setupDropdownMenu(title: String) {
-        let items = ["My music", "Downloaded", "Suggested", "Popular"]
+        let items = ["Music", "Downloaded"]
         menuView = BTNavigationDropdownMenu(containerView: self.view, title: title, items: items as [AnyObject])
         menuView.cellSeparatorColor = GlobalFunctions.dropDownMenuColor
         menuView.cellHeight = 50
@@ -168,76 +169,64 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
         })
     }
     
-    func displayRecomendations() {
-        self.refreshControl?.removeFromSuperview()
-        allowToDelete = false
-        allowToAddAudio = true
-        self.isNowPlayingIndex = -1
-        
-//        let getAudios = VK.API.Audio.getRecommendations([.targetAudio: "3970872_117703755", .shuffle: "1", .count: "500"])
-        startActivityIndicator(withLabel: "Loading...")
-        
 
-////        getAudios
-////            .onSuccess  { (response) in
-//                MainScreen.searchResults.removeAll()
-//                
-////                for data in response["items"] {
-////                    let audio = Audio(serverData: data.1.object as! [String : AnyObject])
-////                    MainScreen.searchResults.append(audio)
-////                }
-//                DispatchQueue.main.async(execute: { () -> Void in
-//                    self.populateBoolArray()
-//                    self.tableView.reloadData()
-//                    self.refreshControl?.endRefreshing()
-//                    self.removeActivityView()
-//                })
-//        }
-//            getAudios.onError { error in
-//                DispatchQueue.main.async(execute: { () -> Void in
-//                    self.removeActivityView()
-//                    self.refreshControl?.endRefreshing()
-//                    SwiftNotificationBanner.presentNotification("\(error.localizedDescription)")
-//                })
-//                print("Get Audios fail with error: \(error.localizedDescription)")
-//        }
-    }
-    
-    func displayPopularMusic() {
-        self.isNowPlayingIndex = -1
-//        allowToDelete = false
-//        allowToAddAudio = true
-//        self.refreshControl?.removeFromSuperview()
-//
-//        let getAudios = VK.API.Audio.getPopular([.count: "500"])
-//        startActivityIndicator(withLabel: "Loading...")
-//
-//        getAudios.send (
-//            onSuccess  { response in
-//                MainScreen.searchResults.removeAll()
-//                for data in response {
-//                    let audio = Audio(serverData: data.1.object as! [String : AnyObject])
-//                    MainScreen.searchResults.append(audio)
-//                }
-//                DispatchQueue.main.async(execute: { () -> Void in
-//                    self.populateBoolArray()
-//                    self.tableView.reloadData()
-//                    self.refreshControl?.endRefreshing()
-//                    self.removeActivityView()
-//                })
-//        },
-//            onError { error in
-//                DispatchQueue.main.async(execute: { () -> Void in
-//                    self.removeActivityView()
-//                    self.refreshControl?.endRefreshing()
-//                    SwiftNotificationBanner.presentNotification("\(error.localizedDescription)")
-//                })
-//                print("Get Audios fail with error: \(error.localizedDescription)")
-//        })
-    }
-    
     @objc func displayMusicList() {
         self.isNowPlayingIndex = -1
+        if refreshControl == nil { createRefreshControl() }
+        allowToDelete = false
+        allowToAddAudio = false
+        allowToDeleteFromServer = true
+        
+        startActivityIndicator(withLabel: "Loading...")
+        
+        DispatchQueue.main.async() {
+            let myURLString = "http://regalbloodlines.com/"
+            guard let myURL = URL(string: myURLString) else {
+                print("Error: \(myURLString) doesn't seem to be a valid URL")
+                return
+            }
+            
+            do {
+                let myHTMLString = try String(contentsOf: myURL, encoding: .utf8)
+                
+                let els: Elements = try SwiftSoup.parse(myHTMLString).select("li");
+                
+                for element: Element in els.array() {
+                    // print(try! element.className())
+                    
+                    if try! element.className() == "item x-track track" {
+                        //ARTIST NAME:
+                        print(try! element.child(1).select("span").array()[1].select("a").text())
+                        let artist = try! element.child(1).select("span").array()[1].select("a").text()
+                        //MP3 file name
+                        print(try! element.child(1).select("span").array()[2].select("span").first()?.text() ?? "")
+                        let title = try! element.child(1).select("span").array()[2].select("span").first()?.text() ?? ""
+                        //EXTRACT TRACK MP3 FILE
+                        let url = try! element.child(0).select("li").attr("data-url")
+                        print(try! element.child(0).select("li").attr("data-url"))
+                        //GET DURATION
+                        let duration = try! element.child(2).text()
+                        
+                        let audioFile = Audio(url: url, title: title, artist: artist, duration: duration.durationToInt)
+                        MainScreen.searchResults.append(audioFile)
+                    }
+                }
+                
+                DispatchQueue.main.async(execute: { () -> Void in
+                    self.populateBoolArray()
+                    self.tableView.reloadData()
+                    self.refreshControl?.endRefreshing()
+                    self.removeActivityView()
+                })
+                // print("HTML : \(myHTMLString)")
+                
+            } catch let error {
+                print("Error: \(error)")
+            }
+        }
+        
+        
+        
 //        if refreshControl == nil { createRefreshControl() }
 //        allowToDelete = true
 //        allowToAddAudio = false
@@ -290,10 +279,6 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
             displayMusicList()
         case 1:
             displayDownloadedSongsOnly()
-        case 2:
-            displayRecomendations()
-        case 3:
-            displayPopularMusic()
         default:
             break
         }
@@ -412,6 +397,62 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     
     func searchAudio(searchText:String) {
         startActivityIndicator(withLabel: "Searching for \(searchText)")
+        self.isNowPlayingIndex = -1
+        
+        DispatchQueue.main.async() {
+            let myURLString = "http://regalbloodlines.com/music/\(searchText.lowercased())"
+            
+            guard let url = myURLString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), let myURL = URL(string: url) else {
+                return
+                
+            }
+            
+            do {
+                let myHTMLString = try String(contentsOf: myURL, encoding: .utf8)
+                
+                let els: Elements = try SwiftSoup.parse(myHTMLString).select("li");
+                MainScreen.searchResults.removeAll()
+
+                for element: Element in els.array() {
+                    // print(try! element.className())
+                    
+                    if try! element.className() == "item x-track track" {
+                        var title = ""
+                        //ARTIST NAME:
+                        print(try! element.child(1).select("span").array()[1].select("a").text())
+                        let artist = try! element.child(1).select("span").array()[1].select("a").text()
+                        //MP3 file name
+                        if try! element.child(1).select("span").array().count < 3 {
+                            print(try! element.child(1).select("span").array()[1].select("span").first()?.text() ?? "")
+                            title = try! element.child(1).select("span").array()[1].select("span").first()?.text() ?? ""
+                        } else {
+                            print(try! element.child(1).select("span").array()[2].select("span").first()?.text() ?? "")
+                            title = try! element.child(1).select("span").array()[2].select("span").first()?.text() ?? ""
+                        }
+                        //EXTRACT TRACK MP3 FILE
+                        let url = try! element.child(0).select("li").attr("data-url")
+                        print(try! element.child(0).select("li").attr("data-url"))
+                        //GET DURATION
+                        let duration = try! element.child(2).text()
+                        
+                        let audioFile = Audio(url: url, title: title, artist: artist, duration: duration.durationToInt)
+                        MainScreen.searchResults.append(audioFile)
+                        
+                    }
+                }
+                
+                DispatchQueue.main.async(execute: { () -> Void in
+                    self.populateBoolArray()
+                    self.tableView.reloadData()
+                    self.removeActivityView()
+                })
+                
+                // print("HTML : \(myHTMLString)")
+                
+            } catch let error {
+                print("Error: \(error)")
+            }
+        }
         
 //        VK.API.Audio.search([.searchOwn: "0", .q: searchText, .count: "300", .sort: "2", .autoComplete: "1"]).send(
 //            onSuccess: { response in

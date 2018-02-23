@@ -10,6 +10,17 @@ import Foundation
 import UIKit
 import RealmSwift
 
+extension String {
+    
+    var durationToInt: Int {
+        let comp = self.components(separatedBy: ":")
+        let min = Int(comp[0])
+        let sec = Int(comp[1])
+        
+        return ((min ?? 0) * 60) + (sec ?? 0)
+    }
+}
+
 
 extension Int {
     
