@@ -2,15 +2,16 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "checkmark for settings@1x.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "checkmark for settings@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "play-mini@3x.png",
       "scale" : "3x"
     }
   ],

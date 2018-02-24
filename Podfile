@@ -8,6 +8,7 @@ target 'VKMusic' do
   # Pods for VKMusic
   pod 'RealmSwift'
   pod 'SwiftSoup'
-
+  pod 'BTNavigationDropdownMenu', :git => 'https://github.com/zkrige/BTNavigationDropdownMenu.git'
+  pod 'SVProgressHUD', :inhibit_warnings => true
 
 end

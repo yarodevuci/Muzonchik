@@ -21,7 +21,7 @@ protocol AudioPlayerDelegate {
     func playerWillPlayNexAudio()
 }
 
-class AudioPlayer{
+class AudioPlayer {
     
     static let defaultPlayer = AudioPlayer()
     
@@ -57,6 +57,26 @@ class AudioPlayer{
     fileprivate func killTimeObserver() {
         if let observer = timeObserber {
             player.removeTimeObserver(observer)
+        }
+    }
+    
+    func playAudio(fromURL url: URL!) {
+        if currentAudio != nil {
+            killTimeObserver()
+        }
+        if let d = self.delegate {
+            d.playerWillPlayNexAudio()
+        }
+        
+        currentAudio = currentPlayList[AudioPlayer.index]
+        
+        let playerItem = AVPlayerItem(url: url)
+        player = AVPlayer(playerItem:playerItem)
+        player.play()
+        addTimeObeserver()
+        
+        DispatchQueue.main.async {
+            CommandCenter.defaultCenter.setNowPlayingInfo()
         }
     }
     
@@ -110,7 +130,11 @@ class AudioPlayer{
         if let sa = rootViewController as? MainScreen { sa.miniPlayerAlbumCoverImage.image = image }
     }
     
-    func play() { player.play() }
+    func play() {
+        if player != nil {
+            player.play()
+        }
+    }
     
     func previous() {
         NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "playPreviousSong"), object: nil)

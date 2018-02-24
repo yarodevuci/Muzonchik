@@ -9,7 +9,7 @@
 import UIKit
 
 // MARK: BTNavigationDropdownMenu
-open class BTNavigationDropdownMenu: UIView {
+open class BTNavigationDropdownMenuView: UIView {
     
     // The color of menu title. Default is darkGrayColor()
     open var menuTitleColor: UIColor! {
@@ -236,7 +236,7 @@ open class BTNavigationDropdownMenu: UIView {
         
         // Init button as navigation title
         self.menuButton = UIButton(frame: frame)
-        self.menuButton.addTarget(self, action: #selector(BTNavigationDropdownMenu.menuButtonTapped(_:)), for: UIControlEvents.touchUpInside)
+        self.menuButton.addTarget(self, action: #selector(BTNavigationDropdownMenuView.menuButtonTapped(_:)), for: UIControlEvents.touchUpInside)
         self.addSubview(self.menuButton)
 
         self.menuTitle = UILabel(frame: frame)
@@ -261,7 +261,7 @@ open class BTNavigationDropdownMenu: UIView {
         self.backgroundView.backgroundColor = self.configuration.maskBackgroundColor
         self.backgroundView.autoresizingMask = [ .flexibleWidth, .flexibleHeight ]
         
-        let backgroundTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(BTNavigationDropdownMenu.hideMenu));
+        let backgroundTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(BTNavigationDropdownMenuView.hideMenu));
         self.backgroundView.addGestureRecognizer(backgroundTapRecognizer)
         
         // Init properties

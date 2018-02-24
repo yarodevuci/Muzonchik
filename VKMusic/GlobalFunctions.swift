@@ -10,31 +10,10 @@ import Foundation
 import UIKit
 import RealmSwift
 
-extension String {
-    
-    var durationToInt: Int {
-        let comp = self.components(separatedBy: ":")
-        let min = Int(comp[0])
-        let sec = Int(comp[1])
-        
-        return ((min ?? 0) * 60) + (sec ?? 0)
-    }
-}
-
-
-extension Int {
-    
-    var toAudioString: String {
-        let minutes = self / 60
-        let seconds = self - minutes * 60
-        if seconds < 10 {
-            return "\(minutes):0\(seconds)"
-        }
-        return "\(minutes):\(seconds)"
-    }
-}
-
 class GlobalFunctions {
+    
+    static let shared = GlobalFunctions()
+    
     //Dropdown menu color
     static let dropDownMenuColor = UIColor(red:0.87, green:0.87, blue:0.87, alpha:1.0)
     //VK Blue Color
@@ -56,5 +35,33 @@ class GlobalFunctions {
         let realm = try! Realm()
         try! realm.write { realm.add(savedAudio)}
     }
+    
+    func urlToHTMLString(url: String, completionHandler: @escaping (_ html: String?, _ error: String?) -> ()) {
+        guard let url = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), let webURL = URL(string: url) else {
+            completionHandler(nil, "Invalid URL")
+            return
+        }
+        DispatchQueue.global(qos: .userInitiated).async { [] in
+            do {
+                let myHTMLString = try String(contentsOf: webURL, encoding: .utf8)
+                completionHandler(myHTMLString, nil)
+            } catch let error {
+                print("Error: \(error)")
+                completionHandler(nil, error.localizedDescription)
+            }
+        }
+    }
+    
+    //For volume bar
+    func getImageWithColor(color: UIColor, size: CGSize) -> UIImage {
+        let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
+        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+        color.setFill()
+        UIRectFill(rect)
+        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return image
+    }
+    
 }
 

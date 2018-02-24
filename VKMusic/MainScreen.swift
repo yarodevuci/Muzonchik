@@ -31,7 +31,7 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     let gF = GlobalFunctions()
     let defaults = UserDefaults.standard
     //MARK: Variable
-    var menuView: BTNavigationDropdownMenu!
+    var menuView: BTNavigationDropdownMenuView!
     var activeDownloads = [String: Download]()
     var dataTask: URLSessionDataTask?
     var activityView = UIView()
@@ -130,7 +130,7 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     //Set up the navigation dropdown menu
     func setupDropdownMenu(title: String) {
         let items = ["Music", "Downloaded"]
-        menuView = BTNavigationDropdownMenu(containerView: self.view, title: title, items: items as [AnyObject])
+        menuView = BTNavigationDropdownMenuView(containerView: self.view, title: title, items: items as [AnyObject])
         menuView.cellSeparatorColor = GlobalFunctions.dropDownMenuColor
         menuView.cellHeight = 50
         menuView.cellBackgroundColor = GlobalFunctions.dropDownMenuColor

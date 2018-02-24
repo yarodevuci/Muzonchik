@@ -10,6 +10,7 @@ import UIKit
 import AVFoundation
 import MediaPlayer
 
+//MARK: - This class is deprecated
 class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
     
     //MARK: IBOutlet
@@ -106,24 +107,32 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         player.pause()
         currenTimeLabel.text? = Int(durationSlider.value).toAudioString
         playButton.setImage(UIImage(named: "MusicPlayer_Play"), for: UIControlState())
+        
+        
         AudioPlayerVC.playButtonImageName = "MusicPlayer_Play"
         MainScreen.mPlayerPlayButtonImageName = "MiniPlayer_Play"
     }
-    
-    @IBAction func tapToDismiss(_ sender: AnyObject) {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
     
     @IBAction func didFinishDragging(_ sender: AnyObject) {
         let value = self.durationSlider.value
         let time = CMTime(value: Int64(value), timescale: 1)
         player.seekToTime(time)
         playButton.setImage(UIImage(named: "MusicPlayer_Pause"), for: UIControlState())
+        
         AudioPlayerVC.playButtonImageName = "MusicPlayer_Pause"
         MainScreen.mPlayerPlayButtonImageName = "MiniPlayer_Pause"
         player.play()
     }
+    
+    
+    
+    
+    @IBAction func tapToDismiss(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    
+    
     
     
     @IBAction func tapPlayPauseButton(_ sender: AnyObject) {
