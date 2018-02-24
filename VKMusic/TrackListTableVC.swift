@@ -144,7 +144,9 @@ class TrackListTableVC: UITableViewController {
         GlobalFunctions.shared.urlToHTMLString(url: WEB_BASE_URL) { (htmlString, error) in
             if let error = error {
                 print(error)
-                SwiftNotificationBanner.presentNotification(error)
+                DispatchQueue.main.async {
+                    SwiftNotificationBanner.presentNotification(error)
+                }
                 SVProgressHUD.dismiss()
             }
             if let htmlString = htmlString {
@@ -161,7 +163,9 @@ class TrackListTableVC: UITableViewController {
         GlobalFunctions.shared.urlToHTMLString(url: SEARCH_URL + "\(tag)") { (htmlString, error) in
             if let error = error {
                 print(error)
-                SwiftNotificationBanner.presentNotification(error)
+                DispatchQueue.main.async {
+                    SwiftNotificationBanner.presentNotification(error)
+                }
                 SVProgressHUD.dismiss()
             }
             if let htmlString = htmlString {
