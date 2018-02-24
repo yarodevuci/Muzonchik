@@ -31,7 +31,6 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     let gF = GlobalFunctions()
     let defaults = UserDefaults.standard
     //MARK: Variable
-    var menuView: BTNavigationDropdownMenuView!
     var activeDownloads = [String: Download]()
     var dataTask: URLSessionDataTask?
     var activityView = UIView()
@@ -64,7 +63,6 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         //Set up the navigation dropdown menu
-        setupDropdownMenu(title: "My music")
         //Set up miniPlayerView
         miniPlayerView.isHidden = true
         
@@ -125,30 +123,6 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
         self.tableView(self.tableView, didSelectRowAt: rowToSelect as IndexPath)
         allowToPresent = true
     }
-    
-    
-    //Set up the navigation dropdown menu
-    func setupDropdownMenu(title: String) {
-        let items = ["Music", "Downloaded"]
-        menuView = BTNavigationDropdownMenuView(containerView: self.view, title: title, items: items as [AnyObject])
-        menuView.cellSeparatorColor = GlobalFunctions.dropDownMenuColor
-        menuView.cellHeight = 50
-        menuView.cellBackgroundColor = GlobalFunctions.dropDownMenuColor
-        menuView.cellSelectionColor = GlobalFunctions.vkNavBarColor
-        menuView.shouldKeepSelectedCellColor = false
-        menuView.cellTextLabelColor = UIColor.black
-        menuView.cellTextLabelFont = UIFont(name: "Avenir-Heavy", size: 17)
-        menuView.cellTextLabelAlignment = .center // .Center // .Right // .Left
-        menuView.arrowPadding = 15
-        menuView.animationDuration = 0.5
-        menuView.maskBackgroundColor = UIColor.black
-        menuView.maskBackgroundOpacity = 0.3
-        menuView.didSelectItemAtIndexHandler = {(indexPath: Int) -> () in
-            self.handleDropdownSelection(index: indexPath)
-        }
-        view.addSubview(menuView)
-    }
-    
     
     func displayDownloadedSongsOnly() {
         allowToDelete = true
