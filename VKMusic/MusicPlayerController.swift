@@ -131,6 +131,30 @@ class MusicPlayerController: UIViewController {
         AudioPlayer.defaultPlayer.previous()
     }
     
+    @IBAction func onDurationSliderValChanged(_ sender: UISlider, forEvent event: UIEvent) {
+        if let touchEvent = event.allTouches?.first {
+            switch touchEvent.phase {
+            case .began:
+            // handle drag began
+                AudioPlayer.defaultPlayer.pause()
+                currenTimeLabel.text? = Int(durationSlider.value).toAudioString
+                fullPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "MusicPlayer_Play"), for: UIControlState())
+            
+            case .ended:
+            // handle drag ended
+                let value = self.durationSlider.value
+                let time = CMTime(value: Int64(value), timescale: 1)
+                AudioPlayer.defaultPlayer.seekToTime(time)
+                fullPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "MusicPlayer_Pause"), for: UIControlState())
+                
+                AudioPlayer.defaultPlayer.play()
+            default:
+                break
+            }
+        }
+    }
+    
+    
     @IBAction func durationSliderValueChanged(_ sender: UISlider) {
         AudioPlayer.defaultPlayer.pause()
         currenTimeLabel.text? = Int(durationSlider.value).toAudioString

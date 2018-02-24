@@ -176,9 +176,7 @@
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="ucT-HX-oxP" userLabel="Duration Slider">
                                         <rect key="frame" x="30" y="343" width="260" height="1"/>
                                         <connections>
-                                            <action selector="didEndDraginDurationSlider:" destination="2Yb-SW-c5s" eventType="touchUpInside" id="Rk2-Cs-7dM"/>
-                                            <action selector="didEndDraginDurationSlider:" destination="2Yb-SW-c5s" eventType="touchUpOutside" id="f49-7A-SIH"/>
-                                            <action selector="durationSliderValueChanged:" destination="2Yb-SW-c5s" eventType="valueChanged" id="a1h-Fr-S71"/>
+                                            <action selector="onDurationSliderValChanged:forEvent:" destination="2Yb-SW-c5s" eventType="valueChanged" id="Ss3-Ek-MkI"/>
                                         </connections>
                                     </slider>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="za4-0E-6MH">
@@ -209,7 +207,11 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EUu-g1-6aI" userLabel="Next">
-                                                <rect key="frame" x="226" y="91" width="28" height="18"/>
+                                                <rect key="frame" x="215" y="75" width="50" height="50"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="50" id="VJ5-we-q8g"/>
+                                                    <constraint firstAttribute="height" constant="50" id="dHF-Qd-Huw"/>
+                                                </constraints>
                                                 <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal" image="MusicPlayer_Forward"/>
                                                 <connections>
@@ -217,7 +219,11 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k2g-Rg-x26" userLabel="Prev">
-                                                <rect key="frame" x="66.5" y="91" width="28" height="18"/>
+                                                <rect key="frame" x="55.5" y="75" width="50" height="50"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="50" id="g7c-L4-h68"/>
+                                                    <constraint firstAttribute="width" constant="50" id="qzP-qh-6VL"/>
+                                                </constraints>
                                                 <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal" image="MusicPlayer_Rewind"/>
                                                 <connections>
