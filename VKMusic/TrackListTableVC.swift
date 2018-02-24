@@ -89,15 +89,13 @@ class TrackListTableVC: UITableViewController {
     }
     
     private func setupMimiMusicPlayerView() {
-        if #available(iOS 9.0, *) {
-            UIProgressView.appearance(whenContainedInInstancesOf: [LNPopupBar.self]).tintColor = .red
-        } else {
-            // Fallback on earlier versions
-        }
+       
+        UIProgressView.appearance(whenContainedInInstancesOf: [LNPopupBar.self]).tintColor = .red
+       
         navigationController?.popupBar.tintColor = UIColor(white: 38.0 / 255.0, alpha: 1.0)
         navigationController?.popupBar.imageView.layer.cornerRadius = 5
         navigationController?.popupBar.barStyle = .default
-        navigationController?.popupInteractionStyle = .drag
+        navigationController?.popupInteractionStyle = .default
         navigationController?.popupBar.progressViewStyle = .top
     }
         
@@ -240,9 +238,6 @@ class TrackListTableVC: UITableViewController {
         popupContentController.albumArt = #imageLiteral(resourceName: "music_plate")
         popupContentController.trackDurationSeconds = audioFiles[indexPath.row].duration
         
-        popupContentController.popupItem.accessibilityHint = NSLocalizedString("Double Tap to Expand the Mini Player", comment: "")
-        popupContentView.popupCloseButton.accessibilityLabel = NSLocalizedString("Dismiss Now Playing Screen", comment: "")
-        
         popupContentController.popupItem.title = audioFiles[indexPath.row].artist
         popupContentController.popupItem.subtitle = audioFiles[indexPath.row].title
         
@@ -260,13 +255,16 @@ class TrackListTableVC: UITableViewController {
             if localFileExistsForTrack(audioFiles[indexPath.row]) {
                 let urlString = "\(audioFiles[indexPath.row].title)\n\(audioFiles[indexPath.row].artist).mp3"
                 let url = localFilePathForUrl(urlString)
+                audioFiles[indexPath.row].isPlaying = true
                 AudioPlayer.defaultPlayer.playAudioFromURL(audioURL: url!)
             } else {
                 let url = URL(string: audioFiles[indexPath.row].url!)
                 audioFiles[indexPath.row].isPlaying = true
                 AudioPlayer.defaultPlayer.playAudio(fromURL: url)
             }
-            tableView.reloadData()
+            DispatchQueue.main.async {
+                tableView.reloadData()
+            }
         }
     }
 

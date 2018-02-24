@@ -50,7 +50,7 @@ class MusicPlayerController: UIViewController {
 		
 		accessibilityDateComponentsFormatter.unitsStyle = .spellOut
 	}
-    
+    //MARK: - viewWillAppear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -58,10 +58,8 @@ class MusicPlayerController: UIViewController {
         volumeViewBar.showsRouteButton = false
         view?.setThumbImage(#imageLiteral(resourceName: "circle"), for: UIControlState.normal)
         view?.setMinimumTrackImage(GlobalFunctions.shared.getImageWithColor(color: UIColor(red:0.33, green:0.33, blue:0.33, alpha:1.0), size: CGSize(width: 1, height: 1)), for: UIControlState.normal)
-        
     }
-    
-
+    //MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         AudioPlayer.defaultPlayer.delegate = self
@@ -195,7 +193,7 @@ extension MusicPlayerController: AudioPlayerDelegate {
         let progressValue = Float(time) / Float(AudioPlayer.defaultPlayer.currentAudio.duration)
         popupItem.progress = progressValue
 
-        durationSlider.setValue(Float(time), animated: true)
+        durationSlider.value = Float(time)
 
         currenTimeLabel.text = Int(time).toAudioString
         durationLabel.text = "-\((Int(trackDurationSeconds) - Int(time)).toAudioString)"

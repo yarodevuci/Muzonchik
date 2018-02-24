@@ -35,9 +35,11 @@ extension TrackListTableVC: URLSessionDownloadDelegate {
                 })
             } catch let error as NSError {
                 DispatchQueue.main.async(execute: { () -> Void in
-                    SwiftNotificationBanner.presentNotification("\(self.activeDownloads[originalURL]!.songName)\nError downloading")
-                    let url = downloadTask.originalRequest?.url?.absoluteString
-                    self.activeDownloads[url!] = nil
+                    if self.activeDownloads[originalURL] != nil {
+                        SwiftNotificationBanner.presentNotification("\(self.activeDownloads[originalURL]!.songName)\nError downloading")
+                        let url = downloadTask.originalRequest?.url?.absoluteString
+                        self.activeDownloads[url!] = nil
+                    }
                 })
                 print("Could not copy file to disk: \(error.localizedDescription)")
             }
@@ -55,15 +57,15 @@ extension TrackListTableVC: URLSessionDownloadDelegate {
             let download = activeDownloads[downloadUrl] {
             download.progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
             let totalSize = ByteCountFormatter.string(fromByteCount: totalBytesExpectedToWrite, countStyle: ByteCountFormatter.CountStyle.binary)
-            if let trackIndex = trackIndexForDownloadTask(downloadTask),
-                let trackCell = tableView.cellForRow(at: IndexPath(row: trackIndex, section: 0)) as? TrackListTableViewCell {
-                
-                DispatchQueue.main.async(execute: {
+            
+            DispatchQueue.main.async(execute: {
+                if let trackIndex = self.trackIndexForDownloadTask(downloadTask),
+                    let trackCell = self.tableView.cellForRow(at: IndexPath(row: trackIndex, section: 0)) as? TrackListTableViewCell {
                     trackCell.downloadProgressView.progress = download.progress
                     let bitRate = String(Int(totalBytesExpectedToWrite) * 8 / 1000 / download.realmDuration)
                     trackCell.downloadProgressLabel.text =  String(format: "%.1f%% of %@",  download.progress * 100, totalSize) + " \(bitRate)kbps"
-                })
-            }
+                }
+            })
         }
     }
     
