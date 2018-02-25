@@ -5,3 +5,5 @@ project.pbxproj
 Manifest.lock
 *.xcuserdatad
 *.xcuserstate
+LNPopupController.xcscheme
+*.xcodeproj

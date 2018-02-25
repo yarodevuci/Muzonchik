@@ -738,11 +738,11 @@ extension MainScreen: UISearchBarDelegate {
 extension MainScreen: TrackCellDelegate {
     
     func cancelTapped(_ cell: TrackCell) {
-        if let indexPath = tableView.indexPath(for: cell) {
-            let track = MainScreen.searchResults[(indexPath as NSIndexPath).row]
-            //cancelDownload(track)
-            tableView.reloadRows(at: [IndexPath(row: (indexPath as NSIndexPath).row, section: 0)], with: .none)
-        }
+//        if let indexPath = tableView.indexPath(for: cell) {
+//            let track = MainScreen.searchResults[(indexPath as NSIndexPath).row]
+//            //cancelDownload(track)
+//            tableView.reloadRows(at: [IndexPath(row: (indexPath as NSIndexPath).row, section: 0)], with: .none)
+//        }
     }
     
     func downloadTapped(_ cell: TrackCell) {
