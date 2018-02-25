@@ -79,9 +79,7 @@ extension TrackListTableVC {
 				SwiftNotificationBanner.presentNotification("Deleted")
 			} catch let error as NSError {
 				print(error.debugDescription)
-				DispatchQueue.main.async {
-					SwiftNotificationBanner.presentNotification(error.localizedDescription)
-				}
+				SwiftNotificationBanner.presentNotification(error.localizedDescription)
 			}
 		}
 	}

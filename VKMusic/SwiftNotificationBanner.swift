@@ -11,8 +11,9 @@ import UIKit
 class SwiftNotificationBanner: NSObject {
         
     class func presentNotification(_ title: String) {
-        
-        SwiftNotificationBanner().present(title)
+        DispatchQueue.main.async {
+            SwiftNotificationBanner().present(title)
+        }
     }
     
     func present(_ title: String) {
