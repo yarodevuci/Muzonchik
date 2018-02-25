@@ -3,3 +3,5 @@ Podfile.lock
 xcdebugger
 project.pbxproj
 Manifest.lock
+*.xcuserdatad
+*.xcuserstate
