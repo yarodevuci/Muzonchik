@@ -23,17 +23,16 @@ class SwiftNotificationBanner: NSObject {
             _window.addSubview(bannerView)
         }
         
-        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
             bannerView.transform = CGAffineTransform(translationX: 0, y: 65.0)
             
             }, completion: {
                 finished in
                 
-                UIView.animate(withDuration: 0.1, delay: 1.5, options: .curveEaseOut, animations: {
+                UIView.animate(withDuration: 0.2, delay: 2.0, options: .curveEaseOut, animations: {
                     bannerView.transform = CGAffineTransform.identity
                     }, completion: {
                         finished in
-                        
                         bannerView.removeFromSuperview()
                 })
         })

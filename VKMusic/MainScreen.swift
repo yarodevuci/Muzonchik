@@ -466,13 +466,13 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     // Called when the Download button for a track is tapped
     func startDownload(_ track: Audio) {
         let urlString = track.url
-        if (urlString?.isEmpty)! {
+        if urlString.isEmpty {
             SwiftNotificationBanner.presentNotification("Unable to download. No url")
             print("No url :(")
             return
         }
-        let url =  URL(string: urlString!)
-        let download = Download(url: urlString!)
+        let url =  URL(string: urlString)
+        let download = Download(url: urlString)
         download.downloadTask = self.downloadsSession.downloadTask(with: url!)
         download.downloadTask!.resume()
         download.isDownloading = true
@@ -492,13 +492,13 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     }
     
     // Called when the Cancel button for a track is tapped
-    func cancelDownload(_ track: Audio) {
-        if let urlString = track.url,
-            let download = activeDownloads[urlString] {
-            download.downloadTask?.cancel()
-            activeDownloads[urlString] = nil
-        }
-    }
+//    func cancelDownload(_ track: Audio) {
+//        let urlString = track.url,
+//        let download = activeDownloads[urlString] {
+//            download.downloadTask?.cancel()
+//            activeDownloads[urlString] = nil
+//        }
+//    }
     
     func localFilePathForUrl(_ previewUrl: String) -> URL? {
         let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString
@@ -519,7 +519,7 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
     func trackIndexForDownloadTask(_ downloadTask: URLSessionDownloadTask) -> Int? {
         if let url = downloadTask.originalRequest?.url?.absoluteString {
             for (index, track) in MainScreen.searchResults.enumerated() {
-                if url == track.url! {
+                if url == track.url {
                     return index
                 }
             }
@@ -740,7 +740,7 @@ extension MainScreen: TrackCellDelegate {
     func cancelTapped(_ cell: TrackCell) {
         if let indexPath = tableView.indexPath(for: cell) {
             let track = MainScreen.searchResults[(indexPath as NSIndexPath).row]
-            cancelDownload(track)
+            //cancelDownload(track)
             tableView.reloadRows(at: [IndexPath(row: (indexPath as NSIndexPath).row, section: 0)], with: .none)
         }
     }
@@ -797,7 +797,7 @@ extension MainScreen: UITableViewDataSource {
         else { cell.musicIndicator.state = .estMusicIndicatorViewStateStopped }
         
         var showDownloadControls = false
-        if let download = activeDownloads[track.url!] {
+        if let download = activeDownloads[track.url] {
             showDownloadControls = true
             cell.progressView.progress = download.progress
             cell.progressLabel.text = (download.isDownloading) ? "Downloading..." : "Paused"
@@ -886,7 +886,7 @@ extension MainScreen: UITableViewDelegate {
                 player.playAudioFromURL(audioURL: url!)
             }
             else {
-                let url = URL(string: MainScreen.searchResults[indexPath.row].url!)
+                let url = URL(string: MainScreen.searchResults[indexPath.row].url)
                 self.player.playAudioFromURL(audioURL: url!)
             }
             

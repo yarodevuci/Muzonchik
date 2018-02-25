@@ -11,13 +11,13 @@ import SwiftSoup
 
 struct Audio: Equatable {
     
-    let url: String?
-    let title: String
+    var url = ""
+    var title = ""
     var artist = ""
-    let duration: Int
+    var duration = 0
     var isPlaying = false
     
-    init(url: String?, title: String, artist: String , duration: Int) {
+    init(url: String, title: String, artist: String , duration: Int) {
         self.url = url
         self.title = title
         self.artist = artist

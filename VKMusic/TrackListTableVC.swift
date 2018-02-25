@@ -183,12 +183,11 @@ class TrackListTableVC: UITableViewController {
                 audioFiles.append(audioFile)
             }
         }
-        
+
         DispatchQueue.main.async {
             SVProgressHUD.dismiss()
             self.tableView.reloadData()
         }
-        
     }
 
 
@@ -229,7 +228,7 @@ class TrackListTableVC: UITableViewController {
         cell.audioData = audioFiles[indexPath.row]
         cell.delegate = self
         
-        cell.downloadData = activeDownloads[audioFiles[indexPath.row].url!]
+        cell.downloadData = activeDownloads[audioFiles[indexPath.row].url]
         cell.checkMarkImageView.isHidden = !localFileExistsForTrack(audioFiles[indexPath.row])
         return cell
     }
@@ -257,12 +256,12 @@ class TrackListTableVC: UITableViewController {
                 audioFiles[i].isPlaying = false
             }
             if localFileExistsForTrack(audioFiles[indexPath.row]) {
-                let urlString = "\(audioFiles[indexPath.row].title)\n\(audioFiles[indexPath.row].artist).mp3"
+                let urlString = "\(audioFiles[indexPath.row].title)_\(audioFiles[indexPath.row].artist).mp3"
                 let url = localFilePathForUrl(urlString)
                 audioFiles[indexPath.row].isPlaying = true
                 AudioPlayer.defaultPlayer.playAudioFromURL(audioURL: url!)
             } else {
-                let url = URL(string: audioFiles[indexPath.row].url!)
+                let url = URL(string: audioFiles[indexPath.row].url)
                 audioFiles[indexPath.row].isPlaying = true
                 AudioPlayer.defaultPlayer.playAudio(fromURL: url)
             }
