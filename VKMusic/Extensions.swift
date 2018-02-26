@@ -40,4 +40,19 @@ extension UIColor {
     open class var lightBlack: UIColor { return UIColor(red:0.09, green:0.09, blue:0.09, alpha:1.0) }
     open class var blueButtonColor: CGColor { return UIColor(red:0.04, green:0.38, blue:1.00, alpha:1.0).cgColor }
     open class var redButtonColor: CGColor { return UIColor(red:0.93, green:0.11, blue:0.14, alpha:1.0).cgColor }
+    open class var splashBlue: UIColor { return UIColor(red:0.06, green:0.10, blue:0.17, alpha:1.0) }
+}
+
+//MARK: - UIViewController
+extension UIViewController {
+   
+    func presentViewControllerWithNavBar(identifier: String) {
+        let vc = self.storyboard!.instantiateViewController(withIdentifier: identifier)
+        let navController = UINavigationController(rootViewController: vc)
+        navController.navigationBar.barStyle = .blackTranslucent
+        navController.navigationBar.barTintColor = .splashBlue
+        DispatchQueue.main.async {
+            self.present(navController, animated:true, completion: nil)
+        }
+    }
 }

@@ -9,11 +9,11 @@
 import Foundation
 import RealmSwift
 
+struct DocumentsDirectory {
+    static let localDocumentsURL = FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: .userDomainMask).last!
+}
+
 extension TrackListTableVC {
-    
-    struct DocumentsDirectory {
-        static let localDocumentsURL = FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: .userDomainMask).last!
-    }
     
     func getLocalDownloadsURL() -> URL {
         return DocumentsDirectory.localDocumentsURL.appendingPathComponent("Downloads")

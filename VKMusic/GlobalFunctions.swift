@@ -63,5 +63,38 @@ class GlobalFunctions {
         return image
     }
     
+    func folderSize() -> UInt {
+    
+        let folderPath = DocumentsDirectory.localDocumentsURL.appendingPathComponent("Downloads")
+        if !FileManager.default.fileExists(atPath: folderPath.path) {
+            return 0
+        }
+        
+        let filesArray: [String] = try! FileManager.default.subpathsOfDirectory(atPath: folderPath.path)
+        var fileSize:UInt = 0
+        
+        for fileName in filesArray {
+            let filePath = folderPath.path + "/" + fileName
+            let fileDictionary:NSDictionary = try! FileManager.default.attributesOfItem(atPath: filePath) as NSDictionary
+            fileSize += UInt(fileDictionary.fileSize())
+        }
+        
+        return fileSize
+    }
+    
+    func getFriendlyCacheSize() -> String {
+        let size = folderSize()
+        if size == 0 {
+            return "Zero KB"
+        }
+        var convertedValue: Double = Double(size)
+        var multiplyFactor = 0
+        let tokens = ["bytes", "KB", "MB", "GB"]
+        while convertedValue > 1024 {
+            convertedValue /= 1024
+            multiplyFactor += 1
+        }
+        return String(format: "%4.2f %@", convertedValue, tokens[multiplyFactor])
+    }
 }
 

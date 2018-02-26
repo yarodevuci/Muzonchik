@@ -21,6 +21,7 @@ class TrackListTableVC: UITableViewController {
     var barPlayButton: UIBarButtonItem?
     var currentSelectedIndex = -1
     var audioFiles = [Audio]()
+    var filterAudios = [Audio]()
     var activeDownloads = [String: Download]()
     var isDownloadedListShown = false
     
@@ -64,10 +65,26 @@ class TrackListTableVC: UITableViewController {
     
     private func setupUI() {
         setupMimiMusicPlayerView()
+        addRightBarButton()
         setupSearchBar()
         let backView = UIView(frame: self.tableView.bounds)
-        backView.backgroundColor = .black
+        backView.backgroundColor = .splashBlue
         self.tableView.backgroundView = backView
+    }
+    
+    private func addRightBarButton() {
+        let settingsButton = UIButton(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
+        settingsButton.addTarget(self, action: #selector(didTapSettingsButton), for: .touchUpInside)
+        settingsButton.setImage(#imageLiteral(resourceName: "settings"), for: .normal)
+        settingsButton.transform = CGAffineTransform(translationX: 15, y: 0)
+        let settingsButtonContainer = UIView(frame: settingsButton.frame)
+        settingsButtonContainer.addSubview(settingsButton)
+        let rightBarButton = UIBarButtonItem(customView: settingsButtonContainer)
+        self.navigationItem.rightBarButtonItem = rightBarButton
+    }
+    
+    @objc func didTapSettingsButton() {
+        self.presentViewControllerWithNavBar(identifier: "SettingsTableVC")
     }
     
     private func setupSearchBar() {
@@ -95,7 +112,7 @@ class TrackListTableVC: UITableViewController {
         navigationController?.popupBar.tintColor = UIColor(white: 38.0 / 255.0, alpha: 1.0)
         navigationController?.popupBar.imageView.layer.cornerRadius = 5
         navigationController?.popupBar.barStyle = .default
-        navigationController?.popupInteractionStyle = .default
+        navigationController?.popupInteractionStyle = .drag
         navigationController?.popupBar.progressViewStyle = .top
     }
         
@@ -190,6 +207,9 @@ class TrackListTableVC: UITableViewController {
         }
     }
 
+    func isFiltering() -> Bool {
+        return searchController.isActive && !(searchController.searchBar.text ?? "").isEmpty && isDownloadedListShown
+    }
 
     // MARK: - Table view data source
 
@@ -199,6 +219,7 @@ class TrackListTableVC: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return audioFiles.count
+        //return isFiltering() ? filterAudios.count : audioFiles.count
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -225,24 +246,36 @@ class TrackListTableVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TrackListTableViewCell", for: indexPath) as! TrackListTableViewCell
-        cell.audioData = audioFiles[indexPath.row]
-        cell.delegate = self
+//        let audio: Audio
+//        isFiltering() ? (audio = filterAudios[indexPath.row]) : (audio = audioFiles[indexPath.row])
+//        cell.audioData = audio
+//        cell.downloadData = activeDownloads[audio.url]
+//        cell.checkMarkImageView.isHidden = !localFileExistsForTrack(audio)
         
+        cell.delegate = self
+        cell.audioData = audioFiles[indexPath.row]
         cell.downloadData = activeDownloads[audioFiles[indexPath.row].url]
         cell.checkMarkImageView.isHidden = !localFileExistsForTrack(audioFiles[indexPath.row])
+
+
         return cell
     }
     
    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let popupContentController = storyboard?.instantiateViewController(withIdentifier: "MusicPlayerController") as! MusicPlayerController
-        popupContentController.songTitle = audioFiles[indexPath.row].title
-        popupContentController.albumTitle = audioFiles[indexPath.row].artist
-        popupContentController.albumArt = #imageLiteral(resourceName: "music_plate")
-        popupContentController.trackDurationSeconds = audioFiles[indexPath.row].duration
+//        var audio: Audio
+//        isFiltering() ? (audio = filterAudios[indexPath.row]) : (audio = audioFiles[indexPath.row])
         
-        popupContentController.popupItem.title = audioFiles[indexPath.row].artist
-        popupContentController.popupItem.subtitle = audioFiles[indexPath.row].title
+        let audio = audioFiles[indexPath.row]
+        
+        let popupContentController = storyboard?.instantiateViewController(withIdentifier: "MusicPlayerController") as! MusicPlayerController
+        popupContentController.songTitle = audio.title
+        popupContentController.albumTitle = audio.artist
+        popupContentController.albumArt = #imageLiteral(resourceName: "artwork")
+        popupContentController.trackDurationSeconds = audio.duration
+        
+        popupContentController.popupItem.title = audio.artist
+        popupContentController.popupItem.subtitle = audio.title
         
         navigationController?.presentPopupBar(withContentViewController: popupContentController, animated: true, completion: nil)
         
@@ -255,13 +288,13 @@ class TrackListTableVC: UITableViewController {
             for i in 0..<audioFiles.count {
                 audioFiles[i].isPlaying = false
             }
-            if localFileExistsForTrack(audioFiles[indexPath.row]) {
-                let urlString = "\(audioFiles[indexPath.row].title)_\(audioFiles[indexPath.row].artist).mp3"
+            if localFileExistsForTrack(audio) {
+                let urlString = "\(audio.title)_\(audio.artist).mp3"
                 let url = localFilePathForUrl(urlString)
                 audioFiles[indexPath.row].isPlaying = true
                 AudioPlayer.defaultPlayer.playAudioFromURL(audioURL: url!)
             } else {
-                let url = URL(string: audioFiles[indexPath.row].url)
+                let url = URL(string: audio.url)
                 audioFiles[indexPath.row].isPlaying = true
                 AudioPlayer.defaultPlayer.playAudio(fromURL: url)
             }
@@ -274,15 +307,21 @@ class TrackListTableVC: UITableViewController {
     
 }
 
-//MARK: UISearchBar Delegate
+//MARK: - UISearchBar Delegate
 extension TrackListTableVC: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchBar.showsCancelButton = true
+//        if isDownloadedListShown {
+//            filterContentForSearchText(searchText)
+//        }
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        pullMusic()
+        //pullMusic()
+//        if isDownloadedListShown {
+//            self.displayDownloadedSongsOnly()
+//        }
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
@@ -294,5 +333,12 @@ extension TrackListTableVC: UISearchBarDelegate {
         if let searchText = searchBar.text {
             searchMusic(tag: searchText.lowercased())
         }
+    }
+    
+    func filterContentForSearchText(_ searchText: String) {
+        filterAudios = audioFiles.filter({(audio : Audio) -> Bool in
+            return audio.title.lowercased().contains(searchText.lowercased())
+        })
+        tableView.reloadData()
     }
 }
