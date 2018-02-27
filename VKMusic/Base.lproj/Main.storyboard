@@ -481,6 +481,29 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="50" id="YqO-2s-i5u">
+                                        <rect key="frame" x="0.0" y="391.5" width="320" height="50"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="YqO-2s-i5u" id="Okq-Qy-Cif">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Import From Dropbox" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ayu-51-ivT">
+                                                    <rect key="frame" x="16" y="0.0" width="288" height="50"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="18"/>
+                                                    <color key="textColor" red="0.96078431369999995" green="0.1764705882" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Ayu-51-ivT" firstAttribute="centerY" secondItem="Okq-Qy-Cif" secondAttribute="centerY" id="c36-rH-dj7"/>
+                                                <constraint firstItem="Ayu-51-ivT" firstAttribute="centerX" secondItem="Okq-Qy-Cif" secondAttribute="centerX" id="i5F-Jz-SG9"/>
+                                                <constraint firstItem="Ayu-51-ivT" firstAttribute="width" secondItem="Okq-Qy-Cif" secondAttribute="width" constant="-32" id="mby-DD-84w"/>
+                                                <constraint firstItem="Ayu-51-ivT" firstAttribute="height" secondItem="Okq-Qy-Cif" secondAttribute="height" id="vbq-s1-Ps8"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
