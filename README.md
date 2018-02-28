@@ -4,8 +4,8 @@
 Used to be VK based app that used VK API to search and downloaded music. Since VK closed that feauture I found another way that let you search, download music. 
 
 <div>
-<img height="450" src="./player.png" />
-<img height="450" src="./audiolist.png" />
+<img height="450" src="./audioplayer.png" />
+<img height="450" src="./musiclist.png" />
 </div>
 
 ##**Requirements**
