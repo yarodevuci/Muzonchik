@@ -74,7 +74,7 @@ extension TrackListTableVC: URLSessionDownloadDelegate {
         download.downloadTask = self.downloadsSession.downloadTask(with: url!)
         download.downloadTask!.resume()
         download.isDownloading = true
-        download.fileName = "\(track.title)_\(track.artist).mp3"
+        download.fileName = "\(track.title)_\(track.artist).mp\(track.url.last ?? "3")"
         download.songName = track.title
         
         //Save info for Ream:

@@ -97,9 +97,10 @@ class TrackListTableVC: UITableViewController {
             navigationItem.searchController = searchController
         } else {
             tableView.tableHeaderView = searchController.searchBar
+            searchController.searchBar.barTintColor = .splashBlue
         }
         definesPresentationContext = true
-        searchController.searchBar.barStyle = .black
+        searchController.searchBar.isTranslucent = true
         searchController.searchBar.keyboardAppearance = .dark
         // Setup the Scope Bar
         searchController.searchBar.delegate = self
@@ -114,6 +115,7 @@ class TrackListTableVC: UITableViewController {
         navigationController?.popupBar.barStyle = .default
         navigationController?.popupInteractionStyle = .drag
         navigationController?.popupBar.progressViewStyle = .top
+        navigationController?.popupBar.barTintColor = .white
     }
         
     private func setupDropdownMenu() {
@@ -206,6 +208,27 @@ class TrackListTableVC: UITableViewController {
             self.tableView.reloadData()
         }
     }
+    
+    func getAudioFromYouTubeURL(url: String) {
+        SVProgressHUD.show(withStatus: "Processing ...")
+        GlobalFunctions.shared.processYouTubeURL(url: url) { (audio, error) in
+            SVProgressHUD.dismiss()
+            if error == nil {
+                guard let audio = audio else { return }
+               
+                self.audioFiles.removeAll()
+                self.audioFiles.append(audio)
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            } else {
+                DispatchQueue.main.async {
+                    SwiftNotificationBanner.presentNotification(error ?? "ERROR parsing video")
+                }
+                print(error ?? "")
+            }
+        }
+    }
 
     func isFiltering() -> Bool {
         return searchController.isActive && !(searchController.searchBar.text ?? "").isEmpty && isDownloadedListShown
@@ -289,7 +312,7 @@ class TrackListTableVC: UITableViewController {
                 audioFiles[i].isPlaying = false
             }
             if localFileExistsForTrack(audio) {
-                let urlString = "\(audio.title)_\(audio.artist).mp3"
+                let urlString = "\(audio.title)_\(audio.artist).mp\(audio.url.last ?? "3")"
                 let url = localFilePathForUrl(urlString)
                 audioFiles[indexPath.row].isPlaying = true
                 AudioPlayer.defaultPlayer.playAudioFromURL(audioURL: url!)
@@ -331,7 +354,11 @@ extension TrackListTableVC: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
         if let searchText = searchBar.text {
-            searchMusic(tag: searchText.lowercased())
+            if searchText.hasPrefix("http") {
+                getAudioFromYouTubeURL(url: searchText)
+            } else {
+                searchMusic(tag: searchText.lowercased())
+            }
         }
     }
     

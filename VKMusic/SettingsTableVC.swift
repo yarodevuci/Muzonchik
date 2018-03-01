@@ -114,6 +114,13 @@ class SettingsTableVC: UITableViewController {
                         SVProgressHUD.dismiss()
                         self.musicLibrarySizeLabel.text = GlobalFunctions.shared.getFriendlyCacheSize()
                         self.numberOfCurrentFilesLabel.text = self.calculatedNumOfSongs()
+                        
+                        //Delete archive after downloading
+                        do {
+                            try FileManager.default.removeItem(at: zipFilePath)
+                        } catch {
+                            //Error Deleting file
+                        }
                     }
                 }
             })
