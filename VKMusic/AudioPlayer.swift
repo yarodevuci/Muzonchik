@@ -5,19 +5,17 @@ import Foundation
 import AVFoundation
 import MediaPlayer
 
-let audioPlayerWillChangePlaybleScreenNotificationKey = "audioPlayerWillChangePlaybleScreenNotification"
-let audioPlayerWillPlayNextSongNotificationKey = "audioPlayerWillPlayNextSongNotification"
-
-protocol AudioPlayerDelegate: class {
+protocol AudioPlayerDelegate {
     func audioDidChangeTime(_ time: Int64)
     func playerWillPlayNexAudio()
+	func playerWillPlayPreviousAudio()
 }
 
 class AudioPlayer {
     
     static let defaultPlayer = AudioPlayer()
     
-    weak var delegate: AudioPlayerDelegate?
+	var delegate: AudioPlayerDelegate?
     static var index = 0
     fileprivate var player: AVPlayer!
     var currentAudio: Audio!
@@ -111,18 +109,24 @@ class AudioPlayer {
         if let sa = rootViewController as? MainScreen { sa.miniPlayerAlbumCoverImage.image = image }
     }
     
-    func play() {
-        if player != nil {
-            player.play()
-        }
-    }
+	func play() {
+		if let player = player {
+			player.play()
+		}
+	}
     
     func previous() {
-        NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "playPreviousSong"), object: nil)
+       // NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "playPreviousSong"), object: nil)
+		delegate?.playerWillPlayPreviousAudio()
     }
+	
+	func next() {
+		//NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "playNextSong"), object: nil)
+		delegate?.playerWillPlayNexAudio()
+	}
     
     func pause() {
-        if player != nil {
+        if let player = player {
             player.pause()
         }
     }
@@ -130,14 +134,9 @@ class AudioPlayer {
     func getCurrentTime() -> Double {
         return player.currentTime().seconds
     }
-    
-    func next() {
-        //NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "playNextSong"), object: nil)
-		delegate?.playerWillPlayNexAudio()
-    }
-    
+	
     func kill() {
-        if player != nil {
+		if let player = player {
             killTimeObserver()
             player.replaceCurrentItem(with: nil)
             currentAudio = nil

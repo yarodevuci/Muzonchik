@@ -72,8 +72,25 @@ class TrackListTableVC: UITableViewController {
         self.tableView.selectRow(at: rowToSelect as IndexPath, animated: true, scrollPosition: UITableViewScrollPosition.none)
         self.tableView(self.tableView, didSelectRowAt: rowToSelect as IndexPath)
     }
+	
+	private func setupVolumeBar() {
+		let volume = SubtleVolume(style: .dashes)
+		let volumeHeight: CGFloat = 20
+		var volumeOrigin: CGFloat = -20//UIApplication.shared.statusBarFrame.height
+		if #available(iOS 11.0, *) {
+			volumeOrigin = additionalSafeAreaInsets.top
+		}
+		
+		volume.frame = CGRect(x: 0, y: volumeOrigin, width: UIScreen.main.bounds.width, height: volumeHeight)
+		volume.barTintColor = .pinkColor
+		volume.barBackgroundColor = UIColor.white.withAlphaComponent(0.3)
+		volume.animation = .slideDown
+		navigationController?.navigationBar.addSubview(volume)
+		//view.addSubview(volume)
+	}
     
     private func setupUI() {
+		setupVolumeBar()
         setupMimiMusicPlayerView()
         addRightBarButton()
         setupSearchBar()

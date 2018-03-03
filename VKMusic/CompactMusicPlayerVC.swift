@@ -11,7 +11,7 @@ import LNPopupController
 import MediaPlayer
 
 class CompactMusicPlayerVC: UIViewController {
-	
+	//MARK: - @IBOutlet
 	@IBOutlet weak var musicControlsView: UIView!
 	@IBOutlet weak var songNameLabel: UILabel!
 	@IBOutlet weak var albumNameLabel: UILabel!
@@ -20,12 +20,11 @@ class CompactMusicPlayerVC: UIViewController {
 	@IBOutlet weak var durationSlider: UISlider!
 	@IBOutlet weak var albumArtImageView: UIImageView!
 	@IBOutlet weak var fullPlayerPlayPauseButton: UIButton!
-	//@IBOutlet weak var volumeViewBar: MPVolumeView!
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	@IBOutlet weak var tableView: UITableView!
+	//MARK: - Constants
 	
-	let volume = SubtleVolume(style: .dashes)
-	
+	//MARK: - Variables
 	var playBarButton: UIBarButtonItem!
 	var puseBarButton: UIBarButtonItem!
 	var nextBarButton: UIBarButtonItem!
@@ -49,7 +48,6 @@ class CompactMusicPlayerVC: UIViewController {
 		else {
 			popupItem.rightBarButtonItems = [ puseBarButton, nextBarButton ]
 		}
-
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -82,7 +80,7 @@ class CompactMusicPlayerVC: UIViewController {
 		if #available(iOS 11.0, *) {
 			volumeOrigin = additionalSafeAreaInsets.top
 		}
-		
+		let volume = SubtleVolume(style: .dashes)
 		volume.frame = CGRect(x: 0, y: volumeOrigin, width: UIScreen.main.bounds.width, height: volumeHeight)
 		volume.barTintColor = .white
 		volume.barBackgroundColor = UIColor.white.withAlphaComponent(0.3)
@@ -243,6 +241,11 @@ extension CompactMusicPlayerVC: AudioPlayerDelegate {
 	func playerWillPlayNexAudio() {
 		print("Playing next aduio...")
 		playNextTrack()
+	}
+	
+	func playerWillPlayPreviousAudio() {
+		print("Playing previous aduio...")
+		playPreviousTrack()
 	}
 }
 

@@ -215,6 +215,10 @@ class AudioPlayerVC: UIViewController, AudioPlayerDelegate {
         AudioPlayerVC.time = 0
         setInfo(fromIndex: AudioPlayerVC.indexToPlay)
     }
+	
+	func playerWillPlayPreviousAudio() {
+		
+	}
     
     func updatePlayButton() {
         if playButton.imageView?.image == UIImage(named: "MusicPlayer_Play") {

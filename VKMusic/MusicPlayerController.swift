@@ -181,7 +181,7 @@ class MusicPlayerController: UIViewController {
 }
 //MARK: - AudioPlayerDelegate
 extension MusicPlayerController: AudioPlayerDelegate {
-    
+	
     //MARK: - AudioPlayerDelegate
     func audioDidChangeTime(_ time: Int64) {
         //Unhide play button and hide activity indicator
@@ -203,5 +203,9 @@ extension MusicPlayerController: AudioPlayerDelegate {
     func playerWillPlayNexAudio() {
         print("Audio is finished playing..")
     }
+	
+	func playerWillPlayPreviousAudio() {
+		
+	}
 }
 
