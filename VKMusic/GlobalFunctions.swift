@@ -140,5 +140,12 @@ class GlobalFunctions {
         }
         return String(format: "%4.2f %@", convertedValue, tokens[multiplyFactor])
     }
+	
+	func localFileExistsForTrack(_ audio: Audio) -> Bool {
+		let localUrl = DocumentsDirectory.localDownloadsURL.appendingPathComponent("\(audio.title)_\(audio.artist).mp\(audio.url.last ?? "3")")
+		var isDir : ObjCBool = false
+		let path = localUrl.path
+		return FileManager.default.fileExists(atPath: path, isDirectory: &isDir)
+	}
 }
 

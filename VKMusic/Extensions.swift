@@ -36,11 +36,12 @@ extension Int {
 //MARK: - UIColor
 extension UIColor {
     open class var dropDownMenuColor: UIColor { return UIColor(red:0.87, green:0.87, blue:0.87, alpha:1.0) }
-    open class var vkNavBarColor: UIColor { return UIColor(red:0.35, green:0.52, blue:0.71, alpha:1.0) }
+    open class var estBackGroundColor: UIColor { return UIColor(red:0.38, green:0.38, blue:0.38, alpha:1.0) }
     open class var lightBlack: UIColor { return UIColor(red:0.09, green:0.09, blue:0.09, alpha:1.0) }
     open class var blueButtonColor: CGColor { return UIColor(red:0.04, green:0.38, blue:1.00, alpha:1.0).cgColor }
-    open class var redButtonColor: CGColor { return UIColor(red:0.93, green:0.11, blue:0.14, alpha:1.0).cgColor }
+	open class var pinkColor: UIColor { return UIColor(red:0.77, green:0.14, blue:0.29, alpha:1.0) }
     open class var splashBlue: UIColor { return UIColor(red:0.06, green:0.10, blue:0.17, alpha:1.0) }
+	open class var playerBackgroundColor: UIColor { return UIColor(red:0.11, green:0.11, blue:0.12, alpha:1.0) }
 }
 
 //MARK: - UIViewController
@@ -55,4 +56,16 @@ extension UIViewController {
             self.present(navController, animated:true, completion: nil)
         }
     }
+}
+
+//MARK: - UIView extension
+extension UIView {
+	
+	func roundCorner(corners: UIRectCorner, radius: CGFloat) {
+		let maskPath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+		let maskLayer = CAShapeLayer()
+		maskLayer.frame = bounds
+		maskLayer.path = maskPath.cgPath
+		layer.mask = maskLayer
+	}
 }

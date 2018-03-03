@@ -11,6 +11,7 @@ import RealmSwift
 
 struct DocumentsDirectory {
     static let localDocumentsURL = FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: .userDomainMask).last!
+	static let localDownloadsURL = localDocumentsURL.appendingPathComponent("Downloads")
 }
 
 extension TrackListTableVC {

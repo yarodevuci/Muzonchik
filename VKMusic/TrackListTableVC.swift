@@ -43,15 +43,25 @@ class TrackListTableVC: UITableViewController {
         pullMusic()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        if ProcessInfo.processInfo.operatingSystemVersion.majorVersion <= 10 {
+            let insets = UIEdgeInsetsMake(topLayoutGuide.length, 0, bottomLayoutGuide.length, 0)
+            tableView.contentInset = insets
+            tableView.scrollIndicatorInsets = insets
+        }
+    }
+    
     @objc func playPreviousSong() {
         if currentSelectedIndex == 0 {
             currentSelectedIndex = audioFiles.count - 1
         } else {
-            currentSelectedIndex = currentSelectedIndex - 1
+            currentSelectedIndex -= 1
         }
-        let rowToSelect = NSIndexPath(row: currentSelectedIndex, section: 0)
-        self.tableView.selectRow(at: rowToSelect as IndexPath, animated: true, scrollPosition: UITableViewScrollPosition.none)
-        self.tableView(self.tableView, didSelectRowAt: rowToSelect as IndexPath)
+        let rowToSelect = IndexPath(row: currentSelectedIndex, section: 0)
+        tableView.selectRow(at: rowToSelect, animated: true, scrollPosition: .none)
+        tableView(tableView, didSelectRowAt: rowToSelect)
     }
     
     @objc func playNextSong() {
@@ -107,15 +117,30 @@ class TrackListTableVC: UITableViewController {
     }
     
     private func setupMimiMusicPlayerView() {
+		UIProgressView.appearance(whenContainedInInstancesOf: [LNPopupBar.self]).tintColor = .pinkColor
+		navigationController?.popupBar.progressViewStyle = .top
+		navigationController?.popupInteractionStyle = .drag
+		navigationController?.popupBar.imageView.layer.cornerRadius = 5
+		navigationController?.toolbar.barStyle = .black
+		//navigationController?.toolbar.barTintColor = .splashBlue
+		navigationController?.popupBar.tintColor = .white//UIColor(white: 38.0 / 255.0, alpha: 1.0)
+		navigationController?.updatePopupBarAppearance()
        
-        UIProgressView.appearance(whenContainedInInstancesOf: [LNPopupBar.self]).tintColor = .red
-       
-        navigationController?.popupBar.tintColor = UIColor(white: 38.0 / 255.0, alpha: 1.0)
-        navigationController?.popupBar.imageView.layer.cornerRadius = 5
-        navigationController?.popupBar.barStyle = .default
-        navigationController?.popupInteractionStyle = .drag
-        navigationController?.popupBar.progressViewStyle = .top
-        navigationController?.popupBar.barTintColor = .white
+//        UIProgressView.appearance(whenContainedInInstancesOf: [LNPopupBar.self]).tintColor = .red
+//
+//        navigationController?.popupBar.tintColor = UIColor(white: 38.0 / 255.0, alpha: 1.0)
+//        navigationController?.popupBar.imageView.layer.cornerRadius = 5
+//        navigationController?.popupBar.barStyle = .default
+//        navigationController?.popupInteractionStyle = .drag
+//        navigationController?.popupBar.progressViewStyle = .top
+//        navigationController?.popupBar.barTintColor = .splashBlue
+//		navigationController?.popupBar.isTranslucent = true
+//		if #available(iOS 10.0, *) {
+//			navigationController?.popupBar.backgroundStyle = .light
+//		} else {
+//			// Fallback on earlier versions
+//		}
+//		self.navigationController?.updatePopupBarAppearance()
     }
         
     private func setupDropdownMenu() {
@@ -164,7 +189,7 @@ class TrackListTableVC: UITableViewController {
             if let error = error {
                 print(error)
                 DispatchQueue.main.async {
-                    SwiftNotificationBanner.presentNotification(error)
+                    SwiftNotificationBanner.presentNotification("Unable to load")
                 }
                 SVProgressHUD.dismiss()
             }
@@ -291,22 +316,18 @@ class TrackListTableVC: UITableViewController {
         
         let audio = audioFiles[indexPath.row]
         
-        let popupContentController = storyboard?.instantiateViewController(withIdentifier: "MusicPlayerController") as! MusicPlayerController
-        popupContentController.songTitle = audio.title
-        popupContentController.albumTitle = audio.artist
-        popupContentController.albumArt = #imageLiteral(resourceName: "artwork")
-        popupContentController.trackDurationSeconds = audio.duration
-        
-        popupContentController.popupItem.title = audio.artist
-        popupContentController.popupItem.subtitle = audio.title
-        
-        navigationController?.presentPopupBar(withContentViewController: popupContentController, animated: true, completion: nil)
-        
+        let musicPlayerController = storyboard?.instantiateViewController(withIdentifier: "CompactMusicPlayerVC") as! CompactMusicPlayerVC
+		musicPlayerController.tracks = audioFiles
+		musicPlayerController.currentIndexPathRow = indexPath.row
+		navigationController?.popupBar.marqueeScrollEnabled = true
+		navigationController?.presentPopupBar(withContentViewController: musicPlayerController, animated: true, completion: nil)
+
+		
         if currentSelectedIndex != indexPath.row {
             currentSelectedIndex = indexPath.row
             AudioPlayer.defaultPlayer.setPlayList(audioFiles)
             AudioPlayer.index = currentSelectedIndex
-            
+			
             //Mark that nothing isPlaying
             for i in 0..<audioFiles.count {
                 audioFiles[i].isPlaying = false

@@ -5,18 +5,10 @@ import Foundation
 import AVFoundation
 import MediaPlayer
 
-
-enum PlaybleScreen {
-    case none
-    case all
-    case search
-    case cache
-}
-
 let audioPlayerWillChangePlaybleScreenNotificationKey = "audioPlayerWillChangePlaybleScreenNotification"
 let audioPlayerWillPlayNextSongNotificationKey = "audioPlayerWillPlayNextSongNotification"
 
-protocol AudioPlayerDelegate {
+protocol AudioPlayerDelegate: class {
     func audioDidChangeTime(_ time: Int64)
     func playerWillPlayNexAudio()
 }
@@ -25,16 +17,11 @@ class AudioPlayer {
     
     static let defaultPlayer = AudioPlayer()
     
-    var delegate: AudioPlayerDelegate?
+    weak var delegate: AudioPlayerDelegate?
     static var index = 0
     fileprivate var player: AVPlayer!
     var currentAudio: Audio!
-    var playbleScreen = PlaybleScreen.none {
-        willSet {
-            NotificationCenter.default.post(name: Notification.Name(rawValue: audioPlayerWillChangePlaybleScreenNotificationKey), object: nil, userInfo: nil)
-        }
-    }
-    
+	
     fileprivate var currentPlayList = [Audio]()
     fileprivate var timeObserber: AnyObject?
     
@@ -64,10 +51,7 @@ class AudioPlayer {
         if currentAudio != nil {
             killTimeObserver()
         }
-        if let d = self.delegate {
-            d.playerWillPlayNexAudio()
-        }
-        
+	
         currentAudio = currentPlayList[AudioPlayer.index]
         
         let playerItem = AVPlayerItem(url: url)
@@ -80,15 +64,12 @@ class AudioPlayer {
         }
     }
     
-    //MARK: - Public API
+	//MARK: - Public API - #####  DEPRECATED  #####
     func playAudioFromURL(audioURL: URL) {
         if currentAudio != nil {
             killTimeObserver()
         }
-        if let d = self.delegate {
-            d.playerWillPlayNexAudio()
-        }
-        
+		
         currentAudio = currentPlayList[AudioPlayer.index]
         
         let playerItem = AVPlayerItem(url: audioURL)
@@ -124,7 +105,7 @@ class AudioPlayer {
         }
 
     }
-    
+	
     func setAlbumImageForMiniPlayer(image: UIImage) {
         let rootViewController = UIApplication.shared.keyWindow?.rootViewController
         if let sa = rootViewController as? MainScreen { sa.miniPlayerAlbumCoverImage.image = image }
@@ -151,7 +132,8 @@ class AudioPlayer {
     }
     
     func next() {
-        NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "playNextSong"), object: nil)
+        //NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "playNextSong"), object: nil)
+		delegate?.playerWillPlayNexAudio()
     }
     
     func kill() {
