@@ -101,6 +101,8 @@ class CompactMusicPlayerVC: UIViewController {
 		popupItem.image = #imageLiteral(resourceName: "ArtPlaceholder")
 		trackDurationSeconds = tracks[currentIndexPathRow].duration
 		durationSlider.maximumValue = Float(trackDurationSeconds)
+		
+		NotificationCenter.default.post(name: .playTrackAtIndex, object: nil, userInfo: ["index" : currentIndexPathRow])
 	}
 	
 	func updatePlayButton() {
@@ -144,6 +146,8 @@ class CompactMusicPlayerVC: UIViewController {
 		tableView.selectRow(at: IndexPath(row: nextIndex, section: 0), animated: true, scrollPosition: .none)
 		tableView(tableView, didSelectRowAt: IndexPath(row: nextIndex, section: 0))
 		tableView.scrollToRow(at: IndexPath(row: nextIndex, section: 0), at: .none, animated: true)
+		
+		NotificationCenter.default.post(name: .playTrackAtIndex, object: nil, userInfo: ["index" : nextIndex])
 	}
 	
 	func playPreviousTrack() {
@@ -155,6 +159,8 @@ class CompactMusicPlayerVC: UIViewController {
 		tableView.selectRow(at: IndexPath(row: nextIndex, section: 0), animated: true, scrollPosition: .none)
 		tableView(tableView, didSelectRowAt: IndexPath(row: nextIndex, section: 0))
 		tableView.scrollToRow(at: IndexPath(row: nextIndex, section: 0), at: .none, animated: true)
+		
+		NotificationCenter.default.post(name: .playTrackAtIndex, object: nil, userInfo: ["index" : nextIndex])
 	}
 	
 	//Play pause songs

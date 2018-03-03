@@ -116,12 +116,12 @@ class AudioPlayer {
 	}
     
     func previous() {
-       // NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "playPreviousSong"), object: nil)
+        NotificationCenter.default.post(name: .previousTrack, object: nil)
 		delegate?.playerWillPlayPreviousAudio()
     }
 	
 	func next() {
-		//NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "playNextSong"), object: nil)
+		NotificationCenter.default.post(name: .nextTrack, object: nil)
 		delegate?.playerWillPlayNexAudio()
 	}
     

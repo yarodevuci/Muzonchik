@@ -69,3 +69,9 @@ extension UIView {
 		layer.mask = maskLayer
 	}
 }
+
+extension Notification.Name {
+	static let nextTrack = Notification.Name("playNextSong")
+	static let previousTrack = Notification.Name("playPreviousSong")
+	static let playTrackAtIndex = Notification.Name("playTrackAtIndex")
+}
