@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -515,12 +514,47 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="50" id="1Br-Qi-KN9">
+                                        <rect key="frame" x="0.0" y="305.5" width="320" height="50"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1Br-Qi-KN9" id="HSM-d5-sgd">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Duration Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KWD-5w-fF9">
+                                                    <rect key="frame" x="16" y="0.0" width="176" height="50"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="176" id="7Kl-BO-PUx"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BOW-ep-iDV">
+                                                    <rect key="frame" x="300.5" y="0.0" width="9.5" height="50"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
+                                                    <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="KWD-5w-fF9" secondAttribute="trailing" constant="20" symbolic="YES" id="3yc-Qv-oaj"/>
+                                                <constraint firstItem="KWD-5w-fF9" firstAttribute="height" secondItem="HSM-d5-sgd" secondAttribute="height" id="7AO-hv-axw"/>
+                                                <constraint firstItem="BOW-ep-iDV" firstAttribute="height" secondItem="HSM-d5-sgd" secondAttribute="height" id="dq3-pK-myK"/>
+                                                <constraint firstItem="BOW-ep-iDV" firstAttribute="centerY" secondItem="HSM-d5-sgd" secondAttribute="centerY" id="eeY-aU-g2k"/>
+                                                <constraint firstItem="KWD-5w-fF9" firstAttribute="leading" secondItem="HSM-d5-sgd" secondAttribute="leading" constant="16" id="fKR-ey-RQ4"/>
+                                                <constraint firstItem="KWD-5w-fF9" firstAttribute="centerY" secondItem="HSM-d5-sgd" secondAttribute="centerY" id="pwh-C3-r2Y"/>
+                                                <constraint firstAttribute="trailing" secondItem="BOW-ep-iDV" secondAttribute="trailing" constant="10" id="z7a-nf-xA5"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection id="LI6-7u-FZE">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="50" id="JYY-Ag-j9y">
-                                        <rect key="frame" x="0.0" y="341.5" width="320" height="50"/>
+                                        <rect key="frame" x="0.0" y="391.5" width="320" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JYY-Ag-j9y" id="M2Z-6t-6NA">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
@@ -543,7 +577,7 @@
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="50" id="YqO-2s-i5u">
-                                        <rect key="frame" x="0.0" y="391.5" width="320" height="50"/>
+                                        <rect key="frame" x="0.0" y="441.5" width="320" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="YqO-2s-i5u" id="Okq-Qy-Cif">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
@@ -586,6 +620,7 @@
                         <outlet property="audioCategorySwitch" destination="KOI-Lw-fFg" id="SOD-Hi-wbb"/>
                         <outlet property="musicLibrarySizeLabel" destination="80W-OO-ofV" id="YHP-T5-2gC"/>
                         <outlet property="numberOfCurrentFilesLabel" destination="yl4-dI-NGT" id="L4J-YW-kYq"/>
+                        <outlet property="totalDurationTimeLabel" destination="BOW-ep-iDV" id="4uR-7E-yQH"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dwM-15-MNp" userLabel="First Responder" sceneMemberID="firstResponder"/>
