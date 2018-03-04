@@ -169,7 +169,7 @@ class CompactMusicPlayerVC: UIViewController {
 		setPlayButtonIconToPlay()
 		popupItem.rightBarButtonItems = [ playBarButton, nextBarButton ]
 		
-		let cell = tableView.cellForRow(at: IndexPath(row: currentIndexPathRow, section: 0)) as! TrackTableViewCell
+		guard let cell = tableView.cellForRow(at: IndexPath(row: currentIndexPathRow, section: 0)) as? TrackTableViewCell else { return }
 		cell.musicPlayIdicatorView.state = .estMusicIndicatorViewStatePaused
 	}
 	
@@ -177,7 +177,7 @@ class CompactMusicPlayerVC: UIViewController {
 		AudioPlayer.defaultPlayer.play()
 		setPlayButtonIconToPause()
 		popupItem.rightBarButtonItems = [ puseBarButton, nextBarButton ]
-		let cell = tableView.cellForRow(at: IndexPath(row: currentIndexPathRow, section: 0)) as! TrackTableViewCell
+		guard let cell = tableView.cellForRow(at: IndexPath(row: currentIndexPathRow, section: 0)) as? TrackTableViewCell else { return }
 		cell.musicPlayIdicatorView.state = .estMusicIndicatorViewStatePlaying
 	}
 	
