@@ -60,7 +60,6 @@ extension UIViewController {
 
 //MARK: - UIView extension
 extension UIView {
-	
 	func roundCorner(corners: UIRectCorner, radius: CGFloat) {
 		let maskPath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
 		let maskLayer = CAShapeLayer()
@@ -69,9 +68,15 @@ extension UIView {
 		layer.mask = maskLayer
 	}
 }
-
+//MARK: - Notification.Name
 extension Notification.Name {
 	static let nextTrack = Notification.Name("playNextSong")
 	static let previousTrack = Notification.Name("playPreviousSong")
 	static let playTrackAtIndex = Notification.Name("playTrackAtIndex")
+}
+
+//MARK: - Get Bundle Release and Version Number
+extension Bundle {
+	var releaseVersionNumber: String? { return self.infoDictionary?["CFBundleShortVersionString"] as? String }
+	var buildVersionNumber: String? { return self.infoDictionary?["CFBundleVersion"] as? String }
 }

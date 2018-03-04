@@ -16,7 +16,7 @@
         </array>
     </customFonts>
     <scenes>
-        <!--Track List TableVC-->
+        <!--Library-->
         <scene sceneID="XKu-wR-Sf6">
             <objects>
                 <tableViewController storyboardIdentifier="TrackListTableVC" id="YDD-qJ-rLp" customClass="TrackListTableVC" customModule="Muzonchik" customModuleProvider="target" sceneMemberID="viewController">
@@ -119,7 +119,7 @@
                             <outlet property="delegate" destination="YDD-qJ-rLp" id="SlB-XR-ykn"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="eXh-U1-SDL"/>
+                    <navigationItem key="navigationItem" title="Library" id="eXh-U1-SDL"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IRE-hM-Xfo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

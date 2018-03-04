@@ -18,7 +18,6 @@ class TrackListTableVC: UITableViewController {
 	//MARK: - Constants
 	let searchController = UISearchController(searchResultsController: nil)
 	//MARK: - Variables
-	var barPlayButton: UIBarButtonItem?
 	var currentSelectedIndex = -1
 	var audioFiles = [Audio]()
 	var filterAudios = [Audio]()
@@ -40,8 +39,10 @@ class TrackListTableVC: UITableViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		setupUI()
-		setupDropdownMenu()
-		pullMusic()
+//		setupDropdownMenu()
+//		pullMusic()
+		
+		displayDownloadedSongsOnly()
 	}
 	
 	override func viewDidLayoutSubviews() {
@@ -64,10 +65,10 @@ class TrackListTableVC: UITableViewController {
 	private func setupVolumeBar() {
 		let volume = SubtleVolume(style: .dashes)
 		let volumeHeight: CGFloat = 20
-		var volumeOrigin: CGFloat = -20//UIApplication.shared.statusBarFrame.height
-		if #available(iOS 11.0, *) {
-			volumeOrigin = additionalSafeAreaInsets.top
-		}
+		let volumeOrigin: CGFloat = -20//UIApplication.shared.statusBarFrame.height
+//		if #available(iOS 11.0, *) {
+//			volumeOrigin = additionalSafeAreaInsets.top
+//		}
 		
 		volume.frame = CGRect(x: 0, y: volumeOrigin, width: UIScreen.main.bounds.width, height: volumeHeight)
 		volume.barTintColor = .pinkColor
@@ -173,7 +174,7 @@ class TrackListTableVC: UITableViewController {
 	
 	func displayDownloadedSongsOnly() {
 		isDownloadedListShown = true
-		currentSelectedIndex = -1
+//		currentSelectedIndex = -1
 		
 		let realm = try! Realm()
 		let downloadedAudioFiles = realm.objects(SavedAudio.self)
@@ -348,17 +349,15 @@ class TrackListTableVC: UITableViewController {
 extension TrackListTableVC: UISearchBarDelegate {
 	
 	func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-		searchBar.showsCancelButton = true
+		//searchBar.showsCancelButton = true
 		//        if isDownloadedListShown {
 		//            filterContentForSearchText(searchText)
 		//        }
 	}
 	
 	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-		//pullMusic()
-		//        if isDownloadedListShown {
-		//            self.displayDownloadedSongsOnly()
-		//        }
+		displayDownloadedSongsOnly()
+		
 	}
 	
 	func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
@@ -366,7 +365,6 @@ extension TrackListTableVC: UISearchBarDelegate {
 	}
 	
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-		
 		if let searchText = searchBar.text {
 			if searchText.hasPrefix("http") {
 				getAudioFromYouTubeURL(url: searchText)
