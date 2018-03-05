@@ -90,13 +90,8 @@ class TrackListTableVC: UITableViewController {
 	}
 	
 	private func addRightBarButton() {
-		let settingsButton = UIButton(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
-		settingsButton.addTarget(self, action: #selector(didTapSettingsButton), for: .touchUpInside)
-		settingsButton.setImage(#imageLiteral(resourceName: "settings"), for: .normal)
-		settingsButton.transform = CGAffineTransform(translationX: 15, y: 0)
-		let settingsButtonContainer = UIView(frame: settingsButton.frame)
-		settingsButtonContainer.addSubview(settingsButton)
-		let rightBarButton = UIBarButtonItem(customView: settingsButtonContainer)
+		let rightBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "settings"), style: .plain, target: self, action: #selector(didTapSettingsButton))
+		rightBarButton.tintColor = .white
 		self.navigationItem.rightBarButtonItem = rightBarButton
 	}
 	
@@ -125,6 +120,7 @@ class TrackListTableVC: UITableViewController {
 	
 	private func setupMimiMusicPlayerView() {
 		UIProgressView.appearance(whenContainedInInstancesOf: [LNPopupBar.self]).tintColor = .pinkColor
+		
 		navigationController?.popupBar.progressViewStyle = .top
 		navigationController?.popupInteractionStyle = .drag
 		navigationController?.popupBar.imageView.layer.cornerRadius = 5
