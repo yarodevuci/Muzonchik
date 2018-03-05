@@ -108,7 +108,7 @@ open class ESTMusicIndicatorView: UIView {
     }
     
     fileprivate var hasInstalledConstraints: Bool = false
-    fileprivate var contentView:ESTMusicIndicatorContentView!
+    fileprivate var contentView: ESTMusicIndicatorContentView!
     
     override public init(frame: CGRect) {
         super.init(frame: frame)

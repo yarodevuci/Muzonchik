@@ -12,12 +12,23 @@ import Zip
 import SVProgressHUD
 import SwiftyDropbox
 
+extension Double {
+	func parsedTimeDuration() -> String {
+		let formatter = DateComponentsFormatter()
+		formatter.allowedUnits = [.hour, .minute, .second]
+		formatter.unitsStyle = .abbreviated
+		guard let formattedString = formatter.string(from: self) else { return "" }
+		return formattedString
+	}
+}
+
 class SettingsTableVC: UITableViewController {
     
     @IBOutlet weak var musicLibrarySizeLabel: UILabel!
     @IBOutlet weak var numberOfCurrentFilesLabel: UILabel!
     @IBOutlet weak var audioCategorySwitch: UISwitch!
-    
+	@IBOutlet weak var totalDurationTimeLabel: UILabel!
+	
     let client = DropboxClient(accessToken: "NmIeH0pT1foAAAAAAAAiguXgIQmC_V0CnwkgG7DZKOF4c4yuYEclYPRldub7UAI3")
     
     override func viewDidLoad() {
@@ -28,10 +39,6 @@ class SettingsTableVC: UITableViewController {
         audioCategorySwitch.isOn = UserDefaults.standard.value(forKey: "mixAudioWithOthers") as? Bool ?? true
         musicLibrarySizeLabel.text = GlobalFunctions.shared.getFriendlyCacheSize()
         numberOfCurrentFilesLabel.text = calculatedNumOfSongs()
-        
-        
-        //unZip()
-        //dowloadMusicArchiveFromDropBox()
     }
     
     func zipAllDownloads() {
@@ -69,6 +76,12 @@ class SettingsTableVC: UITableViewController {
     func calculatedNumOfSongs() -> String {
         let realm = try! Realm()
         let downloadedAudioFiles = realm.objects(SavedAudio.self)
+		
+		var timeSeconds = 0
+		for track in downloadedAudioFiles {
+			timeSeconds += track.duration
+		}
+		totalDurationTimeLabel.text = Double(timeSeconds).parsedTimeDuration()		
         return downloadedAudioFiles.count.description
     }
     
@@ -114,6 +127,13 @@ class SettingsTableVC: UITableViewController {
                         SVProgressHUD.dismiss()
                         self.musicLibrarySizeLabel.text = GlobalFunctions.shared.getFriendlyCacheSize()
                         self.numberOfCurrentFilesLabel.text = self.calculatedNumOfSongs()
+                        
+                        //Delete archive after downloading
+                        do {
+                            try FileManager.default.removeItem(at: zipFilePath)
+                        } catch {
+                            //Error Deleting file
+                        }
                     }
                 }
             })
@@ -150,4 +170,8 @@ class SettingsTableVC: UITableViewController {
             self.dowloadMusicArchiveFromDropBox()
         }
     }
+	
+	override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+		return section == 2 ? "Музончик v\(Bundle.main.releaseVersionNumber ?? "") Build \(Bundle.main.buildVersionNumber ?? "")" : nil
+	}
 }

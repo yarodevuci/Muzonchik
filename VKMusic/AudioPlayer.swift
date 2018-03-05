@@ -5,36 +5,21 @@ import Foundation
 import AVFoundation
 import MediaPlayer
 
-
-enum PlaybleScreen {
-    case none
-    case all
-    case search
-    case cache
-}
-
-let audioPlayerWillChangePlaybleScreenNotificationKey = "audioPlayerWillChangePlaybleScreenNotification"
-let audioPlayerWillPlayNextSongNotificationKey = "audioPlayerWillPlayNextSongNotification"
-
 protocol AudioPlayerDelegate {
     func audioDidChangeTime(_ time: Int64)
     func playerWillPlayNexAudio()
+	func playerWillPlayPreviousAudio()
 }
 
 class AudioPlayer {
     
     static let defaultPlayer = AudioPlayer()
     
-    var delegate: AudioPlayerDelegate?
+	var delegate: AudioPlayerDelegate?
     static var index = 0
     fileprivate var player: AVPlayer!
     var currentAudio: Audio!
-    var playbleScreen = PlaybleScreen.none {
-        willSet {
-            NotificationCenter.default.post(name: Notification.Name(rawValue: audioPlayerWillChangePlaybleScreenNotificationKey), object: nil, userInfo: nil)
-        }
-    }
-    
+	
     fileprivate var currentPlayList = [Audio]()
     fileprivate var timeObserber: AnyObject?
     
@@ -64,10 +49,7 @@ class AudioPlayer {
         if currentAudio != nil {
             killTimeObserver()
         }
-        if let d = self.delegate {
-            d.playerWillPlayNexAudio()
-        }
-        
+	
         currentAudio = currentPlayList[AudioPlayer.index]
         
         let playerItem = AVPlayerItem(url: url)
@@ -80,15 +62,12 @@ class AudioPlayer {
         }
     }
     
-    //MARK: - Public API
+	//MARK: - Public API - #####  DEPRECATED  #####
     func playAudioFromURL(audioURL: URL) {
         if currentAudio != nil {
             killTimeObserver()
         }
-        if let d = self.delegate {
-            d.playerWillPlayNexAudio()
-        }
-        
+		
         currentAudio = currentPlayList[AudioPlayer.index]
         
         let playerItem = AVPlayerItem(url: audioURL)
@@ -124,24 +103,30 @@ class AudioPlayer {
         }
 
     }
-    
+	
     func setAlbumImageForMiniPlayer(image: UIImage) {
         let rootViewController = UIApplication.shared.keyWindow?.rootViewController
         if let sa = rootViewController as? MainScreen { sa.miniPlayerAlbumCoverImage.image = image }
     }
     
-    func play() {
-        if player != nil {
-            player.play()
-        }
-    }
+	func play() {
+		if let player = player {
+			player.play()
+		}
+	}
     
     func previous() {
-        NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "playPreviousSong"), object: nil)
+        NotificationCenter.default.post(name: .previousTrack, object: nil)
+		delegate?.playerWillPlayPreviousAudio()
     }
+	
+	func next() {
+		NotificationCenter.default.post(name: .nextTrack, object: nil)
+		delegate?.playerWillPlayNexAudio()
+	}
     
     func pause() {
-        if player != nil {
+        if let player = player {
             player.pause()
         }
     }
@@ -149,13 +134,9 @@ class AudioPlayer {
     func getCurrentTime() -> Double {
         return player.currentTime().seconds
     }
-    
-    func next() {
-        NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "playNextSong"), object: nil)
-    }
-    
+	
     func kill() {
-        if player != nil {
+		if let player = player {
             killTimeObserver()
             player.replaceCurrentItem(with: nil)
             currentAudio = nil

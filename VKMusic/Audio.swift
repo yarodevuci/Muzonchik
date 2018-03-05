@@ -15,7 +15,6 @@ struct Audio: Equatable {
     var title = ""
     var artist = ""
     var duration = 0
-    var isPlaying = false
     
     init(url: String, title: String, artist: String , duration: Int) {
         self.url = url
