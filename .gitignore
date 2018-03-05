@@ -6,5 +6,4 @@ Manifest.lock
 *.xcuserdatad
 *.xcuserstate
 LNPopupController.xcscheme
-*.xcodeproj
 ./Pods/
