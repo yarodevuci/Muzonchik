@@ -143,19 +143,15 @@ class TrackListTableVC: UITableViewController {
 		let activityIndicatorButton = UIBarButtonItem(customView: activityContainer)
 		
 		let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
-		
 		let statusView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 200, height: 44))
-		let prg = UIProgressView(frame: CGRect(x: 0.0, y: 0, width: 320, height: 10))
-		prg.progress = 0.5
-		prg.tintColor = .red
-		
+	
 		toolBarStatusLabel = UILabel(frame: CGRect(x: 0.0, y: 0.0, width: 200, height: 44))
 		toolBarStatusLabel.backgroundColor = .clear
 		toolBarStatusLabel.textAlignment = .center
 		toolBarStatusLabel.textColor = .white
-		toolBarStatusLabel.text = "Searching ..."
+		toolBarStatusLabel.adjustsFontSizeToFitWidth = true
+		toolBarStatusLabel.minimumScaleFactor = 0.6
 		statusView.addSubview(toolBarStatusLabel)
-		statusView.addSubview(prg)
 		let statusLabelButton = UIBarButtonItem(customView: statusView)
 		toolbarItems = [activityIndicatorButton, spacer, statusLabelButton, spacer]
 	}
@@ -233,7 +229,7 @@ class TrackListTableVC: UITableViewController {
 		currentSelectedIndex = -1
 		isDownloadedListShown = false
 		
-		showActivityIndicator(withStatus: "Loading")
+		showActivityIndicator(withStatus: "Searching for \(tag)")
 		GlobalFunctions.shared.urlToHTMLString(url: SEARCH_URL + "\(tag)") { (htmlString, error) in
 			if let error = error {
 				print(error)
