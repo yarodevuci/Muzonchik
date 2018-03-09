@@ -84,4 +84,17 @@ extension TrackListTableVC {
 			}
 		}
 	}
+	
+	func showActivityIndicator(withStatus status: String) {
+		toolBarStatusLabel.text = status
+		activityIndicator.startAnimating()
+		navigationController?.setToolbarHidden(false, animated: true)
+	}
+	
+	func hideActivityIndicator() {
+		DispatchQueue.main.async {
+			self.activityIndicator.stopAnimating()
+			self.navigationController?.setToolbarHidden(true, animated: true)
+		}
+	}
 }

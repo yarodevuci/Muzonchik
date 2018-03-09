@@ -19,6 +19,16 @@ extension String {
         return ((min ?? 0) * 60) + (sec ?? 0)
     }
 }
+//MARK: - Double
+extension Double {
+	func parsedTimeDuration() -> String {
+		let formatter = DateComponentsFormatter()
+		formatter.allowedUnits = [.hour, .minute, .second]
+		formatter.unitsStyle = .abbreviated
+		guard let formattedString = formatter.string(from: self) else { return "" }
+		return formattedString
+	}
+}
 
 //MARK: - Int
 extension Int {
@@ -75,7 +85,7 @@ extension Notification.Name {
 	static let playTrackAtIndex = Notification.Name("playTrackAtIndex")
 }
 
-//MARK: - Get Bundle Release and Version Number
+//MARK: - Bundle
 extension Bundle {
 	var releaseVersionNumber: String? { return self.infoDictionary?["CFBundleShortVersionString"] as? String }
 	var buildVersionNumber: String? { return self.infoDictionary?["CFBundleVersion"] as? String }

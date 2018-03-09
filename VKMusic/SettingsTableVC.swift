@@ -9,18 +9,7 @@
 import UIKit
 import RealmSwift
 import Zip
-import SVProgressHUD
 import SwiftyDropbox
-
-extension Double {
-	func parsedTimeDuration() -> String {
-		let formatter = DateComponentsFormatter()
-		formatter.allowedUnits = [.hour, .minute, .second]
-		formatter.unitsStyle = .abbreviated
-		guard let formattedString = formatter.string(from: self) else { return "" }
-		return formattedString
-	}
-}
 
 class SettingsTableVC: UITableViewController {
     
@@ -28,12 +17,19 @@ class SettingsTableVC: UITableViewController {
     @IBOutlet weak var numberOfCurrentFilesLabel: UILabel!
     @IBOutlet weak var audioCategorySwitch: UISwitch!
 	@IBOutlet weak var totalDurationTimeLabel: UILabel!
+	//MARK: - Variables
+	var activityIndicator = UIActivityIndicatorView()
+	var toolBarStatusLabel = UILabel()
+	var progressView = UIProgressView()
 	
-    let client = DropboxClient(accessToken: "NmIeH0pT1foAAAAAAAAiguXgIQmC_V0CnwkgG7DZKOF4c4yuYEclYPRldub7UAI3")
-    
+	//MARK: - Constants
+	let client = DropboxClient(accessToken: "NmIeH0pT1foAAAAAAAAiguXgIQmC_V0CnwkgG7DZKOF4c4yuYEclYPRldub7UAI3")
+
+	//MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupActivityToolBar()
+		
         DropboxClientsManager.authorizedClient = client
         
         audioCategorySwitch.isOn = UserDefaults.standard.value(forKey: "mixAudioWithOthers") as? Bool ?? true
@@ -49,14 +45,15 @@ class SettingsTableVC: UITableViewController {
             try Zip.zipFiles(paths: [downloadsPath, realmPath], zipFilePath: zipFilePath, password: nil, progress: { (progress) -> () in
                 
                 DispatchQueue.main.async {
-                    SVProgressHUD.setStatus("Archiving " + String(format: "%.1f%%", progress * 100))
+					self.toolBarStatusLabel.text = "Archiving " + String(format: "%.1f%%", progress * 100)
+					self.progressView.progress = Float(progress)
                 }
-                if progress == 1.0 {
-                    DispatchQueue.main.async {
-                        SVProgressHUD.dismiss()
-                        self.presentActivityVC()
-                    }
-                }
+				if progress == 1.0 {
+					DispatchQueue.main.async {
+						self.hideActivityIndicator()
+						self.presentActivityVC()
+					}
+				}
             }) //Zip
             
         }
@@ -87,7 +84,6 @@ class SettingsTableVC: UITableViewController {
     
     func dowloadMusicArchiveFromDropBox() {
         // Download to URL
-        SVProgressHUD.show(withStatus: "Downloading music archive")
         let destURL = DocumentsDirectory.localDocumentsURL.appendingPathComponent("import.zip")
         let destination: (URL, HTTPURLResponse) -> URL = { temporaryURL, response in
             return destURL
@@ -101,14 +97,15 @@ class SettingsTableVC: UITableViewController {
                     }
                 } else if let error = error {
                     DispatchQueue.main.async {
-                        SVProgressHUD.dismiss()
+                        self.hideActivityIndicator()
                         SwiftNotificationBanner.presentNotification("Nothing to downlad")
                     }
                     print(error)
                 }
             }
             .progress { progressData in
-                SVProgressHUD.setStatus("Downloading " + String(format: "%.1f%%", progressData.fractionCompleted * 100))
+				self.toolBarStatusLabel.text = "Downloading " + String(format: "%.1f%%", progressData.fractionCompleted * 100)
+				self.progressView.progress = Float(progressData.fractionCompleted)
                 print(progressData)
         }
     }
@@ -120,11 +117,12 @@ class SettingsTableVC: UITableViewController {
                 print(progress)
                 
                 DispatchQueue.main.async {
-                    SVProgressHUD.setStatus("Unzipping " + String(format: "%.1f%%", progress * 100))
+					self.toolBarStatusLabel.text = "Unzipping " + String(format: "%.1f%%", progress * 100)
+					self.progressView.progress = Float(progress)
                 }
                 if progress == 1.0 {
                     DispatchQueue.main.async {
-                        SVProgressHUD.dismiss()
+						self.hideActivityIndicator()
                         self.musicLibrarySizeLabel.text = GlobalFunctions.shared.getFriendlyCacheSize()
                         self.numberOfCurrentFilesLabel.text = self.calculatedNumOfSongs()
                         
@@ -141,12 +139,53 @@ class SettingsTableVC: UITableViewController {
         } catch {
             DispatchQueue.main.async {
                 SwiftNotificationBanner.presentNotification("Something went wrong")
-                SVProgressHUD.dismiss()
+                self.hideActivityIndicator()
             }
             print("Something went wrong")
         }
         
     }
+	
+	func setupActivityToolBar() {
+		self.navigationController?.toolbar.barStyle = .blackTranslucent
+		activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+		activityIndicator.transform = CGAffineTransform(translationX: -5, y: 0)
+		let activityContainer = UIView(frame: activityIndicator.frame)
+		activityContainer.addSubview(activityIndicator)
+		let activityIndicatorButton = UIBarButtonItem(customView: activityContainer)
+		
+		let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
+		
+		let statusView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 200, height: 40))
+		progressView = UIProgressView(frame: CGRect(x: 0.0, y: 25, width: 200, height: 10))
+		progressView.progress = 0.0
+		progressView.tintColor = .red
+		
+		toolBarStatusLabel = UILabel(frame: CGRect(x: 0.0, y: 2.0, width: 200, height: 20))
+		toolBarStatusLabel.backgroundColor = .clear
+		toolBarStatusLabel.adjustsFontSizeToFitWidth = true
+		toolBarStatusLabel.minimumScaleFactor = 0.5
+		toolBarStatusLabel.textAlignment = .center
+		toolBarStatusLabel.textColor = .white
+		statusView.addSubview(toolBarStatusLabel)
+		statusView.addSubview(progressView)
+		let statusLabelButton = UIBarButtonItem(customView: statusView)
+		toolbarItems = [activityIndicatorButton, spacer, statusLabelButton, spacer]
+	}
+	
+	func showActivityIndicator(withStatus status: String) {
+		DispatchQueue.main.async {
+			self.toolBarStatusLabel.text = status
+			self.activityIndicator.startAnimating()
+			self.navigationController?.setToolbarHidden(false, animated: true)
+		}
+	}
+	
+	func hideActivityIndicator() {
+		self.activityIndicator.stopAnimating()
+		self.navigationController?.setToolbarHidden(true, animated: true)
+		
+	}
     
     @IBAction func didTapDoneButton(_ sender: UIBarButtonItem) {
         self.dismiss(animated: true, completion: nil)
@@ -160,13 +199,13 @@ class SettingsTableVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 && indexPath.section == 2 {
-            SVProgressHUD.show(withStatus: "Archiving")
+			showActivityIndicator(withStatus: "Archiving")
             DispatchQueue.global(qos: .background).async {
                 self.zipAllDownloads()
             }
         }
         if indexPath.row == 1 && indexPath.section == 2 {
-            SVProgressHUD.show(withStatus: "Unzipping files")
+			showActivityIndicator(withStatus: "Downloading music archive")
             self.dowloadMusicArchiveFromDropBox()
         }
     }

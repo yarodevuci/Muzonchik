@@ -9,7 +9,6 @@ target 'Muzonchik' do
   pod 'RealmSwift', :inhibit_warnings => true
   pod 'SwiftSoup', :inhibit_warnings => true
   pod 'BTNavigationDropdownMenu', :git => 'https://github.com/zkrige/BTNavigationDropdownMenu.git'
-  pod 'SVProgressHUD', :inhibit_warnings => true
   pod 'Zip', :git => 'https://github.com/marmelroy/Zip.git'
   pod 'SwiftyDropbox', :inhibit_warnings => true
 end

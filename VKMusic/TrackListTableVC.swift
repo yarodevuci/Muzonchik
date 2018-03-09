@@ -10,8 +10,8 @@ import UIKit
 import BTNavigationDropdownMenu
 import SwiftSoup
 import LNPopupController
-import SVProgressHUD
 import RealmSwift
+
 
 class TrackListTableVC: UITableViewController {
 	
@@ -23,6 +23,8 @@ class TrackListTableVC: UITableViewController {
 	var filterAudios = [Audio]()
 	var activeDownloads = [String: Download]()
 	var isDownloadedListShown = false
+	var activityIndicator = UIActivityIndicatorView()
+	var toolBarStatusLabel = UILabel()
 	
 	lazy var downloadsSession: Foundation.URLSession = {
 		let configuration = URLSessionConfiguration.background(withIdentifier: "bgSessionConfiguration")
@@ -65,10 +67,7 @@ class TrackListTableVC: UITableViewController {
 	private func setupVolumeBar() {
 		let volume = SubtleVolume(style: .dashes)
 		let volumeHeight: CGFloat = 20
-		let volumeOrigin: CGFloat = -20//UIApplication.shared.statusBarFrame.height
-//		if #available(iOS 11.0, *) {
-//			volumeOrigin = additionalSafeAreaInsets.top
-//		}
+		let volumeOrigin: CGFloat = -20
 		
 		volume.frame = CGRect(x: 0, y: volumeOrigin, width: UIScreen.main.bounds.width, height: volumeHeight)
 		volume.barTintColor = .pinkColor
@@ -79,14 +78,29 @@ class TrackListTableVC: UITableViewController {
 	
 	private func setupUI() {
 		NotificationCenter.default.addObserver(self, selector: #selector(playTrackAtIndex), name: .playTrackAtIndex, object: nil)
-
+		setupActivityToolBar()
+		setupRefreshControl()
 		setupVolumeBar()
 		setupMimiMusicPlayerView()
 		addRightBarButton()
 		setupSearchBar()
+		setBackViewForTableView()
+	}
+
+	func setBackViewForTableView() {
 		let backView = UIView(frame: self.tableView.bounds)
 		backView.backgroundColor = .splashBlue
 		self.tableView.backgroundView = backView
+	}
+	
+	private func setupRefreshControl() {
+		refreshControl = UIRefreshControl()
+		if #available(iOS 10.0, *) {
+			tableView.refreshControl = refreshControl
+		} else {
+			tableView.addSubview(refreshControl!)
+		}
+		refreshControl?.addTarget(self, action: #selector(displayDownloadedSongsOnly), for: .valueChanged)
 	}
 	
 	private func addRightBarButton() {
@@ -99,8 +113,8 @@ class TrackListTableVC: UITableViewController {
 		self.presentViewControllerWithNavBar(identifier: "SettingsTableVC")
 	}
 	
+	// Setup the Search Controller
 	private func setupSearchBar() {
-		// Setup the Search Controller
 		if #available(iOS 9.1, *) {
 			searchController.obscuresBackgroundDuringPresentation = false
 		}
@@ -111,39 +125,51 @@ class TrackListTableVC: UITableViewController {
 			tableView.tableHeaderView = searchController.searchBar
 			searchController.searchBar.barTintColor = .splashBlue
 		}
+		
+		let cancelButtonAttributes: [NSAttributedStringKey : Any] = [.foregroundColor: UIColor.white]
+		UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes, for: .normal)
+		
 		definesPresentationContext = true
 		searchController.searchBar.isTranslucent = true
 		searchController.searchBar.keyboardAppearance = .dark
-		// Setup the Scope Bar
 		searchController.searchBar.delegate = self
+	}
+	
+	func setupActivityToolBar() {
+		activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+		activityIndicator.transform = CGAffineTransform(translationX: -5, y: 0)
+		let activityContainer = UIView(frame: activityIndicator.frame)
+		activityContainer.addSubview(activityIndicator)
+		let activityIndicatorButton = UIBarButtonItem(customView: activityContainer)
+		
+		let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
+		
+		let statusView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 200, height: 44))
+		let prg = UIProgressView(frame: CGRect(x: 0.0, y: 0, width: 320, height: 10))
+		prg.progress = 0.5
+		prg.tintColor = .red
+		
+		toolBarStatusLabel = UILabel(frame: CGRect(x: 0.0, y: 0.0, width: 200, height: 44))
+		toolBarStatusLabel.backgroundColor = .clear
+		toolBarStatusLabel.textAlignment = .center
+		toolBarStatusLabel.textColor = .white
+		toolBarStatusLabel.text = "Searching ..."
+		statusView.addSubview(toolBarStatusLabel)
+		statusView.addSubview(prg)
+		let statusLabelButton = UIBarButtonItem(customView: statusView)
+		toolbarItems = [activityIndicatorButton, spacer, statusLabelButton, spacer]
 	}
 	
 	private func setupMimiMusicPlayerView() {
 		UIProgressView.appearance(whenContainedInInstancesOf: [LNPopupBar.self]).tintColor = .pinkColor
 		
 		navigationController?.popupBar.progressViewStyle = .top
+		navigationController?.popupBar.barStyle = .compact
 		navigationController?.popupInteractionStyle = .drag
 		navigationController?.popupBar.imageView.layer.cornerRadius = 5
 		navigationController?.toolbar.barStyle = .black
-		//navigationController?.toolbar.barTintColor = .splashBlue
-		navigationController?.popupBar.tintColor = .white//UIColor(white: 38.0 / 255.0, alpha: 1.0)
+		navigationController?.popupBar.tintColor = .white
 		navigationController?.updatePopupBarAppearance()
-		
-		//        UIProgressView.appearance(whenContainedInInstancesOf: [LNPopupBar.self]).tintColor = .red
-		//
-		//        navigationController?.popupBar.tintColor = UIColor(white: 38.0 / 255.0, alpha: 1.0)
-		//        navigationController?.popupBar.imageView.layer.cornerRadius = 5
-		//        navigationController?.popupBar.barStyle = .default
-		//        navigationController?.popupInteractionStyle = .drag
-		//        navigationController?.popupBar.progressViewStyle = .top
-		//        navigationController?.popupBar.barTintColor = .splashBlue
-		//		navigationController?.popupBar.isTranslucent = true
-		//		if #available(iOS 10.0, *) {
-		//			navigationController?.popupBar.backgroundStyle = .light
-		//		} else {
-		//			// Fallback on earlier versions
-		//		}
-		//		self.navigationController?.updatePopupBarAppearance()
 	}
 	
 	private func setupDropdownMenu() {
@@ -168,7 +194,7 @@ class TrackListTableVC: UITableViewController {
 		
 	}
 	
-	func displayDownloadedSongsOnly() {
+	@objc func displayDownloadedSongsOnly() {
 		isDownloadedListShown = true
 //		currentSelectedIndex = -1
 		
@@ -179,6 +205,7 @@ class TrackListTableVC: UITableViewController {
 			audioFiles.append(Audio(url: audio.url, title: audio.title, artist: audio.artist, duration: audio.duration))
 		}
 		DispatchQueue.main.async {
+			self.refreshControl?.endRefreshing()
 			self.tableView.reloadData()
 		}
 	}
@@ -187,14 +214,14 @@ class TrackListTableVC: UITableViewController {
 		currentSelectedIndex = -1
 		isDownloadedListShown = false
 		
-		SVProgressHUD.show(withStatus: "Loading")
+		showActivityIndicator(withStatus: "Loading")
 		GlobalFunctions.shared.urlToHTMLString(url: WEB_BASE_URL) { (htmlString, error) in
 			if let error = error {
 				print(error)
 				DispatchQueue.main.async {
 					SwiftNotificationBanner.presentNotification("Unable to load")
 				}
-				SVProgressHUD.dismiss()
+				self.hideActivityIndicator()
 			}
 			if let htmlString = htmlString {
 				self.parseHTML(html: htmlString)
@@ -206,14 +233,14 @@ class TrackListTableVC: UITableViewController {
 		currentSelectedIndex = -1
 		isDownloadedListShown = false
 		
-		SVProgressHUD.show(withStatus: "Loading")
+		showActivityIndicator(withStatus: "Loading")
 		GlobalFunctions.shared.urlToHTMLString(url: SEARCH_URL + "\(tag)") { (htmlString, error) in
 			if let error = error {
 				print(error)
 				DispatchQueue.main.async {
 					SwiftNotificationBanner.presentNotification(error)
 				}
-				SVProgressHUD.dismiss()
+				self.hideActivityIndicator()
 			}
 			if let htmlString = htmlString {
 				self.parseHTML(html: htmlString)
@@ -232,15 +259,17 @@ class TrackListTableVC: UITableViewController {
 		}
 		
 		DispatchQueue.main.async {
-			SVProgressHUD.dismiss()
+			self.hideActivityIndicator()
 			self.tableView.reloadData()
 		}
 	}
 	
 	func getAudioFromYouTubeURL(url: String) {
-		SVProgressHUD.show(withStatus: "Processing ...")
+		showActivityIndicator(withStatus: "Processing ...")
 		GlobalFunctions.shared.processYouTubeURL(url: url) { (audio, error) in
-			SVProgressHUD.dismiss()
+
+			self.hideActivityIndicator()
+			
 			if error == nil {
 				guard let audio = audio else { return }
 				
