@@ -81,7 +81,7 @@ class SettingsTableVC: UITableViewController {
 		for track in downloadedAudioFiles {
 			timeSeconds += track.duration
 		}
-		totalDurationTimeLabel.text = Double(timeSeconds).parsedTimeDuration()		
+		totalDurationTimeLabel.text = Double(timeSeconds).parsedTimeDuration()
         return downloadedAudioFiles.count.description
     }
     

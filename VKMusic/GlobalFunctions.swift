@@ -67,9 +67,8 @@ class GlobalFunctions {
         
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
-        
+
         let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
-            
             guard error == nil else { return }
             guard let data = data else { return }
             
