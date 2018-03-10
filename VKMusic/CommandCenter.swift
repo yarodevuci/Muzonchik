@@ -67,7 +67,7 @@ class CommandCenter: NSObject {
             MPMediaItemPropertyPlaybackDuration: player.currentAudio.duration,
             MPMediaItemPropertyTitle: player.currentAudio.title,
             MPMediaItemPropertyArtist: player.currentAudio.artist,
-            MPMediaItemPropertyArtwork: MPMediaItemArtwork(image: AudioPlayerVC.albumImage!),
+            MPMediaItemPropertyArtwork: MPMediaItemArtwork(image: #imageLiteral(resourceName: "music_plate")),
             MPNowPlayingInfoPropertyPlaybackRate: 1.0]
     }
 }

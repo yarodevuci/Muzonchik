@@ -27,7 +27,7 @@ extension TrackListTableVC: URLSessionDownloadDelegate {
                 let aD = self.activeDownloads[originalURL]!
 				
 				
-				CoreDataManager.shared.saveToCoreData(audio: Audio(url: destinationURL.absoluteString, title: aD.realmTitle, artist: aD.realmArtist, duration: aD.realmDuration))
+				CoreDataManager.shared.saveToCoreData(audio: Audio(url: destinationURL.absoluteString, title: aD.title, artist: aD.artist, duration: aD.duration))
 				
 				
                // GlobalFunctions.shared.createSavedAudio(title: aD.realmTitle, artist: aD.realmArtist, duration: aD.realmDuration, url: destinationURL)
@@ -61,7 +61,7 @@ extension TrackListTableVC: URLSessionDownloadDelegate {
                 if let trackIndex = self.trackIndexForDownloadTask(downloadTask),
                     let trackCell = self.tableView.cellForRow(at: IndexPath(row: trackIndex, section: 0)) as? TrackListTableViewCell {
                     trackCell.downloadProgressView.progress = download.progress
-                    let bitRate = String(Int(totalBytesExpectedToWrite) * 8 / 1000 / download.realmDuration)
+                    let bitRate = String(Int(totalBytesExpectedToWrite) * 8 / 1000 / download.duration)
                     trackCell.downloadProgressLabel.text =  String(format: "%.1f%% of %@",  download.progress * 100, totalSize) + " \(bitRate) kbps"
                 }
             })
@@ -83,9 +83,9 @@ extension TrackListTableVC: URLSessionDownloadDelegate {
         download.songName = track.title
         
         //Save info for Ream:
-        download.realmTitle = track.title
-        download.realmArtist = track.artist
-        download.realmDuration = track.duration
+        download.title = track.title
+        download.artist = track.artist
+        download.duration = track.duration
         
         activeDownloads[download.url] = download
     }

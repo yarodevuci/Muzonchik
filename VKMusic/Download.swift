@@ -13,10 +13,10 @@ class Download: NSObject {
     var progress: Float = 0.0
     var fileName: String = ""
     var songName: String = ""
-    
-    var realmTitle = ""
-    var realmArtist = ""
-    var realmDuration = 0
+	
+    var title = ""
+    var artist = ""
+    var duration = 0
     
     var downloadTask: URLSessionDownloadTask?
     var resumeData: Data?

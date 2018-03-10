@@ -22,7 +22,7 @@ class SettingsTableVC: UITableViewController {
 	var progressView = UIProgressView()
 	
 	//MARK: - Constants
-	let client = DropboxClient(accessToken: "NmIeH0pT1foAAAAAAAAiguXgIQmC_V0CnwkgG7DZKOF4c4yuYEclYPRldub7UAI3")
+	let client = DropboxClient(accessToken: DROPBOX_CLIENT_ACCESS_TOKEN)
 
 	//MARK: - viewDidLoad
     override func viewDidLoad() {

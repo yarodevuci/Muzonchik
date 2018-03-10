@@ -76,9 +76,6 @@ class AudioPlayer {
         addTimeObeserver()
         
         DispatchQueue.main.async {
-            AudioPlayerVC.albumImage = UIImage(named: "music_plate")
-            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "albumCoverImageRetrieved"), object: nil)
-            self.setAlbumImageForMiniPlayer(image: UIImage(named: "music_plate")!)
             CommandCenter.defaultCenter.setNowPlayingInfo()
         }
         
@@ -91,9 +88,6 @@ class AudioPlayer {
                         if i.rawValue == "artwork" {
                             print("image Found")
                             DispatchQueue.main.async {
-                                AudioPlayerVC.albumImage = UIImage(data: item.value as! Data)!
-                                self.setAlbumImageForMiniPlayer(image: UIImage(data: item.value as! Data)!)
-                                NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: "albumCoverImageRetrieved"), object: nil)
                                 CommandCenter.defaultCenter.setNowPlayingInfo()
                             }
                         }
@@ -104,11 +98,7 @@ class AudioPlayer {
 
     }
 	
-    func setAlbumImageForMiniPlayer(image: UIImage) {
-        let rootViewController = UIApplication.shared.keyWindow?.rootViewController
-        if let sa = rootViewController as? MainScreen { sa.miniPlayerAlbumCoverImage.image = image }
-    }
-    
+
 	func play() {
 		if let player = player {
 			player.play()
