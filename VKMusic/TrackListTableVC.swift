@@ -272,7 +272,7 @@ class TrackListTableVC: UITableViewController {
 			
 			if error == nil {
 				guard let audio = audio else { return }
-				
+				GlobalFunctions.shared.fireLocalNotification(withMessage: "\(audio.artist) is ready to be downloaded")
 				self.audioFiles.removeAll()
 				self.audioFiles.append(audio)
 				DispatchQueue.main.async {

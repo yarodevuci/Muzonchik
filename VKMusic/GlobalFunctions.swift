@@ -123,5 +123,15 @@ class GlobalFunctions {
 		let path = localUrl.path
 		return FileManager.default.fileExists(atPath: path, isDirectory: &isDir)
 	}
+	
+	//Send local notification
+	func fireLocalNotification(withMessage msg: String) {
+		let notification = UILocalNotification()
+		notification.fireDate = Date()
+		notification.alertBody = msg
+		DispatchQueue.main.async {
+			UIApplication.shared.scheduleLocalNotification(notification)
+		}
+	}
 }
 
