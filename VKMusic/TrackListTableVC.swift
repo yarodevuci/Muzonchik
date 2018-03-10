@@ -10,8 +10,6 @@ import UIKit
 import BTNavigationDropdownMenu
 import SwiftSoup
 import LNPopupController
-import RealmSwift
-
 
 class TrackListTableVC: UITableViewController {
 	
@@ -89,18 +87,21 @@ class TrackListTableVC: UITableViewController {
 
 	func setBackViewForTableView() {
 		let backView = UIView(frame: self.tableView.bounds)
-		backView.backgroundColor = .splashBlue
+		backView.backgroundColor = .playerBackgroundColor
 		self.tableView.backgroundView = backView
 	}
 	
 	private func setupRefreshControl() {
 		refreshControl = UIRefreshControl()
+		refreshControl?.addTarget(self, action: #selector(displayDownloadedSongsOnly), for: .valueChanged)
+
 		if #available(iOS 10.0, *) {
 			tableView.refreshControl = refreshControl
 		} else {
-			tableView.addSubview(refreshControl!)
+			if let refreshControl = refreshControl {
+				tableView.addSubview(refreshControl)
+			}
 		}
-		refreshControl?.addTarget(self, action: #selector(displayDownloadedSongsOnly), for: .valueChanged)
 	}
 	
 	private func addRightBarButton() {
@@ -119,20 +120,17 @@ class TrackListTableVC: UITableViewController {
 			searchController.obscuresBackgroundDuringPresentation = false
 		}
 		searchController.searchBar.placeholder = "Search"
-		if #available(iOS 11.0, *) {
-			navigationItem.searchController = searchController
-		} else {
-			tableView.tableHeaderView = searchController.searchBar
-			searchController.searchBar.barTintColor = .splashBlue
-		}
+		//searchController.searchBar.barTintColor = .splashBlue
 		
 		let cancelButtonAttributes: [NSAttributedStringKey : Any] = [.foregroundColor: UIColor.white]
 		UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes, for: .normal)
 		
 		definesPresentationContext = true
-		searchController.searchBar.isTranslucent = true
+		searchController.searchBar.barStyle = .blackTranslucent
 		searchController.searchBar.keyboardAppearance = .dark
 		searchController.searchBar.delegate = self
+		
+		tableView.tableHeaderView = searchController.searchBar
 	}
 	
 	func setupActivityToolBar() {
@@ -194,12 +192,18 @@ class TrackListTableVC: UITableViewController {
 		isDownloadedListShown = true
 //		currentSelectedIndex = -1
 		
-		let realm = try! Realm()
-		let downloadedAudioFiles = realm.objects(SavedAudio.self)
-		audioFiles.removeAll()
-		for audio in downloadedAudioFiles {
-			audioFiles.append(Audio(url: audio.url, title: audio.title, artist: audio.artist, duration: audio.duration))
+		if let downloadedAudioFiles = CoreDataManager.shared.fetchSavedResults() {
+			audioFiles.removeAll()
+			for audio in downloadedAudioFiles {
+				let url = audio.value(forKey: "url") as? String ?? ""
+				let artist = audio.value(forKey: "artist") as? String ?? ""
+				let title = audio.value(forKey: "title") as? String ?? ""
+				let duration = audio.value(forKey: "duration") as? Int ?? 0
+				
+				audioFiles.append(Audio(url: url, title: title, artist: artist, duration: duration))
+			}
 		}
+		
 		DispatchQueue.main.async {
 			self.refreshControl?.endRefreshing()
 			self.tableView.reloadData()
@@ -349,7 +353,7 @@ class TrackListTableVC: UITableViewController {
 			musicPlayerController.tracks = audioFiles
 			musicPlayerController.currentIndexPathRow = currentSelectedIndex
 			navigationController?.popupBar.marqueeScrollEnabled = true
-			navigationController?.presentPopupBar(withContentViewController: musicPlayerController, animated: true, completion: nil)
+			self.navigationController?.presentPopupBar(withContentViewController: musicPlayerController, animated: true, completion: nil)
 			
 			AudioPlayer.defaultPlayer.setPlayList(audioFiles)
 			AudioPlayer.index = currentSelectedIndex

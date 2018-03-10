@@ -326,6 +326,11 @@ static CGFloat __smoothstep(CGFloat a, CGFloat b, CGFloat x)
 	return __smoothstep(0.00, 1.0, percent);
 }
 
+- (BOOL)_isPresenterNavControllerWithHiddenToolbar
+{
+	return [_containerController isKindOfClass:[UINavigationController class]] && [(UINavigationController*)_containerController isToolbarHidden];
+}
+
 - (void)_setContentToState:(LNPopupPresentationState)state
 {
 	CGRect targetFrame = self.popupBar.frame;
@@ -348,7 +353,7 @@ static CGFloat __smoothstep(CGFloat a, CGFloat b, CGFloat x)
 		[_containerController setNeedsStatusBarAppearanceUpdate];
 	}
 	
-	[self _repositionPopupContentMovingBottomBar:YES];
+	[self _repositionPopupContentMovingBottomBar:!self._isPresenterNavControllerWithHiddenToolbar];
 }
 
 - (void)_transitionToState:(LNPopupPresentationState)state animated:(BOOL)animated useSpringAnimation:(BOOL)spring allowPopupBarAlphaModification:(BOOL)allowBarAlpha completion:(void(^)(void))completion transitionOriginatedByUser:(BOOL)transitionOriginatedByUser
@@ -635,7 +640,7 @@ static CGFloat __smoothstep(CGFloat a, CGFloat b, CGFloat x)
 		CGFloat currentCenterY = self.popupBar.center.y;
 		
 		self.popupBar.center = CGPointMake(self.popupBar.center.x, targetCenterY);
-		[self _repositionPopupContentMovingBottomBar:resolvedStyle == LNPopupInteractionStyleDrag];
+		[self _repositionPopupContentMovingBottomBar:resolvedStyle == LNPopupInteractionStyleDrag && !self._isPresenterNavControllerWithHiddenToolbar];
 		_lastSeenMovement = CACurrentMediaTime();
 		
 		[_popupContentView.popupCloseButton _setButtonContainerTransitioning];
@@ -917,18 +922,27 @@ static CGFloat __smoothstep(CGFloat a, CGFloat b, CGFloat x)
 
 - (void)_movePopupBarAndContentToBottomBarSuperview
 {
-	//	NSAssert(_bottomBar.superview != nil, @"Bottom docking view must have a superview before presenting popup.");
 	[self.popupBar removeFromSuperview];
+	[self.popupContentView removeFromSuperview];
 	
 	if([_bottomBar.superview isKindOfClass:[UIScrollView class]])
 	{
 		NSLog(@"Attempted to present popup bar %@ on top of a UIScrollView subclass %@. This is unsupported and may result in unexpected behavior.", self.popupBar, _bottomBar.superview);
 	}
 	
-	[_bottomBar.superview insertSubview:self.popupBar belowSubview:_bottomBar];
-	[self.popupBar.superview bringSubviewToFront:self.popupBar];
-	[self.popupBar.superview bringSubviewToFront:_bottomBar];
-	[self.popupBar.superview insertSubview:self.popupContentView belowSubview:self.popupBar];
+	if(_bottomBar.superview != nil)
+	{
+		[_bottomBar.superview insertSubview:self.popupBar belowSubview:_bottomBar];
+		[self.popupBar.superview bringSubviewToFront:self.popupBar];
+		[self.popupBar.superview bringSubviewToFront:_bottomBar];
+		[self.popupBar.superview insertSubview:self.popupContentView belowSubview:self.popupBar];
+	}
+	else
+	{
+		[_containerController.view addSubview:self.popupBar];
+		[_containerController.view bringSubviewToFront:self.popupBar];
+		[_containerController.view insertSubview:self.popupContentView belowSubview:self.popupBar];
+	}
 }
 
 - (UIView*)_view:(UIView*)view selfOrSuperviewKindOfClass:(Class)aClass

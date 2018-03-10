@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import RealmSwift
 
 class GlobalFunctions {
     
@@ -24,17 +23,17 @@ class GlobalFunctions {
     let redButtonColor = UIColor(red:0.93, green:0.11, blue:0.14, alpha:1.0).cgColor
     
     
-    //Save audio info to Realm
-    func createSavedAudio(title: String, artist: String, duration: Int, url: URL) {
-        let savedAudio = SavedAudio()
-        savedAudio.title = title
-        savedAudio.artist = artist
-        savedAudio.duration = duration
-        savedAudio.url = url.absoluteString
-        
-        let realm = try! Realm()
-        try! realm.write { realm.add(savedAudio)}
-    }
+//    //Save audio info to Realm
+//    func createSavedAudio(title: String, artist: String, duration: Int, url: URL) {
+//        let savedAudio = SavedAudio()
+//        savedAudio.title = title
+//        savedAudio.artist = artist
+//        savedAudio.duration = duration
+//        savedAudio.url = url.absoluteString
+//        
+//        let realm = try! Realm()
+//        try! realm.write { realm.add(savedAudio)}
+//    }
     
     func urlToHTMLString(url: String, completionHandler: @escaping (_ html: String?, _ error: String?) -> ()) {
         guard let url = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), let webURL = URL(string: url) else {
@@ -68,7 +67,7 @@ class GlobalFunctions {
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("application/json", forHTTPHeaderField: "Accept")
 
-        let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
+		let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
             guard error == nil else { return }
             guard let data = data else { return }
             

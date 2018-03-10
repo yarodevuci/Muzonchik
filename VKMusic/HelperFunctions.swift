@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import RealmSwift
 
 struct DocumentsDirectory {
     static let localDocumentsURL = FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: .userDomainMask).last!
@@ -54,13 +53,13 @@ extension TrackListTableVC {
         return nil
     }
 	
-	func deleteFileFromRealm(url: String) {
-        let realm = try! Realm()
-        try! realm.write {
-            let trackToDelete = realm.objects(SavedAudio.self).filter("url == %@", url)
-            realm.delete(trackToDelete)
-        }
-	}
+//	func deleteFileFromRealm(url: String) {
+//        let realm = try! Realm()
+//        try! realm.write {
+//            let trackToDelete = realm.objects(SavedAudio.self).filter("url == %@", url)
+//            realm.delete(trackToDelete)
+//        }
+//	}
 	
 	func deleteSong(_ row: Int) {
 		let track = audioFiles[row]
@@ -73,7 +72,8 @@ extension TrackListTableVC {
 					self.navigationController?.dismissPopupBar(animated: true, completion: nil)
 				}
 				//Delete From Realm
-                deleteFileFromRealm(url: track.url)
+				CoreDataManager.shared.deleteAudioFile(withURL: track.url)
+                ///deleteFileFromRealm(url: track.url)
 				currentSelectedIndex = -1
 				audioFiles.remove(at: row)
 				tableView.reloadData()

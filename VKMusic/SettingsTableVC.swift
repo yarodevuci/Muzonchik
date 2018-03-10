@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import RealmSwift
 import Zip
 import SwiftyDropbox
 
@@ -41,8 +40,11 @@ class SettingsTableVC: UITableViewController {
         do {
             let zipFilePath = DocumentsDirectory.localDocumentsURL.appendingPathComponent("import.zip")
             let downloadsPath = DocumentsDirectory.localDocumentsURL.appendingPathComponent("Downloads")
-            let realmPath = DocumentsDirectory.localDocumentsURL.appendingPathComponent("default.realm")
-            try Zip.zipFiles(paths: [downloadsPath, realmPath], zipFilePath: zipFilePath, password: nil, progress: { (progress) -> () in
+            let sqlitePath = DocumentsDirectory.localDocumentsURL.appendingPathComponent("CoreDataModel.sqlite")
+			let sqlite_shmPath = DocumentsDirectory.localDocumentsURL.appendingPathComponent("CoreDataModel.sqlite-shm")
+			let sqlite_walPath = DocumentsDirectory.localDocumentsURL.appendingPathComponent("CoreDataModel.sqlite-wal")
+			
+            try Zip.zipFiles(paths: [downloadsPath, sqlitePath, sqlite_shmPath, sqlite_walPath], zipFilePath: zipFilePath, password: nil, progress: { (progress) -> () in
                 
                 DispatchQueue.main.async {
 					self.toolBarStatusLabel.text = "Archiving " + String(format: "%.1f%%", progress * 100)
@@ -70,17 +72,17 @@ class SettingsTableVC: UITableViewController {
         }
     }
     
-    func calculatedNumOfSongs() -> String {
-        let realm = try! Realm()
-        let downloadedAudioFiles = realm.objects(SavedAudio.self)
-		
+	func calculatedNumOfSongs() -> String {
 		var timeSeconds = 0
-		for track in downloadedAudioFiles {
-			timeSeconds += track.duration
+		guard let downloadedAudioFiles = CoreDataManager.shared.fetchSavedResults() else { return 0.description }
+		for audio in downloadedAudioFiles {
+			let duration = audio.value(forKey: "duration") as? Int ?? 0
+			timeSeconds += duration
 		}
+
 		totalDurationTimeLabel.text = Double(timeSeconds).parsedTimeDuration()
-        return downloadedAudioFiles.count.description
-    }
+		return downloadedAudioFiles.count.description
+	}
     
     func dowloadMusicArchiveFromDropBox() {
         // Download to URL

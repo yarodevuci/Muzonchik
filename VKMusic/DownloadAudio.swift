@@ -25,7 +25,12 @@ extension TrackListTableVC: URLSessionDownloadDelegate {
             do {
                 try fileManager.moveItem(at: location, to: destinationURL)
                 let aD = self.activeDownloads[originalURL]!
-                GlobalFunctions.shared.createSavedAudio(title: aD.realmTitle, artist: aD.realmArtist, duration: aD.realmDuration, url: destinationURL)
+				
+				
+				CoreDataManager.shared.saveToCoreData(audio: Audio(url: destinationURL.absoluteString, title: aD.realmTitle, artist: aD.realmArtist, duration: aD.realmDuration))
+				
+				
+               // GlobalFunctions.shared.createSavedAudio(title: aD.realmTitle, artist: aD.realmArtist, duration: aD.realmDuration, url: destinationURL)
                 DispatchQueue.main.async {
                     SwiftNotificationBanner.presentNotification("\(self.activeDownloads[originalURL]!.songName)\nDownload complete")
                     self.activeDownloads[downloadTask.originalRequest?.url?.absoluteString ?? ""] = nil

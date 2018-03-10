@@ -8,7 +8,6 @@
 
 import UIKit
 import MediaPlayer
-import RealmSwift
 import SwiftSoup
 
 class MainScreen: UIViewController, MGSwipeTableCellDelegate {
@@ -124,25 +123,25 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
         allowToPresent = true
     }
     
-    func displayDownloadedSongsOnly() {
-        allowToDelete = true
-        self.isNowPlayingIndex = -1
-        let realm = try! Realm()
-        let downloadedAudioFiles = realm.objects(SavedAudio.self)
-        MainScreen.searchResults.removeAll()
-        for (i, _) in downloadedAudioFiles.enumerated() {
-            let object = downloadedAudioFiles[i]
-            MainScreen.searchResults.append(Audio(url: object.url, title: object.title, artist: object.artist, duration: object.duration))
-        }
-        populateBoolArray()
-        self.refreshControl?.removeFromSuperview()
-        allowToDeleteFromServer = false //Delete local file. Keep audio on VK server
-        
-        DispatchQueue.main.async(execute: { () -> Void in
-            self.tableView.reloadData()
-        })
-    }
-    
+//    func displayDownloadedSongsOnly() {
+//        allowToDelete = true
+//        self.isNowPlayingIndex = -1
+//        let realm = try! Realm()
+//        let downloadedAudioFiles = realm.objects(SavedAudio.self)
+//        MainScreen.searchResults.removeAll()
+//        for (i, _) in downloadedAudioFiles.enumerated() {
+//            let object = downloadedAudioFiles[i]
+//            MainScreen.searchResults.append(Audio(url: object.url, title: object.title, artist: object.artist, duration: object.duration))
+//        }
+//        populateBoolArray()
+//        self.refreshControl?.removeFromSuperview()
+//        allowToDeleteFromServer = false //Delete local file. Keep audio on VK server
+//
+//        DispatchQueue.main.async(execute: { () -> Void in
+//            self.tableView.reloadData()
+//        })
+//    }
+	
 
     @objc func displayMusicList() {
         self.isNowPlayingIndex = -1
@@ -252,51 +251,52 @@ class MainScreen: UIViewController, MGSwipeTableCellDelegate {
         case 0:
             displayMusicList()
         case 1:
-            displayDownloadedSongsOnly()
+			break
+            //displayDownloadedSongsOnly()
         default:
             break
         }
     }
     
-    func deleteSong(_ row: Int) {
-        let track = MainScreen.searchResults[row]
-        
-        if localFileExistsForTrack(track) {
-            let realm = try! Realm()
-            let fileToDelete = realm.objects(SavedAudio.self)
-            
-            let fileManager = FileManager.default
-            let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
-            let nsUserDomainMask = FileManager.SearchPathDomainMask.userDomainMask
-            let paths = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
-            guard let dirPath = paths.first else { return }
-            let filePath = String(describing: "\(dirPath)/\(track.title)\n\(track.artist).mp3")
-            
-            do {
-                try fileManager.removeItem(atPath: filePath)
-                try! realm.write({ () -> Void in
-                    realm.delete(fileToDelete[row])
-                })
-                if player.currentAudio != nil && player.currentAudio == track {
-                    miniPlayerView.isHidden = true
-                    player.kill()
-                }
-                isNowPlayingIndex = -1
-            } catch let error as NSError {
-                print(error.debugDescription)
-            }
-        }
-        if allowToDeleteFromServer {
-            deleteTrackFromServer(row)
-        }
-        
-        boolArray[row] = false
-        MainScreen.searchResults.remove(at: row)
-        tableView.reloadData()
-        self.populateBoolArray()
-        SwiftNotificationBanner.presentNotification("Deleted")
-    }
-    
+//    func deleteSong(_ row: Int) {
+//        let track = MainScreen.searchResults[row]
+//
+//        if localFileExistsForTrack(track) {
+//            let realm = try! Realm()
+//            let fileToDelete = realm.objects(SavedAudio.self)
+//
+//            let fileManager = FileManager.default
+//            let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
+//            let nsUserDomainMask = FileManager.SearchPathDomainMask.userDomainMask
+//            let paths = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
+//            guard let dirPath = paths.first else { return }
+//            let filePath = String(describing: "\(dirPath)/\(track.title)\n\(track.artist).mp3")
+//
+//            do {
+//                try fileManager.removeItem(atPath: filePath)
+//                try! realm.write({ () -> Void in
+//                    realm.delete(fileToDelete[row])
+//                })
+//                if player.currentAudio != nil && player.currentAudio == track {
+//                    miniPlayerView.isHidden = true
+//                    player.kill()
+//                }
+//                isNowPlayingIndex = -1
+//            } catch let error as NSError {
+//                print(error.debugDescription)
+//            }
+//        }
+//        if allowToDeleteFromServer {
+//            deleteTrackFromServer(row)
+//        }
+//
+//        boolArray[row] = false
+//        MainScreen.searchResults.remove(at: row)
+//        tableView.reloadData()
+//        self.populateBoolArray()
+//        SwiftNotificationBanner.presentNotification("Deleted")
+//    }
+	
     func deleteTrackFromServer(_ row: Int) {
 //        let audio = MainScreen.searchResults[row]
 //
@@ -649,7 +649,7 @@ extension MainScreen: URLSessionDownloadDelegate {
             do {
                 try fileManager.moveItem(at: location, to: destinationURL)
                 let aD = self.activeDownloads[originalURL]!
-                self.gF.createSavedAudio(title: aD.realmTitle, artist: aD.realmArtist, duration: aD.realmDuration, url: destinationURL)
+               // self.gF.createSavedAudio(title: aD.realmTitle, artist: aD.realmArtist, duration: aD.realmDuration, url: destinationURL)
                 DispatchQueue.main.async(execute: {
                     SwiftNotificationBanner.presentNotification("\(self.activeDownloads[originalURL]!.songName)\nDownload complete")
                 })
@@ -765,7 +765,7 @@ extension MainScreen: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            deleteSong(indexPath.row)
+           // deleteSong(indexPath.row)
         }
     }
     

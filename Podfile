@@ -6,7 +6,7 @@ target 'Muzonchik' do
   use_frameworks!
 
   # Pods for VKMusic
-  pod 'RealmSwift', :inhibit_warnings => true
+  #pod 'RealmSwift', :inhibit_warnings => true
   pod 'SwiftSoup', :inhibit_warnings => true
   pod 'BTNavigationDropdownMenu', :git => 'https://github.com/zkrige/BTNavigationDropdownMenu.git'
   pod 'Zip', :git => 'https://github.com/marmelroy/Zip.git'

@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftyDropbox
+import CoreData
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,8 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var backgroundSessionCompletionHandler: (() -> Void)?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        DropboxClientsManager.setupWithAppKey("opfnbmxk3dpjnsa")
+        DropboxClientsManager.setupWithAppKey(DROPBOXAPPKEY)
         print(DocumentsDirectory.localDocumentsURL)
+	
         return true
     }
     
@@ -42,8 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+		CoreDataManager.shared.saveContext()
     }
-    
-    
 }
 
