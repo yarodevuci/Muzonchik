@@ -41,7 +41,6 @@ class TrackListTableVC: UITableViewController {
 		setupUI()
 //		setupDropdownMenu()
 //		pullMusic()
-		
 		displayDownloadedSongsOnly()
 	}
 	
@@ -266,7 +265,7 @@ class TrackListTableVC: UITableViewController {
 	
 	func getAudioFromYouTubeURL(url: String) {
 		showActivityIndicator(withStatus: "Processing ...")
-		GlobalFunctions.shared.processYouTubeURL(url: url) { (audio, error) in
+		GlobalFunctions.shared.processLocalYouTubeURL(url: url) { (audio, error) in
 
 			self.hideActivityIndicator()
 			

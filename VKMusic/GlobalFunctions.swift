@@ -71,6 +71,49 @@ class GlobalFunctions {
         })
         task.resume()
     }
+	
+	func processLocalYouTubeURL(url: String, completionHandler: @escaping (_ audio: Audio?, _ error: String?) -> ()) {
+		
+		let api_url = URL(string: "http://169.234.206.29:8080/convert")!
+		
+		var urlRequest = URLRequest(
+			url: api_url,
+			cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
+			timeoutInterval: 10.0 * 1000)
+		
+		urlRequest.httpMethod = "GET"
+		urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
+		urlRequest.addValue(url, forHTTPHeaderField: "url")
+		
+		let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) -> Void in
+			guard error == nil else {
+				print("Error while fetching remote rooms: \(error)")
+				completionHandler(nil, "Error while loading audio")
+				return
+			}
+			guard let data = data else { return }
+			
+			do {
+				if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
+					print(json)
+					let mp4url = json["url"] as? String ?? ""
+					if mp4url.isEmpty {
+						completionHandler(nil, "Server ERROR")
+					} else {
+						let title = json["title"] as? String ?? ""
+						let durationSeconds = json["duration"] as? Int ?? 0
+						//let durationSeconds = ((8 * size) / (Int(bitrate) ?? 0)) + 1
+						let audio = Audio(url: mp4url, title: "YouTube", artist: title, duration: durationSeconds)
+						completionHandler(audio, nil)
+					}
+				}
+			} catch let error {
+				completionHandler(nil, error.localizedDescription)
+				print(error.localizedDescription)
+			}
+		}
+		task.resume()
+	}
     
     //For volume bar
     func getImageWithColor(color: UIColor, size: CGSize) -> UIImage {
