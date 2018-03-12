@@ -172,9 +172,7 @@ class GlobalFunctions {
 		let notification = UILocalNotification()
 		notification.fireDate = Date()
 		notification.alertBody = msg
-		DispatchQueue.main.async {
-			UIApplication.shared.scheduleLocalNotification(notification)
-		}
+		UIApplication.shared.scheduleLocalNotification(notification)
 	}
 }
 

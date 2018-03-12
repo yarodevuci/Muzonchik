@@ -10,6 +10,7 @@ import UIKit
 import BTNavigationDropdownMenu
 import SwiftSoup
 import LNPopupController
+import RMQClient
 
 class TrackListTableVC: UITableViewController {
 	
@@ -263,18 +264,42 @@ class TrackListTableVC: UITableViewController {
 		}
 	}
 	
+	func subscribeForProgress() {
+		let delegate = RMQConnectionDelegateLogger()
+		let conn = RMQConnection(uri: "amqp://yaroslav:dukalis@169.234.206.29", delegate: delegate)
+		conn.start()
+		let ch = conn.createChannel()
+		let q = ch.queue("progress_report")
+		q.subscribe({ m in
+			
+			if let progressData = String(data: m.body, encoding: String.Encoding.utf8) {
+				guard let progress = Double(progressData) else {return}
+				let prettyProgress = "Converting " + String(format: "%.1f%%", progress * 100)
+				
+				DispatchQueue.main.async {
+					self.toolBarStatusLabel.text = prettyProgress
+				}
+				
+				if progress == 1.0 {
+					conn.close() // Close connection
+				}
+			}
+		})
+	}
+	
 	func getAudioFromYouTubeURL(url: String) {
 		showActivityIndicator(withStatus: "Processing ...")
+		subscribeForProgress()
 		GlobalFunctions.shared.processLocalYouTubeURL(url: url) { (audio, error) in
 
 			self.hideActivityIndicator()
 			
 			if error == nil {
 				guard let audio = audio else { return }
-				GlobalFunctions.shared.fireLocalNotification(withMessage: "\(audio.artist) is ready to be downloaded")
 				self.audioFiles.removeAll()
 				self.audioFiles.append(audio)
 				DispatchQueue.main.async {
+					GlobalFunctions.shared.fireLocalNotification(withMessage: "\(audio.artist) is ready to be downloaded")
 					self.tableView.reloadData()
 				}
 			} else {

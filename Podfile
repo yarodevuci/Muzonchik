@@ -11,4 +11,6 @@ target 'Muzonchik' do
   pod 'BTNavigationDropdownMenu', :git => 'https://github.com/zkrige/BTNavigationDropdownMenu.git'
   pod 'Zip', :git => 'https://github.com/marmelroy/Zip.git'
   pod 'SwiftyDropbox', :inhibit_warnings => true
+  pod 'RMQClient', '~> 0.10.0', :inhibit_warnings => true
+
 end
