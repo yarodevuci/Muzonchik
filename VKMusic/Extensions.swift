@@ -15,9 +15,13 @@ extension String {
         let comp = self.components(separatedBy: ":")
         let min = Int(comp[0])
         let sec = Int(comp[1])
-        
         return ((min ?? 0) * 60) + (sec ?? 0)
     }
+	
+	var stripped: String {
+		let okayChars = Set("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLKMNOPQRSTUVWXYZ1234567890+-=().!_")
+		return self.filter { okayChars.contains($0) }
+	}
 }
 //MARK: - Double
 extension Double {

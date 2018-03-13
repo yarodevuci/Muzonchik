@@ -18,8 +18,8 @@ struct Audio: Equatable {
     
     init(url: String, title: String, artist: String , duration: Int) {
         self.url = url
-        self.title = title
-        self.artist = artist
+        self.title = title.stripped
+        self.artist = artist.stripped
         self.duration = duration
     }
     
@@ -43,8 +43,8 @@ struct Audio: Equatable {
         let duration = try! element.child(2).text()
         
         self.url = url
-        self.title = title
-        self.artist = artist
+        self.title = title.stripped
+        self.artist = artist.stripped
         self.duration = duration.durationToInt
     }
 }
