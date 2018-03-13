@@ -100,7 +100,7 @@ class GlobalFunctions {
 					if mp4url.isEmpty {
 						completionHandler(nil, "Server ERROR")
 					} else {
-						let title = json["title"] as? String ?? ""
+						let title = json["title"] as? String ?? "Unknown"
 						let durationSeconds = json["duration"] as? Int ?? 0
 						//let durationSeconds = ((8 * size) / (Int(bitrate) ?? 0)) + 1
 						let audio = Audio(url: mp4url, title: "YouTube", artist: title, duration: durationSeconds)
