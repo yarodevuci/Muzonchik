@@ -272,17 +272,35 @@ class TrackListTableVC: UITableViewController {
 		let q = ch.queue("progress_report")
 		q.subscribe({ m in
 			
-			if let progressData = String(data: m.body, encoding: String.Encoding.utf8) {
-				guard let progress = Double(progressData) else {return}
+			guard let messageData = String(data: m.body, encoding: String.Encoding.utf8) else { return }
+			print(messageData)
+			if let progress = Double(messageData) {
 				let prettyProgress = "Converting " + String(format: "%.1f%%", progress * 100)
-				
 				DispatchQueue.main.async {
 					self.toolBarStatusLabel.text = prettyProgress
 				}
-				
-				if progress == 1.0 {
-					conn.close() // Close connection
+			}
+			
+			do {
+				if let json = try JSONSerialization.jsonObject(with: m.body, options: .mutableContainers) as? [String: Any] {
+					let data = json["data"] as? [String : Any] ?? [:]
+					let title = data["title"] as? String ?? "Unknown"
+					let duration = data["duration"] as? Int ?? 0
+					let url = data["url"] as? String ?? ""
+					
+					let audio = Audio(url: url, title: "YouTube", artist: title, duration: duration)
+					self.audioFiles.removeAll()
+					self.audioFiles.append(audio)
+					
+					DispatchQueue.main.async {
+						GlobalFunctions.shared.fireLocalNotification(withMessage: "\(audio.artist) is ready to be downloaded")
+						self.tableView.reloadData()
+						self.hideActivityIndicator()
+						conn.close()
+					}
 				}
+			}  catch let error {
+				//print("not json")
 			}
 		})
 	}
@@ -290,23 +308,17 @@ class TrackListTableVC: UITableViewController {
 	func getAudioFromYouTubeURL(url: String) {
 		showActivityIndicator(withStatus: "Processing ...")
 		subscribeForProgress()
-		GlobalFunctions.shared.processLocalYouTubeURL(url: url) { (audio, error) in
-
-			self.hideActivityIndicator()
+		GlobalFunctions.shared.processSocketBasedLocalYouTubeURL(url: url) { (message, error) in
 			
 			if error == nil {
-				guard let audio = audio else { return }
-				self.audioFiles.removeAll()
-				self.audioFiles.append(audio)
+				guard let message = message else { return }
 				DispatchQueue.main.async {
-					GlobalFunctions.shared.fireLocalNotification(withMessage: "\(audio.artist) is ready to be downloaded")
-					self.tableView.reloadData()
+					SwiftNotificationBanner.presentNotification(message)
 				}
 			} else {
 				DispatchQueue.main.async {
-					SwiftNotificationBanner.presentNotification(error ?? "ERROR parsing video")
+					SwiftNotificationBanner.presentNotification(error ?? "Error parsing video")
 				}
-				print(error ?? "")
 			}
 		}
 	}

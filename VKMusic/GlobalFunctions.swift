@@ -72,6 +72,40 @@ class GlobalFunctions {
         task.resume()
     }
 	
+	func processSocketBasedLocalYouTubeURL(url: String, completionHandler: @escaping (_ status: String?, _ error: String?) -> ()) {
+		
+		let api_url = URL(string: "http://169.234.206.29:8080/audio")!
+		
+		var urlRequest = URLRequest(
+			url: api_url,
+			cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
+			timeoutInterval: 10.0 * 100)
+		
+		urlRequest.httpMethod = "GET"
+		urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
+		urlRequest.addValue(url, forHTTPHeaderField: "url")
+		
+		let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) -> Void in
+			guard error == nil else {
+				completionHandler(nil, "Error while loading audio")
+				return
+			}
+			guard let data = data else { return }
+			
+			do {
+				if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
+					print(json)
+					let statusMessage = json["status"] as? String ?? ""
+					completionHandler(statusMessage, nil)
+				}
+			} catch let error {
+				completionHandler(nil, error.localizedDescription)
+				print(error.localizedDescription)
+			}
+		}
+		task.resume()
+	}
+	
 	func processLocalYouTubeURL(url: String, completionHandler: @escaping (_ audio: Audio?, _ error: String?) -> ()) {
 		
 		let api_url = URL(string: "http://169.234.206.29:8080/convert")!
