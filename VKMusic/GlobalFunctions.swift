@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+import AudioToolbox
+import OneSignal
 
 class GlobalFunctions {
     
@@ -84,6 +86,7 @@ class GlobalFunctions {
 		urlRequest.httpMethod = "GET"
 		urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
 		urlRequest.addValue(url, forHTTPHeaderField: "url")
+		urlRequest.addValue(GlobalFunctions.shared.getUserCurrentOneSigPushID(), forHTTPHeaderField: "push_id")
 		
 		let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) -> Void in
 			guard error == nil else {
@@ -201,12 +204,13 @@ class GlobalFunctions {
 		return FileManager.default.fileExists(atPath: path, isDirectory: &isDir)
 	}
 	
-	//Send local notification
-	func fireLocalNotification(withMessage msg: String) {
-		let notification = UILocalNotification()
-		notification.fireDate = Date()
-		notification.alertBody = msg
-		UIApplication.shared.scheduleLocalNotification(notification)
+	func getUserCurrentOneSigPushID() -> String {
+		
+		let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
+		if let id = status.subscriptionStatus.userId {
+			return id
+		}
+		return ""
 	}
 }
 

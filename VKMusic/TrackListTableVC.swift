@@ -293,7 +293,6 @@ class TrackListTableVC: UITableViewController {
 					self.audioFiles.append(audio)
 					
 					DispatchQueue.main.async {
-						GlobalFunctions.shared.fireLocalNotification(withMessage: "\(audio.artist) is ready to be downloaded")
 						self.tableView.reloadData()
 						self.hideActivityIndicator()
 						conn.close()
