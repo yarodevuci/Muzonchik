@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         DropboxClientsManager.setupWithAppKey(DROPBOX_APP_KEY)
         print(DocumentsDirectory.localDocumentsURL)
-		
+		UINavigationBar.appearance().shadowImage = UIImage()
 		registerOneSignalNotifications(launchOptions: launchOptions)
         return true
     }

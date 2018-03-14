@@ -87,7 +87,7 @@ class TrackListTableVC: UITableViewController {
 
 	func setBackViewForTableView() {
 		let backView = UIView(frame: self.tableView.bounds)
-		backView.backgroundColor = .playerBackgroundColor
+		backView.backgroundColor = .black
 		self.tableView.backgroundView = backView
 	}
 	
@@ -119,17 +119,23 @@ class TrackListTableVC: UITableViewController {
 		if #available(iOS 9.1, *) {
 			searchController.obscuresBackgroundDuringPresentation = false
 		}
-		searchController.searchBar.placeholder = "Search"
+		searchController.searchBar.placeholder = "Search for music"
 		//searchController.searchBar.barTintColor = .splashBlue
 		
 		let cancelButtonAttributes: [NSAttributedStringKey : Any] = [.foregroundColor: UIColor.white]
 		UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes, for: .normal)
 		
 		definesPresentationContext = true
-		searchController.searchBar.barStyle = .blackTranslucent
+		searchController.searchBar.barTintColor = .black
 		searchController.searchBar.keyboardAppearance = .dark
 		searchController.searchBar.delegate = self
-		
+		searchController.searchBar.textField?.textColor = .white
+		searchController.searchBar.textField?.font = UIFont.systemFont(ofSize: 13)
+		searchController.searchBar.textField?.backgroundColor = .lightBlack
+		searchController.searchBar.textField?.layer.borderWidth = 4
+		searchController.searchBar.textField?.layer.borderColor = UIColor.black.cgColor
+		searchController.searchBar.textField?.layer.cornerRadius = 10
+		searchController.searchBar.textField?.clipsToBounds = true
 		tableView.tableHeaderView = searchController.searchBar
 	}
 	
@@ -163,6 +169,10 @@ class TrackListTableVC: UITableViewController {
 		navigationController?.popupBar.imageView.layer.cornerRadius = 5
 		navigationController?.toolbar.barStyle = .black
 		navigationController?.popupBar.tintColor = .white
+		let paragraphStyle = NSMutableParagraphStyle()
+		paragraphStyle.alignment = .left
+		navigationController?.popupBar.subtitleTextAttributes = [NSAttributedStringKey.paragraphStyle: paragraphStyle]
+		navigationController?.popupBar.titleTextAttributes = [NSAttributedStringKey.paragraphStyle: paragraphStyle]
 		navigationController?.updatePopupBarAppearance()
 	}
 	
@@ -344,10 +354,6 @@ class TrackListTableVC: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-		return CGFloat(Float.ulpOfOne)
-	}
-	
-	override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 		return CGFloat(Float.ulpOfOne)
 	}
 	

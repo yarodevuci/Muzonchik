@@ -93,3 +93,9 @@ extension Bundle {
 	var releaseVersionNumber: String? { return self.infoDictionary?["CFBundleShortVersionString"] as? String }
 	var buildVersionNumber: String? { return self.infoDictionary?["CFBundleVersion"] as? String }
 }
+
+extension UISearchBar {
+	var textField: UITextField? {
+		return subviews.first?.subviews.first(where: { $0.isKind(of: UITextField.self) }) as? UITextField
+	}
+}
