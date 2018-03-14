@@ -210,7 +210,7 @@ class GlobalFunctions {
 		if let id = status.subscriptionStatus.userId {
 			return id
 		}
-		return ""
+		return "0000-1234-9874"
 	}
 }
 

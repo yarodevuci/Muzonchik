@@ -266,14 +266,13 @@ class TrackListTableVC: UITableViewController {
 	
 	func subscribeForProgress() {
 		let delegate = RMQConnectionDelegateLogger()
-		let conn = RMQConnection(uri: "amqp://yaroslav:dukalis@169.234.206.29", delegate: delegate)
+		let conn = RMQConnection(uri: RMQConnection_URI, delegate: delegate)
 		conn.start()
 		let ch = conn.createChannel()
-		let q = ch.queue("progress_report")
+		let q = ch.queue(GlobalFunctions.shared.getUserCurrentOneSigPushID())
 		q.subscribe({ m in
 			
 			guard let messageData = String(data: m.body, encoding: String.Encoding.utf8) else { return }
-			print(messageData)
 			if let progress = Double(messageData) {
 				let prettyProgress = "Converting " + String(format: "%.1f%%", progress * 100)
 				DispatchQueue.main.async {
@@ -291,11 +290,13 @@ class TrackListTableVC: UITableViewController {
 					let audio = Audio(url: url, title: "YouTube", artist: title, duration: duration)
 					self.audioFiles.removeAll()
 					self.audioFiles.append(audio)
-					
+					q.delete()
+					conn.close()
+					print("Connection is closed")
 					DispatchQueue.main.async {
 						self.tableView.reloadData()
 						self.hideActivityIndicator()
-						conn.close()
+						
 					}
 				}
 			}  catch let error {
@@ -305,18 +306,19 @@ class TrackListTableVC: UITableViewController {
 	}
 	
 	func getAudioFromYouTubeURL(url: String) {
-		showActivityIndicator(withStatus: "Processing ...")
-		subscribeForProgress()
+		showActivityIndicator(withStatus: "Waiting for response ...")
 		GlobalFunctions.shared.processSocketBasedLocalYouTubeURL(url: url) { (message, error) in
 			
 			if error == nil {
 				guard let message = message else { return }
+				self.subscribeForProgress()
 				DispatchQueue.main.async {
-					SwiftNotificationBanner.presentNotification(message)
+					self.toolBarStatusLabel.text = "Connection established."
 				}
 			} else {
 				DispatchQueue.main.async {
 					SwiftNotificationBanner.presentNotification(error ?? "Error parsing video")
+					self.hideActivityIndicator()
 				}
 			}
 		}
