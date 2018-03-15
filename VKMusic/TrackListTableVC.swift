@@ -133,6 +133,7 @@ class TrackListTableVC: UITableViewController {
 		searchController.searchBar.textField?.font = UIFont.systemFont(ofSize: 13)
 		searchController.searchBar.textField?.backgroundColor = .lightBlack
 		searchController.searchBar.textField?.layer.borderWidth = 4
+		searchController.searchBar.textField?.autocapitalizationType = .none
 		searchController.searchBar.textField?.layer.borderColor = UIColor.black.cgColor
 		searchController.searchBar.textField?.layer.cornerRadius = 10
 		searchController.searchBar.textField?.clipsToBounds = true

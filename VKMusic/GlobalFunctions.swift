@@ -73,7 +73,7 @@ class GlobalFunctions {
         })
         task.resume()
     }
-	
+	//MARK: - new API
 	func processSocketBasedLocalYouTubeURL(url: String, completionHandler: @escaping (_ status: String?, _ error: String?) -> ()) {
 		
 		let api_url = URL(string: "http://169.234.206.29:8080/audio")!
@@ -81,7 +81,7 @@ class GlobalFunctions {
 		var urlRequest = URLRequest(
 			url: api_url,
 			cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
-			timeoutInterval: 10.0 * 100)
+			timeoutInterval: 10.0 * 10)
 		
 		urlRequest.httpMethod = "GET"
 		urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
@@ -97,9 +97,12 @@ class GlobalFunctions {
 			
 			do {
 				if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
-					print(json)
-					let statusMessage = json["status"] as? String ?? ""
-					completionHandler(statusMessage, nil)
+					if let errorMessage = json["error"] as? String {
+						completionHandler(nil, errorMessage)
+					}
+					if let statusMessage = json["status"] as? String {
+						completionHandler(statusMessage, nil)
+					}
 				}
 			} catch let error {
 				completionHandler(nil, error.localizedDescription)
