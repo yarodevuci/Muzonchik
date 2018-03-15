@@ -423,6 +423,12 @@ extension TrackListTableVC: UISearchBarDelegate {
 		//        }
 	}
 	
+	func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+		if let url = UIPasteboard.general.string, url.hasPrefix("http") {
+			searchBar.textField?.insertText(url)
+		}
+	}
+	
 	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
 		displayDownloadedSongsOnly()
 		
