@@ -15,23 +15,17 @@ import Foundation
 
 class UploadManager: NSObject, URLSessionDataDelegate {
 	
-	var data: Data!
 	var urlRequest: URLRequest!
-	var downloadURLString: String!
+	var data: Data!
 	weak var delegate: UploadManagerDelegage?
 	
-
-	init(uploadTaskWithData data: Data) {
-		self.data = data
-		let url = URL(string: "http://169.234.206.29:8080/upload/import.zip")
-		self.urlRequest = URLRequest(url: url!)
+	init(uploadTaskDataFromURL data_url: URL) {
+		self.data = try! Data(contentsOf: data_url)
+		let api_url = URL(string: "http://169.234.206.29:8080/upload/import.zip")
+		self.urlRequest = URLRequest(url: api_url!)
 		self.urlRequest.httpMethod = "POST"
 		self.urlRequest.setValue("Keep-Alive", forHTTPHeaderField: "Connection")
 		self.urlRequest.httpBodyStream = InputStream(data: data)
-	}
-	
-	init(downloadTaskWithURLString url: String) {
-		self.downloadURLString = url
 	}
 	
 	func uploadFiles() {

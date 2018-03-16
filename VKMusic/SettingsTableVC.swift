@@ -89,10 +89,9 @@ class SettingsTableVC: UITableViewController {
 	func uploadZipToLocalPC() {
 		self.progressView.progress = Float(0)
 		self.showActivityIndicator(withStatus: "Uploading ...")
-		let data = try! Data(contentsOf: DocumentsDirectory.localDocumentsURL.appendingPathComponent("import.zip"))
-		let s = UploadManager(uploadTaskWithData: data)
-		s.delegate = self
-		s.uploadFiles()
+		let uploadManager = UploadManager(uploadTaskDataFromURL: DocumentsDirectory.localDocumentsURL.appendingPathComponent("import.zip"))
+		uploadManager.delegate = self
+		uploadManager.uploadFiles()
 	}
 	
     func unZip() {
