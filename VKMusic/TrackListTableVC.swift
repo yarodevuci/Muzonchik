@@ -25,9 +25,9 @@ class TrackListTableVC: UITableViewController {
 	var activityIndicator = UIActivityIndicatorView()
 	var toolBarStatusLabel = UILabel()
 	
-	lazy var downloadsSession: Foundation.URLSession = {
+	lazy var downloadsSession: URLSession = {
 		let configuration = URLSessionConfiguration.background(withIdentifier: "bgSessionConfiguration")
-		let session = Foundation.URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
+		let session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
 		return session
 	}()
 	

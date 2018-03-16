@@ -38,12 +38,10 @@ extension Double {
 extension Int {
     
     var toAudioString: String {
-        let minutes = self / 60
-        let seconds = self - minutes * 60
-        if seconds < 10 {
-            return "\(minutes):0\(seconds)"
-        }
-        return "\(minutes):\(seconds)"
+		let h = self / 3600
+		let m = (self % 3600) / 60
+		let s = (self % 3600) % 60
+		return h > 0 ? String(format: "%1d:%02d:%02d", h, m, s) : String(format: "%1d:%02d", m, s)
     }
 }
 
