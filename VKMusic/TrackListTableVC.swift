@@ -106,7 +106,6 @@ class TrackListTableVC: UITableViewController {
 	
 	private func addRightBarButton() {
 		let rightBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "settings"), style: .plain, target: self, action: #selector(didTapSettingsButton))
-		rightBarButton.tintColor = .white
 		self.navigationItem.rightBarButtonItem = rightBarButton
 	}
 	

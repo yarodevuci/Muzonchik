@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         DropboxClientsManager.setupWithAppKey(DROPBOX_APP_KEY)
         print(DocumentsDirectory.localDocumentsURL)
 		UINavigationBar.appearance().shadowImage = UIImage()
+		UINavigationBar.appearance().tintColor = .white
 		registerOneSignalNotifications(launchOptions: launchOptions)
         return true
     }

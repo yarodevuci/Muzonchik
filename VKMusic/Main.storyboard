@@ -104,7 +104,7 @@
                                         <constraint firstAttribute="trailing" secondItem="suo-vQ-vTN" secondAttribute="trailing" constant="10" id="FTP-kk-vAp"/>
                                         <constraint firstAttribute="bottom" secondItem="2qi-6e-cc1" secondAttribute="bottom" id="FpJ-b5-GTw"/>
                                         <constraint firstAttribute="trailing" secondItem="yJ2-pI-43l" secondAttribute="trailing" id="Ibc-F3-ufc"/>
-                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="wi9-Ag-myw" secondAttribute="trailing" constant="45" id="P8R-xF-UQ9"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="wi9-Ag-myw" secondAttribute="trailing" constant="50" id="P8R-xF-UQ9"/>
                                         <constraint firstAttribute="trailing" secondItem="2qi-6e-cc1" secondAttribute="trailing" id="Rk2-cu-x2L"/>
                                         <constraint firstItem="2qi-6e-cc1" firstAttribute="leading" secondItem="oLm-ER-jyy" secondAttribute="leading" constant="80" id="ZJB-Bz-pec"/>
                                         <constraint firstItem="UPs-hL-JTd" firstAttribute="width" secondItem="5cZ-jv-nOe" secondAttribute="width" id="bL1-yE-2zq"/>
@@ -113,7 +113,7 @@
                                         <constraint firstItem="6WZ-dX-cFC" firstAttribute="top" secondItem="oLm-ER-jyy" secondAttribute="top" constant="34" id="hs2-oJ-MbH"/>
                                         <constraint firstItem="5cZ-jv-nOe" firstAttribute="centerY" secondItem="oLm-ER-jyy" secondAttribute="centerY" id="jYQ-z5-I8Z"/>
                                         <constraint firstItem="wi9-Ag-myw" firstAttribute="top" secondItem="oLm-ER-jyy" secondAttribute="top" constant="12" id="jpK-mO-QHb"/>
-                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="6WZ-dX-cFC" secondAttribute="trailing" constant="45" id="oKr-A6-7yS"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="6WZ-dX-cFC" secondAttribute="trailing" constant="50" id="oKr-A6-7yS"/>
                                         <constraint firstItem="UPs-hL-JTd" firstAttribute="height" secondItem="5cZ-jv-nOe" secondAttribute="height" id="qNB-xp-maN"/>
                                         <constraint firstAttribute="bottom" secondItem="VM5-wf-dST" secondAttribute="bottom" constant="4" id="sWJ-vh-6rL"/>
                                         <constraint firstAttribute="trailing" secondItem="VM5-wf-dST" secondAttribute="trailing" constant="8" id="vft-b8-a4J"/>
