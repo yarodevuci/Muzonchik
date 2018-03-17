@@ -16,7 +16,7 @@
         </array>
     </customFonts>
     <scenes>
-        <!--Library-->
+        <!--My Music-->
         <scene sceneID="XKu-wR-Sf6">
             <objects>
                 <tableViewController storyboardIdentifier="TrackListTableVC" id="YDD-qJ-rLp" customClass="TrackListTableVC" customModule="Muzonchik" customModuleProvider="target" sceneMemberID="viewController">
@@ -24,6 +24,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <color key="sectionIndexBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="TrackListTableViewCell" rowHeight="65" id="vYx-QR-lEW" customClass="TrackListTableViewCell" customModule="Muzonchik" customModuleProvider="target">
@@ -33,44 +34,43 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="65"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="igf-OW-qBk">
-                                            <rect key="frame" x="287" y="25" width="15" height="15"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="audio_downloaded_icon" translatesAutoresizingMaskIntoConstraints="NO" id="igf-OW-qBk">
+                                            <rect key="frame" x="295" y="0.0" width="25" height="25"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="15" id="93F-WN-zKd"/>
-                                                <constraint firstAttribute="height" constant="15" id="LNa-VS-VEA"/>
+                                                <constraint firstAttribute="width" constant="25" id="93F-WN-zKd"/>
+                                                <constraint firstAttribute="height" constant="25" id="LNa-VS-VEA"/>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artist" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wi9-Ag-myw" userLabel="TrackArtist" customClass="MarqueeLabel">
-                                            <rect key="frame" x="20" y="5" width="37" height="20.5"/>
+                                            <rect key="frame" x="80" y="12" width="37" height="20.5"/>
                                             <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="15"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="textColor" white="0.89605034722222221" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6WZ-dX-cFC" userLabel="TrackName">
-                                            <rect key="frame" x="20" y="30" width="25.5" height="18"/>
+                                            <rect key="frame" x="80" y="34" width="25.5" height="18"/>
                                             <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="13"/>
-                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="textColor" white="0.60134548611111116" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.10000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="2qi-6e-cc1">
-                                            <rect key="frame" x="0.0" y="63" width="320" height="2"/>
-                                            <color key="progressTintColor" red="0.96078431369999995" green="0.1764705882" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </progressView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--:--" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="suo-vQ-vTN">
-                                            <rect key="frame" x="274" y="5" width="33" height="18"/>
-                                            <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="13"/>
-                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UPs-hL-JTd" userLabel="playIndicator" customClass="ESTMusicIndicatorView" customModule="Muzonchik" customModuleProvider="target">
-                                            <rect key="frame" x="260" y="20" width="25" height="25"/>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <color key="tintColor" red="0.96078431369999995" green="0.1764705882" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yJ2-pI-43l" userLabel="separator">
+                                            <rect key="frame" x="80" y="63.5" width="240" height="1"/>
+                                            <color key="backgroundColor" red="0.14509803921568626" green="0.14509803921568626" blue="0.14509803921568626" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="25" id="8v3-A1-rwV"/>
-                                                <constraint firstAttribute="width" constant="25" id="Vz8-ac-cOK"/>
+                                                <constraint firstAttribute="height" constant="1" id="FLN-uD-4qo"/>
                                             </constraints>
                                         </view>
+                                        <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2qi-6e-cc1">
+                                            <rect key="frame" x="80" y="63" width="240" height="2"/>
+                                            <color key="progressTintColor" red="0.96078431369999995" green="0.1764705882" blue="0.36078431370000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="trackTintColor" red="0.1450980392" green="0.1450980392" blue="0.1450980392" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </progressView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--:--" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="suo-vQ-vTN">
+                                            <rect key="frame" x="284.5" y="26" width="25.5" height="14"/>
+                                            <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="10"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VM5-wf-dST">
                                             <rect key="frame" x="312" y="49" width="0.0" height="12"/>
                                             <constraints>
@@ -80,30 +80,50 @@
                                             <color key="textColor" red="0.84705882349999995" green="0.89411764709999997" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ArtPlaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="5cZ-jv-nOe">
+                                            <rect key="frame" x="18" y="8.5" width="47" height="47"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="47" id="GC0-7c-aaZ"/>
+                                                <constraint firstAttribute="height" constant="47" id="yry-Lr-cRL"/>
+                                            </constraints>
+                                        </imageView>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UPs-hL-JTd" userLabel="playIndicator" customClass="ESTMusicIndicatorView" customModule="Muzonchik" customModuleProvider="target">
+                                            <rect key="frame" x="18" y="9" width="47" height="47"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </view>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstItem="wi9-Ag-myw" firstAttribute="leading" secondItem="oLm-ER-jyy" secondAttribute="leading" constant="20" id="2da-wn-dQD"/>
-                                        <constraint firstItem="6WZ-dX-cFC" firstAttribute="leading" secondItem="oLm-ER-jyy" secondAttribute="leading" constant="20" id="B2b-RA-f4N"/>
-                                        <constraint firstAttribute="trailing" secondItem="suo-vQ-vTN" secondAttribute="trailing" constant="13" id="FTP-kk-vAp"/>
+                                        <constraint firstItem="UPs-hL-JTd" firstAttribute="centerY" secondItem="5cZ-jv-nOe" secondAttribute="centerY" id="0Cb-Dh-pBK"/>
+                                        <constraint firstItem="igf-OW-qBk" firstAttribute="top" secondItem="oLm-ER-jyy" secondAttribute="top" id="0Ld-5W-jJ2"/>
+                                        <constraint firstItem="wi9-Ag-myw" firstAttribute="leading" secondItem="oLm-ER-jyy" secondAttribute="leading" constant="80" id="2da-wn-dQD"/>
+                                        <constraint firstItem="suo-vQ-vTN" firstAttribute="centerY" secondItem="oLm-ER-jyy" secondAttribute="centerY" id="5lX-ma-uOH"/>
+                                        <constraint firstItem="UPs-hL-JTd" firstAttribute="centerX" secondItem="5cZ-jv-nOe" secondAttribute="centerX" id="6jE-Rx-ucq"/>
+                                        <constraint firstItem="6WZ-dX-cFC" firstAttribute="leading" secondItem="oLm-ER-jyy" secondAttribute="leading" constant="80" id="B2b-RA-f4N"/>
+                                        <constraint firstAttribute="trailing" secondItem="suo-vQ-vTN" secondAttribute="trailing" constant="10" id="FTP-kk-vAp"/>
                                         <constraint firstAttribute="bottom" secondItem="2qi-6e-cc1" secondAttribute="bottom" id="FpJ-b5-GTw"/>
-                                        <constraint firstItem="igf-OW-qBk" firstAttribute="centerY" secondItem="oLm-ER-jyy" secondAttribute="centerY" id="Msf-PI-N9C"/>
-                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="wi9-Ag-myw" secondAttribute="trailing" constant="63" id="P8R-xF-UQ9"/>
-                                        <constraint firstItem="suo-vQ-vTN" firstAttribute="top" secondItem="oLm-ER-jyy" secondAttribute="top" constant="5" id="Rz0-ri-gS5"/>
-                                        <constraint firstItem="UPs-hL-JTd" firstAttribute="centerY" secondItem="oLm-ER-jyy" secondAttribute="centerY" id="Xxu-N5-71y"/>
-                                        <constraint firstAttribute="trailing" secondItem="UPs-hL-JTd" secondAttribute="trailing" constant="35" id="aPa-ki-4zC"/>
-                                        <constraint firstItem="2qi-6e-cc1" firstAttribute="width" secondItem="oLm-ER-jyy" secondAttribute="width" id="ay4-UG-q7o"/>
-                                        <constraint firstItem="2qi-6e-cc1" firstAttribute="centerX" secondItem="oLm-ER-jyy" secondAttribute="centerX" id="fZ9-YU-vug"/>
-                                        <constraint firstItem="6WZ-dX-cFC" firstAttribute="top" secondItem="oLm-ER-jyy" secondAttribute="top" constant="30" id="hs2-oJ-MbH"/>
-                                        <constraint firstItem="wi9-Ag-myw" firstAttribute="top" secondItem="oLm-ER-jyy" secondAttribute="top" constant="5" id="jpK-mO-QHb"/>
-                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="6WZ-dX-cFC" secondAttribute="trailing" constant="60" id="oKr-A6-7yS"/>
+                                        <constraint firstAttribute="trailing" secondItem="yJ2-pI-43l" secondAttribute="trailing" id="Ibc-F3-ufc"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="wi9-Ag-myw" secondAttribute="trailing" constant="45" id="P8R-xF-UQ9"/>
+                                        <constraint firstAttribute="trailing" secondItem="2qi-6e-cc1" secondAttribute="trailing" id="Rk2-cu-x2L"/>
+                                        <constraint firstItem="2qi-6e-cc1" firstAttribute="leading" secondItem="oLm-ER-jyy" secondAttribute="leading" constant="80" id="ZJB-Bz-pec"/>
+                                        <constraint firstItem="UPs-hL-JTd" firstAttribute="width" secondItem="5cZ-jv-nOe" secondAttribute="width" id="bL1-yE-2zq"/>
+                                        <constraint firstItem="5cZ-jv-nOe" firstAttribute="leading" secondItem="oLm-ER-jyy" secondAttribute="leading" constant="18" id="bvH-Ek-KVm"/>
+                                        <constraint firstAttribute="bottom" secondItem="yJ2-pI-43l" secondAttribute="bottom" id="fzi-rN-GAa"/>
+                                        <constraint firstItem="6WZ-dX-cFC" firstAttribute="top" secondItem="oLm-ER-jyy" secondAttribute="top" constant="34" id="hs2-oJ-MbH"/>
+                                        <constraint firstItem="5cZ-jv-nOe" firstAttribute="centerY" secondItem="oLm-ER-jyy" secondAttribute="centerY" id="jYQ-z5-I8Z"/>
+                                        <constraint firstItem="wi9-Ag-myw" firstAttribute="top" secondItem="oLm-ER-jyy" secondAttribute="top" constant="12" id="jpK-mO-QHb"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="6WZ-dX-cFC" secondAttribute="trailing" constant="45" id="oKr-A6-7yS"/>
+                                        <constraint firstItem="UPs-hL-JTd" firstAttribute="height" secondItem="5cZ-jv-nOe" secondAttribute="height" id="qNB-xp-maN"/>
                                         <constraint firstAttribute="bottom" secondItem="VM5-wf-dST" secondAttribute="bottom" constant="4" id="sWJ-vh-6rL"/>
                                         <constraint firstAttribute="trailing" secondItem="VM5-wf-dST" secondAttribute="trailing" constant="8" id="vft-b8-a4J"/>
-                                        <constraint firstAttribute="trailing" secondItem="igf-OW-qBk" secondAttribute="trailing" constant="18" id="xEj-pL-ELp"/>
+                                        <constraint firstAttribute="trailing" secondItem="igf-OW-qBk" secondAttribute="trailing" id="xEj-pL-ELp"/>
+                                        <constraint firstItem="yJ2-pI-43l" firstAttribute="leading" secondItem="oLm-ER-jyy" secondAttribute="leading" constant="80" id="z1f-SY-p7A"/>
                                     </constraints>
                                 </tableViewCellContentView>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" red="0.10980392156862745" green="0.10980392156862745" blue="0.11764705882352941" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
+                                    <outlet property="albumArtworkImageView" destination="5cZ-jv-nOe" id="JNV-ko-BP6"/>
                                     <outlet property="checkMarkImageView" destination="igf-OW-qBk" id="HtI-aW-Eai"/>
                                     <outlet property="downloadProgressLabel" destination="VM5-wf-dST" id="I1q-Hv-xOb"/>
                                     <outlet property="downloadProgressView" destination="2qi-6e-cc1" id="j5n-vI-NR3"/>
@@ -119,7 +139,7 @@
                             <outlet property="delegate" destination="YDD-qJ-rLp" id="SlB-XR-ykn"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Library" id="eXh-U1-SDL"/>
+                    <navigationItem key="navigationItem" title="My Music" id="eXh-U1-SDL"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IRE-hM-Xfo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -299,8 +319,8 @@
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </view>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Apashe - Majesty" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bX2-ei-RFn" customClass="MarqueeLabel">
-                                                    <rect key="frame" x="80" y="6.5" width="185" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Apashe - Majesty" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bX2-ei-RFn">
+                                                    <rect key="frame" x="80" y="6.5" width="180" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="I2u-Ij-OWC"/>
                                                     </constraints>
@@ -308,26 +328,26 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4:27" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jmY-FN-ms2">
-                                                    <rect key="frame" x="282.5" y="6.5" width="27.5" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12:04:27" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jmY-FN-ms2">
+                                                    <rect key="frame" x="269" y="17" width="41" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="pj5-nM-X1h"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="10"/>
                                                     <color key="textColor" red="0.48627450979999998" green="0.47843137250000001" blue="0.50196078430000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="trackName" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jFI-y8-RQy" customClass="MarqueeLabel">
-                                                    <rect key="frame" x="80" y="29.5" width="210" height="18"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="trackName" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jFI-y8-RQy">
+                                                    <rect key="frame" x="80" y="29.5" width="180" height="18"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="13"/>
                                                     <color key="textColor" red="0.48627450980392156" green="0.47843137254901963" blue="0.50196078431372548" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="2j9-Bp-jN1">
-                                                    <rect key="frame" x="293" y="31" width="15" height="15"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="audio_downloaded_icon" translatesAutoresizingMaskIntoConstraints="NO" id="2j9-Bp-jN1">
+                                                    <rect key="frame" x="295" y="0.0" width="25" height="25"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="15" id="A11-EG-iIp"/>
-                                                        <constraint firstAttribute="height" constant="15" id="Chd-yq-J08"/>
+                                                        <constraint firstAttribute="width" constant="25" id="A11-EG-iIp"/>
+                                                        <constraint firstAttribute="height" constant="25" id="Chd-yq-J08"/>
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
@@ -336,18 +356,18 @@
                                                 <constraint firstItem="kee-WA-Ac1" firstAttribute="leading" secondItem="noa-KD-Zzg" secondAttribute="leading" constant="18" id="2iV-ZZ-jcI"/>
                                                 <constraint firstItem="bX2-ei-RFn" firstAttribute="top" secondItem="kee-WA-Ac1" secondAttribute="top" constant="3" id="52H-1J-CWD"/>
                                                 <constraint firstAttribute="trailing" secondItem="jmY-FN-ms2" secondAttribute="trailing" constant="10" id="ATg-Sh-l6b"/>
-                                                <constraint firstItem="jmY-FN-ms2" firstAttribute="top" secondItem="bX2-ei-RFn" secondAttribute="top" id="AZU-HQ-UJ5"/>
                                                 <constraint firstItem="bX2-ei-RFn" firstAttribute="leading" secondItem="noa-KD-Zzg" secondAttribute="leading" constant="80" id="ChF-aL-O8e"/>
                                                 <constraint firstItem="jFI-y8-RQy" firstAttribute="top" secondItem="bX2-ei-RFn" secondAttribute="bottom" constant="2" id="FjI-FJ-0P3"/>
-                                                <constraint firstItem="2j9-Bp-jN1" firstAttribute="centerY" secondItem="jFI-y8-RQy" secondAttribute="centerY" id="HIP-Jh-xPC"/>
+                                                <constraint firstItem="jmY-FN-ms2" firstAttribute="centerY" secondItem="noa-KD-Zzg" secondAttribute="centerY" id="KYP-iK-8Mx"/>
                                                 <constraint firstItem="sqH-JW-VSc" firstAttribute="width" secondItem="kee-WA-Ac1" secondAttribute="width" id="KuU-qN-N0S"/>
                                                 <constraint firstItem="sqH-JW-VSc" firstAttribute="height" secondItem="kee-WA-Ac1" secondAttribute="height" id="LdE-in-Ysw"/>
                                                 <constraint firstItem="jFI-y8-RQy" firstAttribute="leading" secondItem="bX2-ei-RFn" secondAttribute="leading" id="Lig-E7-k5T"/>
-                                                <constraint firstAttribute="trailing" secondItem="2j9-Bp-jN1" secondAttribute="trailing" constant="12" id="PDs-fE-cJZ"/>
+                                                <constraint firstItem="2j9-Bp-jN1" firstAttribute="top" secondItem="noa-KD-Zzg" secondAttribute="top" id="Nof-Ae-Aqy"/>
+                                                <constraint firstAttribute="trailing" secondItem="2j9-Bp-jN1" secondAttribute="trailing" id="PDs-fE-cJZ"/>
                                                 <constraint firstItem="sqH-JW-VSc" firstAttribute="centerX" secondItem="kee-WA-Ac1" secondAttribute="centerX" id="RFz-BP-QhZ"/>
-                                                <constraint firstAttribute="trailing" secondItem="jFI-y8-RQy" secondAttribute="trailing" constant="30" id="eVr-yB-Ovo"/>
+                                                <constraint firstAttribute="trailing" secondItem="jFI-y8-RQy" secondAttribute="trailing" constant="60" id="eVr-yB-Ovo"/>
                                                 <constraint firstItem="sqH-JW-VSc" firstAttribute="centerY" secondItem="kee-WA-Ac1" secondAttribute="centerY" id="hjc-tm-30R"/>
-                                                <constraint firstAttribute="trailing" secondItem="bX2-ei-RFn" secondAttribute="trailing" constant="55" id="smA-4V-gHe"/>
+                                                <constraint firstAttribute="trailing" secondItem="bX2-ei-RFn" secondAttribute="trailing" constant="60" id="smA-4V-gHe"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.11372549019607843" green="0.11372549019607843" blue="0.11764705882352941" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -634,6 +654,6 @@
         <image name="MPForward" width="44" height="44"/>
         <image name="MPPause" width="44" height="44"/>
         <image name="MPPrev" width="44" height="44"/>
-        <image name="checkmark" width="48" height="48"/>
+        <image name="audio_downloaded_icon" width="64" height="64"/>
     </resources>
 </document>

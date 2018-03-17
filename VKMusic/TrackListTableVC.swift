@@ -349,9 +349,9 @@ class TrackListTableVC: UITableViewController {
 		return audioFiles.count
 		//return isFiltering() ? filterAudios.count : audioFiles.count
 	}
-	
+		
 	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		return 65
+		return 65.0
 	}
 	
 	override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {

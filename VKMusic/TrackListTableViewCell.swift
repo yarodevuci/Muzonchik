@@ -17,7 +17,7 @@ class TrackListTableViewCell: MGSwipeTableCell {
     @IBOutlet weak var trackDurationLabel: UILabel!
     @IBOutlet weak var musicPlayIdicatorView: ESTMusicIndicatorView!
     @IBOutlet weak var downloadProgressLabel: UILabel!
-    
+    @IBOutlet weak var albumArtworkImageView: UIImageView!
     
     var audioData: Audio? = nil {
         didSet {
@@ -55,10 +55,14 @@ class TrackListTableViewCell: MGSwipeTableCell {
 	
 	func showESTIndicator() {
 		musicPlayIdicatorView.state = .estMusicIndicatorViewStatePlaying
+		albumArtworkImageView.image = nil
+		albumArtworkImageView.backgroundColor = .estBackGroundColor
 	}
 	
 	func hideESTIndicator() {
 		musicPlayIdicatorView.state = .estMusicIndicatorViewStateStopped
+		albumArtworkImageView.image = #imageLiteral(resourceName: "ArtPlaceholder")
+		albumArtworkImageView.backgroundColor = .clear
 	}
 	
 	override var isSelected: Bool {
@@ -69,7 +73,9 @@ class TrackListTableViewCell: MGSwipeTableCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+		
+		albumArtworkImageView.layer.cornerRadius = 5
+		albumArtworkImageView.clipsToBounds = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
