@@ -291,14 +291,21 @@ class TrackListTableVC: UITableViewController {
 			
 			do {
 				if let json = try JSONSerialization.jsonObject(with: m.body, options: .mutableContainers) as? [String: Any] {
-					let data = json["data"] as? [String : Any] ?? [:]
-					let title = data["title"] as? String ?? "Unknown"
-					let duration = data["duration"] as? Int ?? 0
-					let url = data["url"] as? String ?? ""
+					if let data = json["data"] as? [String : Any] {
+						let title = data["title"] as? String ?? "Unknown"
+						let duration = data["duration"] as? Int ?? 0
+						let url = data["url"] as? String ?? ""
+						
+						let audio = Audio(url: url, title: "YouTube", artist: title, duration: duration)
+						self.audioFiles.removeAll()
+						self.audioFiles.append(audio)
+						
+					}
+					if let data = json["error"] as? [String : Any] {
+						let error_message = data["message"] as? String ?? "Some error"
+						SwiftNotificationBanner.presentNotification(error_message)
+					}
 					
-					let audio = Audio(url: url, title: "YouTube", artist: title, duration: duration)
-					self.audioFiles.removeAll()
-					self.audioFiles.append(audio)
 					q.delete()
 					conn.close()
 					print("Connection is closed")
@@ -425,6 +432,7 @@ extension TrackListTableVC: UISearchBarDelegate {
 	func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
 		if let url = UIPasteboard.general.string, url.hasPrefix("http") {
 			searchBar.textField?.insertText(url)
+			UIPasteboard.general.string = ""
 		}
 	}
 	

@@ -17,22 +17,21 @@ extension TrackListTableVC: URLSessionDownloadDelegate {
             let fileManager = FileManager.default
             do {
                 try fileManager.removeItem(at: destinationURL)
-            } catch let error as NSError {
+            } catch let error as Error {
                 //FILE PROBABLY DOES NOT EXIST:
                 print("ERROR WHEN TRYING REMOVING TEMP FILE: \(error.localizedDescription)")
             }
             
             do {
                 try fileManager.moveItem(at: location, to: destinationURL)
-                let aD = self.activeDownloads[originalURL]!
-				
-				CoreDataManager.shared.saveToCoreData(audio: Audio(url: destinationURL.absoluteString, title: aD.title, artist: aD.artist, duration: aD.duration))
-				 self.activeDownloads[downloadTask.originalRequest?.url?.absoluteString ?? ""] = nil
-				
-                DispatchQueue.main.async {
-                    SwiftNotificationBanner.presentNotification("\(self.activeDownloads[originalURL]!.songName)\nDownload complete")
-                    self.tableView.reloadData()
-                }
+				if let currentDownload = self.activeDownloads[originalURL] {
+					CoreDataManager.shared.saveToCoreData(audio: Audio(url: destinationURL.absoluteString, title: currentDownload.title, artist: currentDownload.artist, duration: currentDownload.duration))
+					DispatchQueue.main.async {
+						SwiftNotificationBanner.presentNotification("\(currentDownload.songName)\nDownload complete")
+						self.tableView.reloadData()
+					}
+					self.activeDownloads[downloadTask.originalRequest?.url?.absoluteString ?? ""] = nil
+				}
             } catch let error as Error {
 				DispatchQueue.main.async {
                     print("ERROR: \(error.localizedDescription)")
