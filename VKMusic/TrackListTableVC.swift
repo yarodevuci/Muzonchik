@@ -119,7 +119,6 @@ class TrackListTableVC: UITableViewController {
 			searchController.obscuresBackgroundDuringPresentation = false
 		}
 		searchController.searchBar.placeholder = "Search for music"
-		//searchController.searchBar.barTintColor = .splashBlue
 		
 		let cancelButtonAttributes: [NSAttributedStringKey : Any] = [.foregroundColor: UIColor.white]
 		UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes, for: .normal)

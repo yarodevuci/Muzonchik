@@ -19,34 +19,6 @@ extension SettingsTableVC {
 		}
 	}
 	
-	func dowloadMusicArchiveFromDropBox() {
-		// Download to URL
-		let destURL = DocumentsDirectory.localDocumentsURL.appendingPathComponent("import.zip")
-		let destination: (URL, HTTPURLResponse) -> URL = { temporaryURL, response in
-			return destURL
-		}
-		client.files.download(path: "/import.zip", overwrite: true, destination: destination)
-			.response { response, error in
-				if let response = response {
-					print(response)
-					DispatchQueue.global(qos: .background).async {
-						self.unZip()
-					}
-				} else if let error = error {
-					DispatchQueue.main.async {
-						self.hideActivityIndicator()
-						SwiftNotificationBanner.presentNotification("Nothing to downlad")
-					}
-					print(error)
-				}
-			}
-			.progress { progressData in
-				self.toolBarStatusLabel.text = "Downloading " + String(format: "%.1f%%", progressData.fractionCompleted * 100)
-				self.progressView.progress = Float(progressData.fractionCompleted)
-				print(progressData)
-		}
-	}
-	
 	func setupActivityToolBar() {
 		self.navigationController?.toolbar.barStyle = .blackTranslucent
 		activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))

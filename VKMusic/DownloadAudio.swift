@@ -26,18 +26,15 @@ extension TrackListTableVC: URLSessionDownloadDelegate {
                 try fileManager.moveItem(at: location, to: destinationURL)
                 let aD = self.activeDownloads[originalURL]!
 				
-				
 				CoreDataManager.shared.saveToCoreData(audio: Audio(url: destinationURL.absoluteString, title: aD.title, artist: aD.artist, duration: aD.duration))
+				 self.activeDownloads[downloadTask.originalRequest?.url?.absoluteString ?? ""] = nil
 				
-				
-               // GlobalFunctions.shared.createSavedAudio(title: aD.realmTitle, artist: aD.realmArtist, duration: aD.realmDuration, url: destinationURL)
                 DispatchQueue.main.async {
                     SwiftNotificationBanner.presentNotification("\(self.activeDownloads[originalURL]!.songName)\nDownload complete")
-                    self.activeDownloads[downloadTask.originalRequest?.url?.absoluteString ?? ""] = nil
                     self.tableView.reloadData()
                 }
-            } catch let error as NSError {
-                DispatchQueue.main.async(execute: { () -> Void in
+            } catch let error as Error {
+				DispatchQueue.main.async {
                     print("ERROR: \(error.localizedDescription)")
                     if self.activeDownloads[originalURL] != nil {
                         SwiftNotificationBanner.presentNotification("\(self.activeDownloads[originalURL]!.songName)\n\(error.localizedDescription)")
@@ -45,7 +42,7 @@ extension TrackListTableVC: URLSessionDownloadDelegate {
 
                         self.tableView.reloadData()
                     }
-                })
+                }
             }
         }
     }

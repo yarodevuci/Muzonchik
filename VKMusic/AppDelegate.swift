@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SwiftyDropbox
 import CoreData
 import OneSignal
 
@@ -15,11 +14,8 @@ import OneSignal
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
-
-    var backgroundSessionCompletionHandler: (() -> Void)?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        DropboxClientsManager.setupWithAppKey(DROPBOX_APP_KEY)
         print(DocumentsDirectory.localDocumentsURL)
 		UINavigationBar.appearance().shadowImage = UIImage()
 		UINavigationBar.appearance().tintColor = .white

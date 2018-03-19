@@ -8,7 +8,6 @@
 
 import UIKit
 import Zip
-import SwiftyDropbox
 
 class SettingsTableVC: UITableViewController {
     //MARK: - IBOutlet
@@ -21,16 +20,11 @@ class SettingsTableVC: UITableViewController {
 	var toolBarStatusLabel = UILabel()
 	var progressView = UIProgressView()
 	
-	//MARK: - Constants
-	let client = DropboxClient(accessToken: DROPBOX_CLIENT_ACCESS_TOKEN)
-
 	//MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         setupActivityToolBar()
 		
-        DropboxClientsManager.authorizedClient = client
-        
         audioCategorySwitch.isOn = UserDefaults.standard.value(forKey: "mixAudioWithOthers") as? Bool ?? true
         musicLibrarySizeLabel.text = GlobalFunctions.shared.getFriendlyCacheSize()
         numberOfCurrentFilesLabel.text = calculatedNumOfSongs()
