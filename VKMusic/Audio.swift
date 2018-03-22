@@ -15,13 +15,22 @@ struct Audio: Equatable {
     var title = "Unknown"
     var artist = "Unknown"
     var duration = 0
+	var id = 0
     
-    init(url: String, title: String, artist: String , duration: Int) {
+	init(url: String, title: String, artist: String , duration: Int) {
         self.url = url
         self.title = title.stripped
         self.artist = artist.stripped
         self.duration = duration
     }
+	
+	init(withID id: Int, url: String, title: String, artist: String , duration: Int) {
+		self.id = id
+		self.url = url
+		self.title = title.stripped
+		self.artist = artist.stripped
+		self.duration = duration
+	}
     
     init(withElement element: Element) {
         var title = ""

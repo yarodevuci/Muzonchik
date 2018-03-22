@@ -22,6 +22,7 @@
 		5B7C32F9205B80E6007E8BF6 /* UploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7C32F8205B80E5007E8BF6 /* UploadManager.swift */; };
 		5B7C32FB205BBA57007E8BF6 /* DownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7C32FA205BBA57007E8BF6 /* DownloadManager.swift */; };
 		5B7C32FD205BCB9F007E8BF6 /* SettingsHellper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7C32FC205BCB9F007E8BF6 /* SettingsHellper.swift */; };
+		5BA1B7A0206367E800DAE526 /* MarqueeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA1B79F206367E800DAE526 /* MarqueeLabel.swift */; };
 		5BC751F7204411CE00228EDF /* SettingsTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC751F6204411CE00228EDF /* SettingsTableVC.swift */; };
 		5BFFCE0B2040AC7A00716A78 /* TrackListTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFCE0A2040AC7A00716A78 /* TrackListTableVC.swift */; };
 		5BFFCE0D2040B1DE00716A78 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFCE0C2040B1DE00716A78 /* Extensions.swift */; };
@@ -30,7 +31,6 @@
 		5BFFCE33204115D600716A78 /* TableViewSwipeSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFCE32204115D600716A78 /* TableViewSwipeSettings.swift */; };
 		5BFFCE362041172A00716A78 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFCE352041172A00716A78 /* HelperFunctions.swift */; };
 		5BFFCE38204117CE00716A78 /* DownloadAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFCE37204117CE00716A78 /* DownloadAudio.swift */; };
-		C4444E731DA2788400160F1F /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4444E721DA2788400160F1F /* MarqueeLabel.m */; };
 		C4444E781DA2867300160F1F /* ESTMusicIndicatorContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4444E761DA2867300160F1F /* ESTMusicIndicatorContentView.swift */; };
 		C4444E791DA2867300160F1F /* ESTMusicIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4444E771DA2867300160F1F /* ESTMusicIndicatorView.swift */; };
 		C4444E7F1DA3868200160F1F /* CircleProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4444E7E1DA3868200160F1F /* CircleProgressView.swift */; };
@@ -39,8 +39,6 @@
 		C47D51B71D8FE33700968226 /* SwiftNotificationBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47D51B41D8FE33700968226 /* SwiftNotificationBanner.swift */; };
 		C47D51B81D8FE33700968226 /* SwiftNotificationBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47D51B51D8FE33700968226 /* SwiftNotificationBannerView.swift */; };
 		C47D51B91D8FE33700968226 /* SwiftNotificationBannerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C47D51B61D8FE33700968226 /* SwiftNotificationBannerView.xib */; };
-		C4850B0A1DA1C8CE004AFF81 /* MGSwipeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C4850B071DA1C8CE004AFF81 /* MGSwipeButton.m */; };
-		C4850B0B1DA1C8CF004AFF81 /* MGSwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4850B091DA1C8CE004AFF81 /* MGSwipeTableCell.m */; };
 		C48A9AAC1D8A9929006B3C64 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48A9AAB1D8A9929006B3C64 /* Audio.swift */; };
 		C498CB761D9ED52D00B73FF1 /* GlobalFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C498CB751D9ED52D00B73FF1 /* GlobalFunctions.swift */; };
 		C4CC8D8A1D8A7F8600BF68A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CC8D891D8A7F8600BF68A1 /* AppDelegate.swift */; };
@@ -96,6 +94,7 @@
 		5B7C32F8205B80E5007E8BF6 /* UploadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadManager.swift; sourceTree = "<group>"; };
 		5B7C32FA205BBA57007E8BF6 /* DownloadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadManager.swift; sourceTree = "<group>"; };
 		5B7C32FC205BCB9F007E8BF6 /* SettingsHellper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHellper.swift; sourceTree = "<group>"; };
+		5BA1B79F206367E800DAE526 /* MarqueeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarqueeLabel.swift; sourceTree = "<group>"; };
 		5BC751F6204411CE00228EDF /* SettingsTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableVC.swift; sourceTree = "<group>"; };
 		5BFFCE0A2040AC7A00716A78 /* TrackListTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackListTableVC.swift; sourceTree = "<group>"; };
 		5BFFCE0C2040B1DE00716A78 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -107,8 +106,6 @@
 		A3AF06D2A3F37E16D0179E16 /* Pods-VKMusic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VKMusic.release.xcconfig"; path = "Pods/Target Support Files/Pods-VKMusic/Pods-VKMusic.release.xcconfig"; sourceTree = "<group>"; };
 		ADA000499C89EF66BC4E0D77 /* Pods-Muzonchik.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Muzonchik.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Muzonchik/Pods-Muzonchik.debug.xcconfig"; sourceTree = "<group>"; };
 		BC1F7F3BD2F52A7CCB85E5F5 /* Pods_Muzonchik.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Muzonchik.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C4444E711DA2787E00160F1F /* MarqueeLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MarqueeLabel.h; sourceTree = "<group>"; };
-		C4444E721DA2788400160F1F /* MarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarqueeLabel.m; sourceTree = "<group>"; };
 		C4444E761DA2867300160F1F /* ESTMusicIndicatorContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ESTMusicIndicatorContentView.swift; sourceTree = "<group>"; };
 		C4444E771DA2867300160F1F /* ESTMusicIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ESTMusicIndicatorView.swift; sourceTree = "<group>"; };
 		C4444E7E1DA3868200160F1F /* CircleProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleProgressView.swift; sourceTree = "<group>"; };
@@ -117,11 +114,6 @@
 		C47D51B41D8FE33700968226 /* SwiftNotificationBanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftNotificationBanner.swift; sourceTree = "<group>"; };
 		C47D51B51D8FE33700968226 /* SwiftNotificationBannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftNotificationBannerView.swift; sourceTree = "<group>"; };
 		C47D51B61D8FE33700968226 /* SwiftNotificationBannerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SwiftNotificationBannerView.xib; sourceTree = "<group>"; };
-		C4850B051DA1C8CE004AFF81 /* VKMusic-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VKMusic-Bridging-Header.h"; sourceTree = "<group>"; };
-		C4850B061DA1C8CE004AFF81 /* MGSwipeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSwipeButton.h; sourceTree = "<group>"; };
-		C4850B071DA1C8CE004AFF81 /* MGSwipeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSwipeButton.m; sourceTree = "<group>"; };
-		C4850B081DA1C8CE004AFF81 /* MGSwipeTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSwipeTableCell.h; sourceTree = "<group>"; };
-		C4850B091DA1C8CE004AFF81 /* MGSwipeTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSwipeTableCell.m; sourceTree = "<group>"; };
 		C48A9AAB1D8A9929006B3C64 /* Audio.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
 		C498CB751D9ED52D00B73FF1 /* GlobalFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalFunctions.swift; sourceTree = "<group>"; };
 		C4CC8D861D8A7F8600BF68A1 /* Muzonchik.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Muzonchik.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -220,8 +212,7 @@
 		C4444E741DA27A0700160F1F /* MarqueeLabel */ = {
 			isa = PBXGroup;
 			children = (
-				C4444E721DA2788400160F1F /* MarqueeLabel.m */,
-				C4444E711DA2787E00160F1F /* MarqueeLabel.h */,
+				5BA1B79F206367E800DAE526 /* MarqueeLabel.swift */,
 			);
 			name = MarqueeLabel;
 			sourceTree = "<group>";
@@ -250,7 +241,6 @@
 		C47D51AA1D8FE2AB00968226 /* Extras */ = {
 			isa = PBXGroup;
 			children = (
-				C4850B041DA1C8B2004AFF81 /* MGSwipeTableCell */,
 				C47D51AD1D8FE2D700968226 /* SwiftNotificationBanner */,
 				C4444E751DA2865A00160F1F /* ESTMusicIndicator */,
 				C4444E741DA27A0700160F1F /* MarqueeLabel */,
@@ -266,18 +256,6 @@
 				C47D51B61D8FE33700968226 /* SwiftNotificationBannerView.xib */,
 			);
 			name = SwiftNotificationBanner;
-			sourceTree = "<group>";
-		};
-		C4850B041DA1C8B2004AFF81 /* MGSwipeTableCell */ = {
-			isa = PBXGroup;
-			children = (
-				C4850B061DA1C8CE004AFF81 /* MGSwipeButton.h */,
-				C4850B071DA1C8CE004AFF81 /* MGSwipeButton.m */,
-				C4850B081DA1C8CE004AFF81 /* MGSwipeTableCell.h */,
-				C4850B091DA1C8CE004AFF81 /* MGSwipeTableCell.m */,
-				C4850B051DA1C8CE004AFF81 /* VKMusic-Bridging-Header.h */,
-			);
-			name = MGSwipeTableCell;
 			sourceTree = "<group>";
 		};
 		C4CC8D7D1D8A7F8600BF68A1 = {
@@ -473,6 +451,7 @@
 				"${BUILT_PRODUCTS_DIR}/BTNavigationDropdownMenu/BTNavigationDropdownMenu.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework",
 				"${BUILT_PRODUCTS_DIR}/JKVValue/JKVValue.framework",
+				"${BUILT_PRODUCTS_DIR}/MGSwipeTableCell/MGSwipeTableCell.framework",
 				"${BUILT_PRODUCTS_DIR}/RMQClient/RMQClient.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftSoup/SwiftSoup.framework",
 				"${BUILT_PRODUCTS_DIR}/Zip/Zip.framework",
@@ -482,6 +461,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BTNavigationDropdownMenu.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JKVValue.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MGSwipeTableCell.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RMQClient.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftSoup.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Zip.framework",
@@ -525,9 +505,7 @@
 				5BFFCE102040BCE500716A78 /* TrackListTableViewCell.swift in Sources */,
 				5B5078CC204ACC3E00712ADE /* SubtleVolume.swift in Sources */,
 				5B7C32FD205BCB9F007E8BF6 /* SettingsHellper.swift in Sources */,
-				C4850B0B1DA1C8CF004AFF81 /* MGSwipeTableCell.m in Sources */,
 				5BC751F7204411CE00228EDF /* SettingsTableVC.swift in Sources */,
-				C4850B0A1DA1C8CE004AFF81 /* MGSwipeButton.m in Sources */,
 				5B5078C8204A759A00712ADE /* TrackTableViewCell.swift in Sources */,
 				C498CB761D9ED52D00B73FF1 /* GlobalFunctions.swift in Sources */,
 				C4CC8D8A1D8A7F8600BF68A1 /* AppDelegate.swift in Sources */,
@@ -538,9 +516,9 @@
 				5B3949CF1D8D12DB00A20E7E /* TrackCell.swift in Sources */,
 				5B33AF1220532404006A8B86 /* CoreDataModel.xcdatamodeld in Sources */,
 				5BFFCE0B2040AC7A00716A78 /* TrackListTableVC.swift in Sources */,
-				C4444E731DA2788400160F1F /* MarqueeLabel.m in Sources */,
 				5B7C32FB205BBA57007E8BF6 /* DownloadManager.swift in Sources */,
 				C47D51B71D8FE33700968226 /* SwiftNotificationBanner.swift in Sources */,
+				5BA1B7A0206367E800DAE526 /* MarqueeLabel.swift in Sources */,
 				C45FF8121D9137DC001637A7 /* CommandCenter.swift in Sources */,
 				5B3949D11D8D146500A20E7E /* Download.swift in Sources */,
 			);
@@ -696,7 +674,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "VKMusic/VKMusic-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SUPPRESS_WARNINGS = YES;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -728,7 +706,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "VKMusic/VKMusic-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_SUPPRESS_WARNINGS = YES;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;

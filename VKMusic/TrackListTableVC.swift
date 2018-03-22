@@ -208,8 +208,18 @@ class TrackListTableVC: UITableViewController {
 				let artist = audio.value(forKey: "artist") as? String ?? ""
 				let title = audio.value(forKey: "title") as? String ?? ""
 				let duration = audio.value(forKey: "duration") as? Int ?? 0
+				let id = audio.value(forKey: "id") as? Int ?? 0
+				audioFiles.append(Audio(withID: id, url: url, title: title, artist: artist, duration: duration))
 				
-				audioFiles.append(Audio(url: url, title: title, artist: artist, duration: duration))
+				//MARK: - Used this to rename files in the directory
+//				do {
+//					let documentDirectory = DocumentsDirectory.localDownloadsURL
+//					let originPath = documentDirectory.appendingPathComponent("\(title)_\(artist).mp\(url.last ?? "3")")
+//					let destinationPath = documentDirectory.appendingPathComponent("\(title)_\(artist)_\(duration).mp\(url.last ?? "3")")
+//					try FileManager.default.moveItem(at: originPath, to: destinationPath)
+//				} catch {
+//					print(error)
+//				}
 			}
 		}
 		
@@ -409,9 +419,9 @@ class TrackListTableVC: UITableViewController {
 			AudioPlayer.index = currentSelectedIndex
 			
 			if localFileExistsForTrack(audio) {
-				let urlString = "\(audio.title)_\(audio.artist).mp\(audio.url.last ?? "3")"
+				let urlString = "\(audio.title)_\(audio.artist)_\(audio.duration).mp\(audio.url.last ?? "3")"
 				let url = localFilePathForUrl(urlString)
-				AudioPlayer.defaultPlayer.playAudioFromURL(audioURL: url!)
+				AudioPlayer.defaultPlayer.playAudio(fromURL: url!)
 			} else {
 				let url = URL(string: audio.url)
 				AudioPlayer.defaultPlayer.playAudio(fromURL: url)

@@ -71,10 +71,28 @@ class CoreDataManager {
 	func saveToCoreData(audio: Audio){
 		let entity = NSEntityDescription.entity(forEntityName: "TrackInfo", in: managedObjectContext)
 		let manageObject = NSManagedObject(entity: entity!, insertInto: managedObjectContext)
+		
 		manageObject.setValue(audio.url, forKey: "url")
 		manageObject.setValue(audio.duration, forKey: "duration")
 		manageObject.setValue(audio.artist, forKey: "artist")
 		manageObject.setValue(audio.title, forKey: "title")
+		manageObject.setValue(incrementedID(), forKey: "id")
+		saveContext()		
+	}
+	
+	func updateRecords() {
+		let request: NSFetchRequest = TrackInfo.fetchRequest()
+		
+		do {
+			let records = try managedObjectContext.fetch(request)
+			for i in 0..<records.count {
+				records[i].setValue(i, forKey: "id")
+			}
+			
+		} catch {
+			print(error.localizedDescription)
+		}
+		
 		saveContext()
 	}
 	
@@ -93,15 +111,34 @@ class CoreDataManager {
 		}
 	}
 	
-	func deleteAudioFile(withURLPath url: String) {
+	func incrementedID() -> Int32 {
+		let request: NSFetchRequest = TrackInfo.fetchRequest()
+		let sortDescriptor = NSSortDescriptor(key: "id", ascending: false)
+		
+		request.sortDescriptors = [sortDescriptor]
+		request.fetchLimit = 1
+		
+		do {
+			let tracks = try managedObjectContext.fetch(request)
+			return (tracks.first?.id ?? 0) + 1
+		} catch {
+			print(error.localizedDescription)
+		}
+		return 0
+	}
+	
+	func deleteAudioFile(withID id: Int) {
 		let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "TrackInfo")
-		fetchRequest.predicate = NSPredicate(format: "url == %@", url)
+		fetchRequest.predicate = NSPredicate(format: "id == \(id)")
+		fetchRequest.fetchLimit = 1
 		let entityDescription = NSEntityDescription.entity(forEntityName: "TrackInfo", in: managedObjectContext)
 		fetchRequest.entity = entityDescription
 		
 		do {
 			let result = try managedObjectContext.fetch(fetchRequest)
-			managedObjectContext.delete(result.first as! NSManagedObject)
+			if result.count > 0 {
+				managedObjectContext.delete(result.first as! NSManagedObject)
+			}
 		} catch {
 			let fetchError = error as NSError
 		}

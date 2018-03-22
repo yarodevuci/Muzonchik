@@ -11,5 +11,6 @@ target 'Muzonchik' do
   pod 'Zip', :git => 'https://github.com/marmelroy/Zip.git'
   pod 'RMQClient', '~> 0.10.0', :inhibit_warnings => true
   pod 'OneSignal'
+  pod 'MGSwipeTableCell'
   
 end

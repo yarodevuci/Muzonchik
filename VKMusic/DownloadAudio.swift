@@ -15,11 +15,10 @@ extension TrackListTableVC: URLSessionDownloadDelegate {
         if let originalURL = downloadTask.originalRequest?.url?.absoluteString,
             let destinationURL = localFilePathForUrl(originalURL) {
             let fileManager = FileManager.default
-            do {
-                try fileManager.removeItem(at: destinationURL)
-            } catch let error as Error {
-                //FILE PROBABLY DOES NOT EXIST:
-                print("ERROR WHEN TRYING REMOVING TEMP FILE: \(error.localizedDescription)")
+			
+			do { try fileManager.removeItem(at: destinationURL) }
+			catch let error as Error { //FILE PROBABLY DOES NOT EXIST:
+                print("ERROR REMOVING TEMP FILE: \(error.localizedDescription)")
             }
             
             do {
@@ -76,7 +75,7 @@ extension TrackListTableVC: URLSessionDownloadDelegate {
         download.downloadTask!.resume()
         download.isDownloading = true
 		
-        download.fileName = "\(track.title)_\(track.artist).mp\(track.url.last ?? "3")"
+        download.fileName = "\(track.title)_\(track.artist)_\(track.duration).mp\(track.url.last ?? "3")"
         download.songName = track.title
         
         //Save info for Ream:

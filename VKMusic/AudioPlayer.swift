@@ -9,6 +9,7 @@ protocol AudioPlayerDelegate {
     func audioDidChangeTime(_ time: Int64)
     func playerWillPlayNexAudio()
 	func playerWillPlayPreviousAudio()
+	func receivedArtworkImage(_ image: UIImage)
 }
 
 class AudioPlayer {
@@ -56,53 +57,30 @@ class AudioPlayer {
         player = AVPlayer(playerItem:playerItem)
         player.play()
         addTimeObeserver()
-        
-        DispatchQueue.main.async {
-            CommandCenter.defaultCenter.setNowPlayingInfo()
-        }
-    }
-    
-	//MARK: - Public API - #####  DEPRECATED  #####
-    func playAudioFromURL(audioURL: URL) {
-        if currentAudio != nil {
-            killTimeObserver()
-        }
 		
-        currentAudio = currentPlayList[AudioPlayer.index]
-        
-        let playerItem = AVPlayerItem(url: audioURL)
-        player = AVPlayer(playerItem:playerItem)
-        player.play()
-        addTimeObeserver()
-        
-        DispatchQueue.main.async {
-            CommandCenter.defaultCenter.setNowPlayingInfo()
-        }
-        
-        
-        DispatchQueue.global(qos: .background).async {
-            let metadataList = playerItem.asset.metadata
-            if metadataList.count != 0 {
-                for item in metadataList {
-                    if let i = item.commonKey {
-                        if i.rawValue == "artwork" {
-                            print("image Found")
-                            DispatchQueue.main.async {
-                                CommandCenter.defaultCenter.setNowPlayingInfo()
-                            }
-                        }
-                    }
-                }
-            } else { print("MetadataList is empty ") }
-        }
-
+		let metadataList = playerItem.asset.metadata
+		var audio_image = #imageLiteral(resourceName: "ArtPlaceholder")
+		if metadataList.count > 0 {
+			for item in metadataList {
+				guard let key = item.commonKey, let value = item.value else { continue }
+				
+				if key.rawValue == "artwork" {
+					if let audioImage = UIImage(data: value as! Data) {
+						print("\nimage Found\n")
+						audio_image = audioImage
+						self.delegate?.receivedArtworkImage(audioImage)
+					}
+				}
+			}
+		} else {
+			print("\nMetadataList is empty \n")
+		}
+		
+		CommandCenter.defaultCenter.setNowPlayingInfo(artworkImage: audio_image)
     }
 	
-
 	func play() {
-		if let player = player {
-			player.play()
-		}
+		if let player = player { player.play() }
 	}
     
     func previous() {

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MGSwipeTableCell
 
 protocol TrackCellDelegate {
     func cancelTapped(_ cell: TrackCell)

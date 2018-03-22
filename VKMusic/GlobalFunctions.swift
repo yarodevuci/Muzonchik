@@ -201,7 +201,7 @@ class GlobalFunctions {
     }
 	
 	func localFileExistsForTrack(_ audio: Audio) -> Bool {
-		let localUrl = DocumentsDirectory.localDownloadsURL.appendingPathComponent("\(audio.title)_\(audio.artist).mp\(audio.url.last ?? "3")")
+		let localUrl = DocumentsDirectory.localDownloadsURL.appendingPathComponent("\(audio.title)_\(audio.artist)_\(audio.duration).mp\(audio.url.last ?? "3")")
 		var isDir : ObjCBool = false
 		let path = localUrl.path
 		return FileManager.default.fileExists(atPath: path, isDirectory: &isDir)

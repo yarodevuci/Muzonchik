@@ -126,8 +126,8 @@ class CompactMusicPlayerVC: UIViewController {
 	func playLocalTrack(track: Audio) {
 		activityIndicator.stopAnimating()
 		fullPlayerPlayPauseButton.isHidden = false
-		let trackPath = "\(track.title)_\(track.artist).mp\(track.url.last ?? "3")"
-		AudioPlayer.defaultPlayer.playAudioFromURL(audioURL: DocumentsDirectory.localDownloadsURL.appendingPathComponent(trackPath))
+		let trackPath = "\(track.title)_\(track.artist)_\(track.duration).mp\(track.url.last ?? "3")"
+		AudioPlayer.defaultPlayer.playAudio(fromURL: DocumentsDirectory.localDownloadsURL.appendingPathComponent(trackPath))
 	}
 	
 	func playRemoteTrack(fromURL url: String) {
@@ -205,8 +205,14 @@ class CompactMusicPlayerVC: UIViewController {
 			case .began:
 				// handle drag began
 				AudioPlayer.defaultPlayer.pause()
-				currenTimeLabel.text? = Int(durationSlider.value).toAudioString
+				currenTimeLabel.text = Int(durationSlider.value).toAudioString
+				print(Int(durationSlider.value).toAudioString)
 				fullPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "MPPlay"), for: UIControlState())
+				
+			case .moved:
+				// handle drag moved
+				currenTimeLabel.text = Int(durationSlider.value).toAudioString
+				durationLabel.text = "-\((Int(trackDurationSeconds) - Int(durationSlider.value)).toAudioString)"
 				
 			case .ended:
 				// handle drag ended
@@ -216,6 +222,7 @@ class CompactMusicPlayerVC: UIViewController {
 				fullPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "MPPause"), for: UIControlState())
 				
 				AudioPlayer.defaultPlayer.play()
+				
 			default:
 				break
 			}
@@ -226,7 +233,12 @@ class CompactMusicPlayerVC: UIViewController {
 //MARK: - AudioPlayerDelegate
 extension CompactMusicPlayerVC: AudioPlayerDelegate {
 	
-	//MARK: - AudioPlayerDelegate
+	func receivedArtworkImage(_ image: UIImage) {
+		DispatchQueue.main.async {
+			self.albumArtImageView.image = image
+		}
+	}
+	
 	func audioDidChangeTime(_ time: Int64) {
 		//Unhide play button and hide activity indicator
 		if AudioPlayer.defaultPlayer.getCurrentTime() > 0 {
@@ -285,8 +297,9 @@ extension CompactMusicPlayerVC: UITableViewDelegate, UITableViewDataSource {
 			updateCurrentTrackInfo()
 			
 			let track = tracks[indexPath.row]
+			albumArtImageView.image = #imageLiteral(resourceName: "ArtPlaceholder")
 			GlobalFunctions.shared.localFileExistsForTrack(track) ? playLocalTrack(track: track) : playRemoteTrack(fromURL: track.url)
-
+			
 			tableView.reloadData()
 		}
 	}

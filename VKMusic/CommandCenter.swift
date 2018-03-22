@@ -62,12 +62,12 @@ class CommandCenter: NSObject {
     
     //MARK: - Public Methods
     
-    func setNowPlayingInfo() {
+	func setNowPlayingInfo(artworkImage: UIImage) {
         MPNowPlayingInfoCenter.default().nowPlayingInfo = [
             MPMediaItemPropertyPlaybackDuration: player.currentAudio.duration,
             MPMediaItemPropertyTitle: player.currentAudio.title,
             MPMediaItemPropertyArtist: player.currentAudio.artist,
-            MPMediaItemPropertyArtwork: MPMediaItemArtwork(image: #imageLiteral(resourceName: "ArtPlaceholder")),
+            MPMediaItemPropertyArtwork: MPMediaItemArtwork(image: artworkImage),
             MPNowPlayingInfoPropertyPlaybackRate: 1.0]
     }
 }

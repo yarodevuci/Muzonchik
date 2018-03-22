@@ -6,6 +6,8 @@
 //  Copyright © 2016 Yaroslav Dukal. All rights reserved.
 //
 
+import Foundation
+
 class Download: NSObject {
     
     var url: String

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MGSwipeTableCell
 
 class TrackListTableViewCell: MGSwipeTableCell {
     

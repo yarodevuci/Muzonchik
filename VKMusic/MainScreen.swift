@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import MGSwipeTableCell
+
 //MARK: - DEPRECATED ...
 class MainScreen: UIViewController, MGSwipeTableCellDelegate {
 	
