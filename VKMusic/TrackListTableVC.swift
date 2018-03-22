@@ -310,6 +310,7 @@ class TrackListTableVC: UITableViewController {
 					conn.close()
 					print("Connection is closed")
 					DispatchQueue.main.async {
+						self.isDownloadedListShown = false
 						self.tableView.reloadData()
 						self.hideActivityIndicator()
 						

@@ -65,14 +65,15 @@ extension TrackListTableVC {
 		let track = audioFiles[row]
 		if localFileExistsForTrack(track) {
             let filePath = getLocalDownloadsURL().appendingPathComponent("\(track.title)_\(track.artist).mp\(track.url.last ?? "3")")
+
 			do {
 				try FileManager.default.removeItem(at: filePath)
-				if AudioPlayer.defaultPlayer.currentAudio != nil && AudioPlayer.defaultPlayer.currentAudio == track {
+				if AudioPlayer.defaultPlayer.currentAudio != nil && AudioPlayer.defaultPlayer.currentAudio.duration == track.duration {
 					AudioPlayer.defaultPlayer.kill()
 					self.navigationController?.dismissPopupBar(animated: true, completion: nil)
 				}
 				//Delete From Realm
-				CoreDataManager.shared.deleteAudioFile(withURL: track.url)
+				CoreDataManager.shared.deleteAudioFile(withURLPath: filePath.absoluteString)
                 ///deleteFileFromRealm(url: track.url)
 				currentSelectedIndex = -1
 				audioFiles.remove(at: row)

@@ -93,7 +93,7 @@ class CoreDataManager {
 		}
 	}
 	
-	func deleteAudioFile(withURL url: String) {
+	func deleteAudioFile(withURLPath url: String) {
 		let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "TrackInfo")
 		fetchRequest.predicate = NSPredicate(format: "url == %@", url)
 		let entityDescription = NSEntityDescription.entity(forEntityName: "TrackInfo", in: managedObjectContext)

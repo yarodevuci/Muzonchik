@@ -13,7 +13,7 @@ extension TrackListTableVC: MGSwipeTableCellDelegate {
     func swipeTableCell(_ cell: MGSwipeTableCell, canSwipe direction: MGSwipeDirection) -> Bool {
         guard let indexPath = self.tableView.indexPath(for: cell) else {return false }
         let track = audioFiles[indexPath.row]
-        return direction == .leftToRight && !localFileExistsForTrack(track)
+        return direction == .leftToRight && !localFileExistsForTrack(track) && activeDownloads[audioFiles[indexPath.row].url] == nil
     }
     
     //MGSwipeTableCell

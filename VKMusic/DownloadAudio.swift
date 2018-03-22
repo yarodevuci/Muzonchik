@@ -28,9 +28,9 @@ extension TrackListTableVC: URLSessionDownloadDelegate {
 					CoreDataManager.shared.saveToCoreData(audio: Audio(url: destinationURL.absoluteString, title: currentDownload.title, artist: currentDownload.artist, duration: currentDownload.duration))
 					DispatchQueue.main.async {
 						SwiftNotificationBanner.presentNotification("\(currentDownload.songName)\nDownload complete")
+						self.activeDownloads[downloadTask.originalRequest?.url?.absoluteString ?? ""] = nil
 						self.tableView.reloadData()
 					}
-					self.activeDownloads[downloadTask.originalRequest?.url?.absoluteString ?? ""] = nil
 				}
             } catch let error as Error {
 				DispatchQueue.main.async {
