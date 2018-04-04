@@ -162,7 +162,6 @@ class SettingsTableVC: UITableViewController {
         }
         if indexPath.row == 1 && indexPath.section == 2 {
 			showActivityIndicator(withStatus: "Downloading music archive")
-            //self.dowloadMusicArchiveFromDropBox()			
 			downloadMusicArchiveFromLocalPC()
         }
     }
