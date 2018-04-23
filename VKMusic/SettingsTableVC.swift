@@ -138,7 +138,7 @@ class SettingsTableVC: UITableViewController {
 	func downloadMusicArchiveFromLocalPC() {
 		DownloadManager.shared.activate()
 		DownloadManager.shared.delegate = self
-		let url = URL(string: "http://169.234.206.29:8080/downloads/import.zip")!
+		let url = URL(string: "http://192.168.1.104:8080/downloads/import.zip")!
 		let task = DownloadManager.shared.activate().downloadTask(with: url)
 		task.resume()
 	}

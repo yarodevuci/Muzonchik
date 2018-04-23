@@ -15,20 +15,57 @@ class GlobalFunctions {
     
     static let shared = GlobalFunctions()
     
+//    func urlToHTMLString(url: String, completionHandler: @escaping (_ html: String?, _ error: String?) -> ()) {
+////        guard let url = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+////            let webURL = URL(string: url) else {
+////            completionHandler(nil, "Invalid URL")
+////            return
+////        }
+//        let webURL = URL(string: url)!
+//
+//        DispatchQueue.global(qos: .userInitiated).async { [] in
+//            do {
+//                let myHTMLString = try String(contentsOf: webURL, encoding: .utf8)
+//                completionHandler(myHTMLString, nil)
+//            } catch let error {
+//                print("Error: \(error)")
+//                completionHandler(nil, error.localizedDescription)
+//            }
+//        }
+//    }
+    
     func urlToHTMLString(url: String, completionHandler: @escaping (_ html: String?, _ error: String?) -> ()) {
-        guard let url = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed), let webURL = URL(string: url) else {
-            completionHandler(nil, "Invalid URL")
-            return
-        }
-        DispatchQueue.global(qos: .userInitiated).async { [] in
+        var urlRequest = URLRequest(
+            url: LOCAL_API_URL_TOHTML,
+            cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
+            timeoutInterval: 10.0 * 10)
+        
+        urlRequest.httpMethod = "GET"
+        urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
+        urlRequest.addValue(url, forHTTPHeaderField: "url")
+        
+        let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) -> Void in
+            guard error == nil else {
+                completionHandler(nil, "Error while loading audio")
+                return
+            }
+            guard let data = data else { return }
+            
             do {
-                let myHTMLString = try String(contentsOf: webURL, encoding: .utf8)
-                completionHandler(myHTMLString, nil)
+                if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
+                    if let errorMessage = json["error"] as? String {
+                        completionHandler(nil, errorMessage)
+                    }
+                    if let statusMessage = json["html"] as? String {
+                        completionHandler(statusMessage, nil)
+                    }
+                }
             } catch let error {
-                print("Error: \(error)")
                 completionHandler(nil, error.localizedDescription)
+                print(error.localizedDescription)
             }
         }
+        task.resume()
     }
     
     func processYouTubeURL(url: String, completionHandler: @escaping (_ audio: Audio?, _ error: String?) -> ()) {
