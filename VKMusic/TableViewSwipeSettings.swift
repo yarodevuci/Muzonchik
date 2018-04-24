@@ -44,8 +44,9 @@ extension TrackListTableVC: MGSwipeTableCellDelegate {
             MGSwipeButton(title: "Get", backgroundColor: .pinkColor, callback: { (cell) -> Bool in
                 guard let indexPath = self.tableView.indexPath(for: cell) else { return false }
                 let track = self.audioFiles[indexPath.row]
-                print("Downloading: \(track.title)")
+                print("Downloading file named: \(track.title)")
                 self.startDownload(track)
+                self.tableView.reloadRows(at: [IndexPath(row: (indexPath.row), section: 0)], with: .none)
                 return true
             })
         ]

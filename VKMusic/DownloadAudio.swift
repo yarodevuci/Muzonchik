@@ -55,13 +55,12 @@ extension TrackListTableVC: URLSessionDownloadDelegate {
             print(download.progress)
             
             DispatchQueue.main.async {
+                
                 self.toolBarStatusLabel.text = "Downloading \(String(format: "%.1f%%",  download.progress * 100))"
-            }
-            
-            DispatchQueue.main.async {
+
                 
                 if let trackIndex = self.trackIndexForDownloadTask(downloadTask),
-                    let trackCell = self.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TrackListTableViewCell {
+                    let trackCell = self.tableView.cellForRow(at: IndexPath(row: trackIndex, section: 0)) as? TrackListTableViewCell {
                     trackCell.downloadProgressView.progress = download.progress
                     let bitRate = String(Int(totalBytesExpectedToWrite) * 8 / 1000 / download.duration)
                     trackCell.downloadProgressLabel.text =  String(format: "%.1f%% of %@",  download.progress * 100, totalSize) + " \(bitRate) kbps"
