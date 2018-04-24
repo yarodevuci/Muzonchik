@@ -19,3 +19,4 @@ let RMQConnection_URI = "amqp://yaroslav:dukalis@192.168.1.104"
 let LOCAL_API_URL = URL(string: "http://192.168.1.104:8080/audio")!
 //let LOCAL_API_URL = URL(string: "http://ec2-34-210-113-117.us-west-2.compute.amazonaws.com/audio")!
 let LOCAL_API_URL_TOHTML = URL(string: "http://192.168.1.104:8080/urltostring")!
+let LOCAL_API_URL_FILEDOWNLOAD = URL(string: "http://192.168.1.104:8080/downloadfile")!

@@ -15,11 +15,12 @@ extension TrackListTableVC: URLSessionDownloadDelegate {
         if let originalURL = downloadTask.originalRequest?.url?.absoluteString,
             let destinationURL = localFilePathForUrl(originalURL) {
             let fileManager = FileManager.default
-			
+			// Do this just in case if same file name is already exist. 
 			do { try fileManager.removeItem(at: destinationURL) }
 			catch let error as Error { //FILE PROBABLY DOES NOT EXIST:
-                print("ERROR REMOVING TEMP FILE: \(error.localizedDescription)")
+//                print("ERROR REMOVING TEMP FILE: \(error.localizedDescription)")
             }
+            self.hideActivityIndicator()
             
             do {
                 try fileManager.moveItem(at: location, to: destinationURL)
@@ -51,34 +52,58 @@ extension TrackListTableVC: URLSessionDownloadDelegate {
             let download = activeDownloads[downloadUrl] {
             download.progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
             let totalSize = ByteCountFormatter.string(fromByteCount: totalBytesExpectedToWrite, countStyle: ByteCountFormatter.CountStyle.binary)
+            print(download.progress)
             
-            DispatchQueue.main.async(execute: {
+            DispatchQueue.main.async {
+                self.toolBarStatusLabel.text = "Downloading \(String(format: "%.1f%%",  download.progress * 100))"
+            }
+            
+            DispatchQueue.main.async {
+                
                 if let trackIndex = self.trackIndexForDownloadTask(downloadTask),
-                    let trackCell = self.tableView.cellForRow(at: IndexPath(row: trackIndex, section: 0)) as? TrackListTableViewCell {
+                    let trackCell = self.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TrackListTableViewCell {
                     trackCell.downloadProgressView.progress = download.progress
                     let bitRate = String(Int(totalBytesExpectedToWrite) * 8 / 1000 / download.duration)
                     trackCell.downloadProgressLabel.text =  String(format: "%.1f%% of %@",  download.progress * 100, totalSize) + " \(bitRate) kbps"
                 }
-            })
+            }
         }
     }
     
     func startDownload(_ track: Audio) {
-        let urlString = track.url
-        if urlString.isEmpty {
+
+        if track.url.isEmpty {
             SwiftNotificationBanner.presentNotification("Unable to download. No url")
             return
         }
-        let url =  URL(string: urlString)
+        
+        if track.url.last == "3" { //http://192.168.1.104:8080/downloads/temp.mp3
+            showActivityIndicator(withStatus: "Downloading file to local server ...")
+            
+            GlobalFunctions.shared.getLocalDownloadedFileURL(url: track.url) { (local_url, error) in
+                if let new_url = local_url {
+                    DispatchQueue.main.async {
+                        self.toolBarStatusLabel.text = "Downloading to phone ..."
+                    }
+                    self.downloadFile(fromURL: new_url, track: track)
+                }
+            }
+        } else {
+            downloadFile(fromURL: track.url, track: track)
+        }
+    }
+    
+    func downloadFile(fromURL urlString: String, track: Audio) {
+        
         let download = Download(url: urlString)
-        download.downloadTask = self.downloadsSession.downloadTask(with: url!)
+        download.downloadTask = self.downloadsSession.downloadTask(with: URL(string: urlString)!)
         download.downloadTask!.resume()
         download.isDownloading = true
-		
+        
         download.fileName = "\(track.title)_\(track.artist)_\(track.duration).mp\(track.url.last ?? "3")"
         download.songName = track.title
         
-        //Save info for Ream:
+        //Save info for CoreData:
         download.title = track.title
         download.artist = track.artist
         download.duration = track.duration
