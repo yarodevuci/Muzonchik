@@ -15,8 +15,11 @@ let ONE_SIGNAL_APP_ID = "d9d4d060-a3b8-4324-9474-eafea38ee267"
 //RabbitMQ
 let RMQConnection_URI = "amqp://yaroslav:dukalis@192.168.1.104"
 //let RMQConnection_URI = "amqp://yaroslav:dukalis@34.210.113.117"
-//Local API URL
-let LOCAL_API_URL = URL(string: "http://192.168.1.104:8080/audio")!
+//Local APIS URL
 //let LOCAL_API_URL = URL(string: "http://ec2-34-210-113-117.us-west-2.compute.amazonaws.com/audio")!
-let LOCAL_API_URL_TOHTML = URL(string: "http://192.168.1.104:8080/urltostring")!
-let LOCAL_API_URL_FILEDOWNLOAD = URL(string: "http://192.168.1.104:8080/downloadfile")!
+
+let LOCAL_API_SERVER_ADDRESS = "http://192.168.1.104:8080/"
+let LOCAL_API_URL = URL(string: LOCAL_API_SERVER_ADDRESS + "audio")!
+let LOCAL_API_URL_TOHTML = URL(string: LOCAL_API_SERVER_ADDRESS + "urltostring")!
+let LOCAL_API_URL_FILEDOWNLOAD = URL(string: LOCAL_API_SERVER_ADDRESS + "downloadfile")!
+let LOCAL_API_URL_FILED_UPLOAD = URL(string: LOCAL_API_SERVER_ADDRESS + "upload/import.zip")!

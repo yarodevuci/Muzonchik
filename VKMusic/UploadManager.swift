@@ -21,8 +21,7 @@ class UploadManager: NSObject, URLSessionDataDelegate {
 	
 	init(uploadTaskDataFromURL data_url: URL) {
 		self.data = try! Data(contentsOf: data_url)
-		let api_url = URL(string: "http://169.234.206.29:8080/upload/import.zip")
-		self.urlRequest = URLRequest(url: api_url!)
+		self.urlRequest = URLRequest(url: LOCAL_API_URL_FILED_UPLOAD)
 		self.urlRequest.httpMethod = "POST"
 		self.urlRequest.setValue("Keep-Alive", forHTTPHeaderField: "Connection")
 		self.urlRequest.httpBodyStream = InputStream(data: data)
