@@ -13,6 +13,7 @@ import UIKit
 extension String {
     
     var durationToInt: Int {
+        if self.isEmpty { return 0 } //Just in case we get empty value 
         let comp = self.components(separatedBy: ":")
         let min = Int(comp[0])
         let sec = Int(comp[1])

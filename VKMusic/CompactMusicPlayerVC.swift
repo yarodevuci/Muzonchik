@@ -122,19 +122,31 @@ class CompactMusicPlayerVC: UIViewController {
 	func setPlayButtonIconToPlay() {
 		fullPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "MPPlay"), for: UIControlState())
 	}
+    
+    func prepPlayerControlsUIForNewSong(with duration: String) {
+        currenTimeLabel.text = "0:00"
+        durationLabel.text = "-\(duration)"
+        durationSlider.value = 0
+        popupItem.progress = 0
+    }
 	
 	func playLocalTrack(track: Audio) {
-		activityIndicator.stopAnimating()
-		fullPlayerPlayPauseButton.isHidden = false
+        //Reset values
+        prepPlayerControlsUIForNewSong(with: track.duration.toAudioString)
+        
 		let trackPath = "\(track.title)_\(track.artist)_\(track.duration).mp\(track.url.last ?? "3")"
 		AudioPlayer.defaultPlayer.playAudio(fromURL: DocumentsDirectory.localDownloadsURL.appendingPathComponent(trackPath))
 	}
 	
-	func playRemoteTrack(fromURL url: String) {
-		fullPlayerPlayPauseButton.isHidden = true
-		activityIndicator.startAnimating()
-		let sourceURL = URL(string: url)
-		AudioPlayer.defaultPlayer.playAudio(fromURL: sourceURL)
+    func playRemoteTrack(for track: Audio) {
+        prepPlayerControlsUIForNewSong(with: track.duration.toAudioString)
+        fullPlayerPlayPauseButton.isHidden = true
+        activityIndicator.startAnimating()
+        
+		let sourceURL = URL(string: track.url)
+        DispatchQueue.global(qos: .background).async {
+            AudioPlayer.defaultPlayer.playAudio(fromURL: sourceURL)
+        }
 	}
 	
 	func playNextTrack() {
@@ -241,10 +253,9 @@ extension CompactMusicPlayerVC: AudioPlayerDelegate {
 	
 	func audioDidChangeTime(_ time: Int64) {
 		//Unhide play button and hide activity indicator
-		if AudioPlayer.defaultPlayer.getCurrentTime() > 0 {
-			activityIndicator.stopAnimating()
-			fullPlayerPlayPauseButton.isHidden = false
-		}
+        activityIndicator.stopAnimating()
+        fullPlayerPlayPauseButton.isHidden = false
+
 		plaingTime = Float(time)
 		let progressValue = Float(time) / Float(AudioPlayer.defaultPlayer.currentAudio.duration)
 		popupItem.progress = progressValue
@@ -298,7 +309,7 @@ extension CompactMusicPlayerVC: UITableViewDelegate, UITableViewDataSource {
 			
 			let track = tracks[indexPath.row]
 			albumArtImageView.image = #imageLiteral(resourceName: "ArtPlaceholder")
-			GlobalFunctions.shared.localFileExistsForTrack(track) ? playLocalTrack(track: track) : playRemoteTrack(fromURL: track.url)
+            GlobalFunctions.shared.localFileExistsForTrack(track) ? playLocalTrack(track: track) : playRemoteTrack(for: track)
 			
 			tableView.reloadData()
 		}

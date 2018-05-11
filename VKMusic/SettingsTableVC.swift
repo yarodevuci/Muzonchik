@@ -15,10 +15,14 @@ class SettingsTableVC: UITableViewController {
     @IBOutlet weak var numberOfCurrentFilesLabel: UILabel!
     @IBOutlet weak var audioCategorySwitch: UISwitch!
 	@IBOutlet weak var totalDurationTimeLabel: UILabel!
+    @IBOutlet weak var uploadToServerLabel: UILabel!
+    @IBOutlet weak var downloadLabel: UILabel!
+    
 	//MARK: - Variables
 	var activityIndicator = UIActivityIndicatorView()
 	var toolBarStatusLabel = UILabel()
 	var progressView = UIProgressView()
+    var isTaskActive = false
 	
 	//MARK: - viewDidLoad
     override func viewDidLoad() {
@@ -67,7 +71,9 @@ class SettingsTableVC: UITableViewController {
 			self.uploadZipToLocalPC()
 		}
 		
-		let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive) { action in
+            self.resetUI()
+        }
 		
 		sheet.addAction(uploadAction)
 		sheet.addAction(cancelAction)
@@ -143,6 +149,18 @@ class SettingsTableVC: UITableViewController {
 		task.resume()
 	}
     
+    func grayOutButtons() {
+        isTaskActive = true
+        uploadToServerLabel.textColor = .gray
+        downloadLabel.textColor = .gray
+    }
+    
+    func resetUI() {
+        isTaskActive = false
+        uploadToServerLabel.textColor = .white
+        downloadLabel.textColor = .white
+    }
+    
     @IBAction func didTapDoneButton(_ sender: UIBarButtonItem) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -154,6 +172,9 @@ class SettingsTableVC: UITableViewController {
     // MARK: - Table view data source
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if isTaskActive { return }
+        
         if indexPath.row == 0 && indexPath.section == 2 {
 			showActivityIndicator(withStatus: "Archiving")
             DispatchQueue.global(qos: .background).async {
@@ -197,10 +218,9 @@ extension SettingsTableVC: DownloadManagerDelegate {
 //MARK: - SessionDelegage
 extension SettingsTableVC: UploadManagerDelegage {
 	func didReceiveResponseJSON(_ json: [String : Any]) {
-		print(json)
-		self.hideActivityIndicator()
+		hideActivityIndicator()
 		
-		//Delete archive after uploading
+        //Delete archive after uploading
 		do {
 			try FileManager.default.removeItem(at: DocumentsDirectory.localDocumentsURL.appendingPathComponent("import.zip"))
 		} catch {}

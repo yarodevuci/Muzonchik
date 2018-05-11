@@ -48,6 +48,8 @@ extension SettingsTableVC {
 	}
 	
 	func showActivityIndicator(withStatus status: String) {
+        grayOutButtons()
+        
 		DispatchQueue.main.async {
 			self.toolBarStatusLabel.text = status
 			self.activityIndicator.startAnimating()
@@ -56,6 +58,7 @@ extension SettingsTableVC {
 	}
 	
 	func hideActivityIndicator() {
+        self.resetUI()
 		self.progressView.progress = 0
 		self.toolBarStatusLabel.text = ""
 		self.activityIndicator.stopAnimating()

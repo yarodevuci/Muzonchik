@@ -24,9 +24,9 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
     }
 
     func activate() -> URLSession {
-        let config = URLSessionConfiguration.background(withIdentifier: "\(Bundle.main.bundleIdentifier!).background")
-        // Warning: If an URLSession still exists from a previous download, it doesn't create a new URLSession object but returns the existing one with the old delegate object attached!
-        return URLSession(configuration: config, delegate: self, delegateQueue: OperationQueue())
+        let config = URLSessionConfiguration.background(withIdentifier: "downloadFromLocalPC")
+        config.requestCachePolicy = .reloadIgnoringLocalAndRemoteCacheData
+        return URLSession(configuration: config, delegate: self, delegateQueue: OperationQueue.main)
     }
 
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {

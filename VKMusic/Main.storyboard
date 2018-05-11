@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="119-B8-iKs">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="119-B8-iKs">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="AvenirNext.ttc">
-            <string>AvenirNext-DemiBold</string>
-            <string>AvenirNext-Medium</string>
-            <string>AvenirNext-Regular</string>
-        </array>
-    </customFonts>
     <scenes>
         <!--My Music-->
         <scene sceneID="XKu-wR-Sf6">
@@ -639,9 +632,11 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
                     <connections>
                         <outlet property="audioCategorySwitch" destination="KOI-Lw-fFg" id="SOD-Hi-wbb"/>
+                        <outlet property="downloadLabel" destination="Ayu-51-ivT" id="r57-4h-0hG"/>
                         <outlet property="musicLibrarySizeLabel" destination="80W-OO-ofV" id="YHP-T5-2gC"/>
                         <outlet property="numberOfCurrentFilesLabel" destination="yl4-dI-NGT" id="L4J-YW-kYq"/>
                         <outlet property="totalDurationTimeLabel" destination="BOW-ep-iDV" id="4uR-7E-yQH"/>
+                        <outlet property="uploadToServerLabel" destination="PiR-ZW-QjL" id="OJF-EF-ILH"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dwM-15-MNp" userLabel="First Responder" sceneMemberID="firstResponder"/>

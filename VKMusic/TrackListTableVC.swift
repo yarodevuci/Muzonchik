@@ -198,6 +198,12 @@ class TrackListTableVC: UITableViewController {
 	}
 	
 	@objc func displayDownloadedSongsOnly() {
+        
+        if searchController.isActive {
+            self.refreshControl?.endRefreshing()
+            return
+        }
+        
 		isDownloadedListShown = true
 //		currentSelectedIndex = -1
 		
@@ -424,7 +430,9 @@ class TrackListTableVC: UITableViewController {
 				AudioPlayer.defaultPlayer.playAudio(fromURL: url!)
 			} else {
 				let url = URL(string: audio.url)
-				AudioPlayer.defaultPlayer.playAudio(fromURL: url)
+                DispatchQueue.global(qos: .background).async {
+                    AudioPlayer.defaultPlayer.playAudio(fromURL: url)
+                }
 			}			
 		}
 	}
