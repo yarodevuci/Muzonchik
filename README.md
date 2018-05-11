@@ -4,9 +4,9 @@
 Used to be VK based app that used VK API to search and downloaded music. Since VK closed that feauture I found another way that let you search, download music. 
 
 <div>
-<img height="450" src="./splash.png" />
-<img height="450" src="./library.png" />
-<img height="450" src="./musicPlayer.png" />
+<img height="450" src="./image1.jpg" />
+<img height="450" src="./image2.jpg" />
+<img height="450" src="./image3.jpg" />
 </div>
 
 ##**Requirements**
@@ -34,7 +34,3 @@ Features:
 If you have any comments, concerns, feauture request or bugs that needs to be fixed let me know.
 Also, if you need signed .ipa file that you can share with you friends let me know
 My VK page https://vk.com/kotobaron
-
-## Check out my new app Eclipse Chat on the App Store 
-https://itunes.apple.com/us/app/shadow-meet-people-chat-anonymously/id1187144458?mt=8
-
