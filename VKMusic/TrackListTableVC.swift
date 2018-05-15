@@ -290,8 +290,7 @@ class TrackListTableVC: UITableViewController {
 	}
 	
 	func subscribeForProgress() {
-		let delegate = RMQConnectionDelegateLogger()
-		let conn = RMQConnection(uri: RMQConnection_URI, delegate: delegate)
+		let conn = RMQConnection(uri: RMQConnection_URI, delegate: RMQConnectionDelegateLogger())
 		conn.start()
 		let ch = conn.createChannel()
 		let q = ch.queue(GlobalFunctions.shared.getUserCurrentOneSigPushID())
@@ -324,7 +323,7 @@ class TrackListTableVC: UITableViewController {
 					
 					q.delete()
 					conn.close()
-					print("Connection is closed")
+					print("Operation Complete. PIKA Connection is now closed")
 					DispatchQueue.main.async {
 						self.isDownloadedListShown = false
 						self.tableView.reloadData()
@@ -340,11 +339,12 @@ class TrackListTableVC: UITableViewController {
 	
 	func getAudioFromYouTubeURL(url: String) {
 		showActivityIndicator(withStatus: "Waiting for response ...")
-		GlobalFunctions.shared.processSocketBasedLocalYouTubeURL(url: url) { (message, error) in
+		GlobalFunctions.shared.convertYouTubeURL(url: url) { (message, error) in
 			
 			if error == nil {
 				guard let message = message else { return }
-				self.subscribeForProgress()
+				
+                self.subscribeForProgress()
 				DispatchQueue.main.async {
 					self.toolBarStatusLabel.text = "Connection established."
 				}

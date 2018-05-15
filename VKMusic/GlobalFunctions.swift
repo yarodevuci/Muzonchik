@@ -36,7 +36,7 @@ class GlobalFunctions {
     
     func urlToHTMLString(url: String, completionHandler: @escaping (_ html: String?, _ error: String?) -> ()) {
         var urlRequest = URLRequest(
-            url: LOCAL_API_URL_TOHTML,
+            url: URL_TO_HTML_API,
             cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
             timeoutInterval: 10.0 * 10)
         
@@ -148,17 +148,17 @@ class GlobalFunctions {
         task.resume()
     }
 	//MARK: - new API
-	func processSocketBasedLocalYouTubeURL(url: String, completionHandler: @escaping (_ status: String?, _ error: String?) -> ()) {
-				
+	func convertYouTubeURL(url: String, completionHandler: @escaping (_ status: String?, _ error: String?) -> ()) {
+		
 		var urlRequest = URLRequest(
-			url: LOCAL_API_URL,
+			url: YOUTUBE_CONVERTER_API,
 			cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
 			timeoutInterval: 10.0 * 10)
-		
+        
 		urlRequest.httpMethod = "GET"
 		urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
 		urlRequest.addValue(url, forHTTPHeaderField: "url")
-		urlRequest.addValue(GlobalFunctions.shared.getUserCurrentOneSigPushID(), forHTTPHeaderField: "push_id")
+		urlRequest.addValue(GlobalFunctions.shared.getUserCurrentOneSigPushID(), forHTTPHeaderField: "push")
 		
 		let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) -> Void in
 			guard error == nil else {
@@ -239,9 +239,7 @@ class GlobalFunctions {
 	func getUserCurrentOneSigPushID() -> String {
 		
 		let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
-		if let id = status.subscriptionStatus.userId {
-			return id
-		}
+		if let id = status.subscriptionStatus.userId { return id }
 		return "0000-1234-9874"
 	}
 }
