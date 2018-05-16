@@ -38,7 +38,6 @@ extension TrackListTableVC: URLSessionDownloadDelegate {
                     if self.activeDownloads[originalURL] != nil {
                         SwiftNotificationBanner.presentNotification("\(self.activeDownloads[originalURL]!.songName)\n\(error.localizedDescription)")
                         self.activeDownloads[downloadTask.originalRequest?.url?.absoluteString ?? ""] = nil
-
                         self.tableView.reloadData()
                     }
                 }
@@ -75,21 +74,22 @@ extension TrackListTableVC: URLSessionDownloadDelegate {
             SwiftNotificationBanner.presentNotification("Unable to download. No url")
             return
         }
+        downloadFile(fromURL: track.url, track: track)
         
-        if track.url.last == "3" { //http://192.168.1.104:8080/downloads/temp.mp3
-            showActivityIndicator(withStatus: "Downloading file to local server ...")
-            
-            GlobalFunctions.shared.getLocalDownloadedFileURL(url: track.url) { (local_url, error) in
-                if let new_url = local_url {
-                    DispatchQueue.main.async {
-                        self.toolBarStatusLabel.text = "Downloading to phone ..."
-                    }
-                    self.downloadFile(fromURL: new_url, track: track)
-                }
-            }
-        } else {
-            downloadFile(fromURL: track.url, track: track)
-        }
+//        if track.url.last == "3" { //http://192.168.1.104:8080/downloads/temp.mp3
+//            showActivityIndicator(withStatus: "Downloading file to local server ...")
+//
+//            GlobalFunctions.shared.getLocalDownloadedFileURL(url: track.url) { (local_url, error) in
+//                if let new_url = local_url {
+//                    DispatchQueue.main.async {
+//                        self.toolBarStatusLabel.text = "Downloading to phone ..."
+//                    }
+//                    self.downloadFile(fromURL: new_url, track: track)
+//                }
+//            }
+//        } else {
+//            downloadFile(fromURL: track.url, track: track)
+//        }
     }
     
     func downloadFile(fromURL urlString: String, track: Audio) {
@@ -99,7 +99,12 @@ extension TrackListTableVC: URLSessionDownloadDelegate {
         download.downloadTask!.resume()
         download.isDownloading = true
         
-        download.fileName = "\(track.title)_\(track.artist)_\(track.duration).mp\(track.url.last ?? "3")"
+        var trackURLString = track.url
+        if !track.url.hasSuffix(".mp4") {
+            trackURLString += ".mp3"
+        }
+        
+        download.fileName = "\(track.title)_\(track.artist)_\(track.duration).mp\(trackURLString.hasSuffix(".mp3") ? "3" : "4")"
         download.songName = track.title
         
         //Save info for CoreData:

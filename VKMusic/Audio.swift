@@ -24,6 +24,7 @@ struct Audio: Equatable {
         self.duration = duration
     }
 	
+    //Used for Core Data
 	init(withID id: Int, url: String, title: String, artist: String , duration: Int) {
 		self.id = id
 		self.url = url
@@ -33,19 +34,23 @@ struct Audio: Equatable {
 	}
     
     init(withElement element: Element) {
-        var title = ""
+//        var title = ""
         //ARTIST NAME:
-        let artist = try! element.child(1).select("span").array()[1].select("a").text()
+//        let artist = try! element.child(1).select("span").array()[1].select("a").text()
+        let artist = try! element.select("span").array()[1].text() ?? ""
         //MP3 file name
-        if try! element.child(1).select("span").array().count < 3 {
-            title = try! element.child(1).select("span").array()[1].select("span").first()?.text() ?? "Unknown"
-        } else {
-            title = try! element.child(1).select("span").array()[2].select("span").first()?.text() ?? "Unknown"
-        }
+//        if try! element.child(1).select("span").array().count < 3 {
+//            title = try! element.child(1).select("span").array()[1].select("span").first()?.text() ?? "Unknown"
+//        } else {
+//            title = try! element.child(1).select("span").array()[2].select("span").first()?.text() ?? "Unknown"
+//        }
+        let title = try! element.select("span").array()[0].text() ?? ""
         //EXTRACT TRACK MP3 FILE
-        let url = try! element.child(0).select("li").attr("data-url")
+//        let url = try! element.child(0).select("li").attr("data-url")
+        let url = try! element.attr("data-audio-src")
         //GET DURATION
-        let duration = try! element.child(2).text()
+//        let duration = try! element.child(2).text()
+        let duration =  try! element.select("span").array()[2].text() ?? ""
         
         self.url = url
 		self.title = title.stripped.isEmpty ? "Unknown" : title.stripped

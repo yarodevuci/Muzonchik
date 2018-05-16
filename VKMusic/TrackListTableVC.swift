@@ -259,7 +259,7 @@ class TrackListTableVC: UITableViewController {
 		isDownloadedListShown = false
 		
 		showActivityIndicator(withStatus: "Searching for \(tag)")
-		GlobalFunctions.shared.urlToHTMLString(url: SEARCH_URL + "\(tag)") { (htmlString, error) in
+		GlobalFunctions.shared.urlToHTMLString(url: SEARCH_URL + "\(tag)?offset=0&sameFromAjax=1") { (htmlString, error) in
 			if let error = error {
 				print(error)
 				DispatchQueue.main.async {
@@ -274,10 +274,10 @@ class TrackListTableVC: UITableViewController {
 	}
 	
 	func parseHTML(html: String) {
-		let els: Elements = try! SwiftSoup.parse(html).select("li")
+		let els: Elements = try! SwiftSoup.parse(html).select("div")
 		audioFiles.removeAll()
 		for element: Element in els.array() {
-			if try! element.className() == "item x-track track" {
+			if try! element.className() == "eventContent__audio  mm-clickable mm-audioPlay" {
 				let audioFile = Audio(withElement: element)
 				audioFiles.append(audioFile)
 			}

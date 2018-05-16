@@ -8,8 +8,11 @@
 
 import Foundation
 
-let WEB_BASE_URL = "http://regalbloodline.com/"
-let SEARCH_URL = WEB_BASE_URL + "music/"
+//OLD URL NO LONGER WORKS ON MOBILE
+//let WEB_BASE_URL = "http://regalbloodline.com/"
+
+let WEB_BASE_URL = "https://m.my.mail.ru/"
+let SEARCH_URL = WEB_BASE_URL + "music/search/"
 //OneSignal
 let ONE_SIGNAL_APP_ID = "d9d4d060-a3b8-4324-9474-eafea38ee267"
 
