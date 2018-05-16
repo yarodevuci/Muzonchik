@@ -18,7 +18,10 @@ let RMQConnection_URI = "amqp://yaroslav:dukalis@54.193.246.239"    //"amqp://ya
 
 let LOCAL_API_SERVER_ADDRESS = "http://192.168.1.104:8080/"
 let SERVER_API_ADDRESS = "http://54.193.246.239/"
+
 let YOUTUBE_CONVERTER_API = URL(string: SERVER_API_ADDRESS + "youtube_url_to_audio")!
 let URL_TO_HTML_API = URL(string: LOCAL_API_SERVER_ADDRESS + "urltostring")!
 let LOCAL_API_URL_FILEDOWNLOAD = URL(string: SERVER_API_ADDRESS + "downloadfile")!
-let LOCAL_API_URL_FILED_UPLOAD = URL(string: SERVER_API_ADDRESS + "upload/import.zip")!
+//ZIP FILE OPERATIONS URLS
+let UPLOAD_ZIP_FILE_URL = URL(string: SERVER_API_ADDRESS + "upload/import.zip")!
+let DOWNLOAD_ZIP_FILE_URL = URL(string: SERVER_API_ADDRESS + "downloads/import.zip")!
