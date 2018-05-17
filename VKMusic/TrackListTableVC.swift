@@ -425,7 +425,13 @@ class TrackListTableVC: UITableViewController {
 			AudioPlayer.index = currentSelectedIndex
 			
 			if localFileExistsForTrack(audio) {
-				let urlString = "\(audio.title)_\(audio.artist)_\(audio.duration).mp\(audio.url.last ?? "3")"
+                var trackURLString = ""
+                if audio.url.hasSuffix(".mp3") || audio.url.hasSuffix(".mp4") {
+                    trackURLString = audio.url
+                } else { //MAILRU IS MISSING .mp3 extension, adding it manually to avoid bugs
+                    trackURLString = audio.url + ".mp3"
+                }
+				let urlString = "\(audio.title)_\(audio.artist)_\(audio.duration).mp\(trackURLString.hasSuffix(".mp3") ? "3" : "4")"
 				let url = localFilePathForUrl(urlString)
 				AudioPlayer.defaultPlayer.playAudio(fromURL: url!)
 			} else {
