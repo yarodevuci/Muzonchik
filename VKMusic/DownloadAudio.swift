@@ -25,7 +25,8 @@ extension TrackListTableVC: URLSessionDownloadDelegate {
             do {
                 try fileManager.moveItem(at: location, to: destinationURL)
 				if let currentDownload = self.activeDownloads[originalURL] {
-					CoreDataManager.shared.saveToCoreData(audio: Audio(url: destinationURL.absoluteString, title: currentDownload.title, artist: currentDownload.artist, duration: currentDownload.duration))
+					CoreDataManager.shared.saveToCoreData(audio: Audio(withThumbnailImage: currentDownload.thumbnailImage, url: destinationURL.absoluteString, title: currentDownload.title, artist: currentDownload.artist, duration: currentDownload.duration))
+                    
 					DispatchQueue.main.async {
 						SwiftNotificationBanner.presentNotification("\(currentDownload.songName)\nDownload complete")
 						self.activeDownloads[downloadTask.originalRequest?.url?.absoluteString ?? ""] = nil
@@ -75,21 +76,6 @@ extension TrackListTableVC: URLSessionDownloadDelegate {
             return
         }
         downloadFile(fromURL: track.url, track: track)
-        
-//        if track.url.last == "3" { //http://192.168.1.104:8080/downloads/temp.mp3
-//            showActivityIndicator(withStatus: "Downloading file to local server ...")
-//
-//            GlobalFunctions.shared.getLocalDownloadedFileURL(url: track.url) { (local_url, error) in
-//                if let new_url = local_url {
-//                    DispatchQueue.main.async {
-//                        self.toolBarStatusLabel.text = "Downloading to phone ..."
-//                    }
-//                    self.downloadFile(fromURL: new_url, track: track)
-//                }
-//            }
-//        } else {
-//            downloadFile(fromURL: track.url, track: track)
-//        }
     }
     
     func downloadFile(fromURL urlString: String, track: Audio) {
@@ -110,7 +96,8 @@ extension TrackListTableVC: URLSessionDownloadDelegate {
         //Save info for CoreData:
         download.title = track.title
         download.artist = track.artist
-        download.duration = track.duration
+        download.duration = track.duration        
+        download.thumbnailImage = track.thumbnail_image
         
         activeDownloads[download.url] = download
     }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class Download: NSObject {
     
@@ -15,6 +16,7 @@ class Download: NSObject {
     var progress: Float = 0.0
     var fileName: String = ""
     var songName: String = ""
+    var thumbnailImage: UIImage?
 	
     var title = ""
     var artist = ""

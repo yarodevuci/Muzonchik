@@ -15,22 +15,25 @@ struct Audio: Equatable {
     var title = "Unknown"
     var artist = "Unknown"
     var duration = 0
+    var thumbnail_image: UIImage?
 	var id = 0
     
-	init(url: String, title: String, artist: String , duration: Int) {
+    init(withThumbnailImage timage: UIImage?, url: String, title: String, artist: String , duration: Int) {
+        self.thumbnail_image = timage
         self.url = url
         self.title = title.stripped
         self.artist = artist.stripped
         self.duration = duration
     }
 	
-    //Used for Core Data
-	init(withID id: Int, url: String, title: String, artist: String , duration: Int) {
+    //Used for Core Data loading Image
+	init(withID id: Int, url: String, title: String, artist: String , duration: Int, t_img: UIImage?) {
 		self.id = id
 		self.url = url
 		self.title = title.stripped
 		self.artist = artist.stripped
 		self.duration = duration
+        self.thumbnail_image = t_img
 	}
     
     init(withElement element: Element) {
@@ -56,5 +59,7 @@ struct Audio: Equatable {
 		self.title = title.stripped.isEmpty ? "Unknown" : title.stripped
         self.artist = artist.stripped.isEmpty ? "Unknown" : artist.stripped
         self.duration = duration.durationToInt
+        
+        self.thumbnail_image = #imageLiteral(resourceName: "ArtPlaceholder")
     }
 }

@@ -42,7 +42,7 @@ class TrackListTableVC: UITableViewController {
 		setupUI()
 //		setupDropdownMenu()
 //		pullMusic()
-		displayDownloadedSongsOnly()
+		fetchDownloads()
 	}
 	
 	override func viewDidLayoutSubviews() {
@@ -93,7 +93,7 @@ class TrackListTableVC: UITableViewController {
 	
 	private func setupRefreshControl() {
 		refreshControl = UIRefreshControl()
-		refreshControl?.addTarget(self, action: #selector(displayDownloadedSongsOnly), for: .valueChanged)
+		refreshControl?.addTarget(self, action: #selector(fetchDownloads), for: .valueChanged)
 
 		if #available(iOS 10.0, *) {
 			tableView.refreshControl = refreshControl
@@ -191,13 +191,13 @@ class TrackListTableVC: UITableViewController {
 		menuView.maskBackgroundColor = .black
 		menuView.maskBackgroundOpacity = 0.3
 		menuView.didSelectItemAtIndexHandler = {(indexPath: Int) -> () in
-			indexPath == 0 ? self.pullMusic() : self.displayDownloadedSongsOnly()
+			indexPath == 0 ? self.pullMusic() : self.fetchDownloads()
 		}
 		self.navigationItem.titleView = menuView
 		
 	}
 	
-	@objc func displayDownloadedSongsOnly() {
+	@objc func fetchDownloads() {
         
         if searchController.isActive {
             self.refreshControl?.endRefreshing()
@@ -215,7 +215,13 @@ class TrackListTableVC: UITableViewController {
 				let title = audio.value(forKey: "title") as? String ?? ""
 				let duration = audio.value(forKey: "duration") as? Int ?? 0
 				let id = audio.value(forKey: "id") as? Int ?? 0
-				audioFiles.append(Audio(withID: id, url: url, title: title, artist: artist, duration: duration))
+                
+                var default_thmb_img: UIImage = #imageLiteral(resourceName: "ArtPlaceholder")
+                if let thumb_imageData = audio.value(forKey: "thumbnail_img") as? Data {
+                    default_thmb_img = UIImage(data: thumb_imageData) ?? #imageLiteral(resourceName: "ArtPlaceholder")
+                }
+                
+                audioFiles.append(Audio(withID: id, url: url, title: title, artist: artist, duration: duration, t_img: default_thmb_img))
 				
 				//MARK: - Used this to rename files in the directory
 //				do {
@@ -310,11 +316,27 @@ class TrackListTableVC: UITableViewController {
 						let title = data["title"] as? String ?? "Unknown"
 						let duration = data["duration"] as? Int ?? 0
 						let url = data["url"] as? String ?? ""
-						
-						let audio = Audio(url: url, title: "YouTube", artist: title, duration: duration)
-						self.audioFiles.removeAll()
-						self.audioFiles.append(audio)
-						
+                        let thumbnail_url = data["thumbnail_url"] as? String ?? ""
+                        
+                        let thumbnail_URL = URL(string: thumbnail_url)
+                        
+                        DispatchQueue.main.async {
+                            self.toolBarStatusLabel.text = "Getting Preview Image ..."
+                        }
+                        
+                        DispatchQueue.global().async {
+                            let data = try? Data(contentsOf: thumbnail_URL!)
+                            let audio = Audio(withThumbnailImage: UIImage(data: data!)!, url: url, title: "YouTube", artist: title, duration: duration)
+                            self.audioFiles.removeAll()
+                            self.audioFiles.append(audio)
+                            
+                            DispatchQueue.main.async {
+                                self.isDownloadedListShown = false
+                                self.tableView.reloadData()
+                                self.hideActivityIndicator()
+                                
+                            }
+                        }
 					}
 					if let data = json["error"] as? [String : Any] {
 						let error_message = data["message"] as? String ?? "Some error"
@@ -324,12 +346,7 @@ class TrackListTableVC: UITableViewController {
 					q.delete()
 					conn.close()
 					print("Operation Complete. PIKA Connection is now closed")
-					DispatchQueue.main.async {
-						self.isDownloadedListShown = false
-						self.tableView.reloadData()
-						self.hideActivityIndicator()
-						
-					}
+					
 				}
 			}  catch let error {
 				//print("not json")
@@ -462,7 +479,7 @@ extension TrackListTableVC: UISearchBarDelegate {
 	}
 	
 	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-		displayDownloadedSongsOnly()
+		fetchDownloads()
 		
 	}
 	

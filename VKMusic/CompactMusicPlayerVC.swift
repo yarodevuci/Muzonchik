@@ -94,11 +94,12 @@ class CompactMusicPlayerVC: UIViewController {
 		//Update topview track info labels
 		songNameLabel.text = tracks[currentIndexPathRow].artist
 		albumNameLabel.text = tracks[currentIndexPathRow].title
-		
+		albumArtImageView.image = tracks[currentIndexPathRow].thumbnail_image
+        
 		//Update popupItem text
 		popupItem.title = tracks[currentIndexPathRow].artist
 		popupItem.subtitle = tracks[currentIndexPathRow].title
-		popupItem.image = #imageLiteral(resourceName: "ArtPlaceholder")
+		popupItem.image = tracks[currentIndexPathRow].thumbnail_image
 		trackDurationSeconds = tracks[currentIndexPathRow].duration
 		durationSlider.maximumValue = Float(trackDurationSeconds)
 		
@@ -308,7 +309,7 @@ extension CompactMusicPlayerVC: UITableViewDelegate, UITableViewDataSource {
 			updateCurrentTrackInfo()
 			
 			let track = tracks[indexPath.row]
-			albumArtImageView.image = #imageLiteral(resourceName: "ArtPlaceholder")
+			albumArtImageView.image = tracks[indexPath.row].thumbnail_image
             GlobalFunctions.shared.localFileExistsForTrack(track) ? playLocalTrack(track: track) : playRemoteTrack(for: track)
 			
 			tableView.reloadData()

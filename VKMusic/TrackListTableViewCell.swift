@@ -52,6 +52,8 @@ class TrackListTableViewCell: MGSwipeTableCell {
         downloadProgressView.isHidden = true
         musicPlayIdicatorView.state = .estMusicIndicatorViewStateStopped
         checkMarkImageView.isHidden = true
+        albumArtworkImageView.image = audioData.thumbnail_image
+
     }
 	
 	func showESTIndicator() {
@@ -62,7 +64,7 @@ class TrackListTableViewCell: MGSwipeTableCell {
 	
 	func hideESTIndicator() {
 		musicPlayIdicatorView.state = .estMusicIndicatorViewStateStopped
-		albumArtworkImageView.image = #imageLiteral(resourceName: "ArtPlaceholder")
+		albumArtworkImageView.image = audioData?.thumbnail_image
 		albumArtworkImageView.backgroundColor = .clear
 	}
 	

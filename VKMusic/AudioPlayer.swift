@@ -59,7 +59,7 @@ class AudioPlayer {
         addTimeObeserver()
 		
 		let metadataList = playerItem.asset.metadata
-		var audio_image = #imageLiteral(resourceName: "ArtPlaceholder")
+		var audio_image = currentPlayList[AudioPlayer.index].thumbnail_image
 		if metadataList.count > 0 {
 			for item in metadataList {
 				guard let key = item.commonKey, let value = item.value else { continue }
@@ -76,7 +76,7 @@ class AudioPlayer {
 			print("\nMetadataList is empty \n")
 		}
 		
-		CommandCenter.defaultCenter.setNowPlayingInfo(artworkImage: audio_image)
+		CommandCenter.defaultCenter.setNowPlayingInfo(artworkImage: audio_image ?? #imageLiteral(resourceName: "ArtPlaceholder"))
     }
 	
 	func play() {
