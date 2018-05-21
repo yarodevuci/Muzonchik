@@ -297,6 +297,7 @@ extension CompactMusicPlayerVC: UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "TrackTableViewCell", for: indexPath) as! TrackTableViewCell
 		cell.setTrackInfo = tracks[indexPath.row]
+        cell.albumArtworkImageView.image = tracks[indexPath.row].thumbnail_image
 		cell.isSelected = currentIndexPathRow == indexPath.row
 		return cell
 	}

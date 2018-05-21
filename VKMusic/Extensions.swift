@@ -54,7 +54,7 @@ extension UIColor {
     open class var lightBlack: UIColor { return UIColor(red:0.09, green:0.09, blue:0.09, alpha:1.0) }
     open class var blueButtonColor: CGColor { return UIColor(red:0.04, green:0.38, blue:1.00, alpha:1.0).cgColor }
 	open class var pinkColor: UIColor { return UIColor(red:0.77, green:0.14, blue:0.29, alpha:1.0) }
-    open class var splashBlue: UIColor { return UIColor(red:0.06, green:0.10, blue:0.17, alpha:1.0) }
+    open class var youtubeDarkGray: UIColor { return UIColor(red:0.07, green:0.07, blue:0.07, alpha:1.0) }
 	open class var playerBackgroundColor: UIColor { return UIColor(red:0.11, green:0.11, blue:0.12, alpha:1.0) }
 }
 

@@ -48,14 +48,14 @@ class TrackTableViewCell: UITableViewCell {
 	
 	func showESTIndicator() {
 		musicPlayIdicatorView.state = .estMusicIndicatorViewStatePlaying
-		albumArtworkImageView.image = nil
+        albumArtworkImageView.image = nil
 		albumArtworkImageView.backgroundColor = .estBackGroundColor
 	}
 	
 	func hideESTIndicator() {
 
 		musicPlayIdicatorView.state = .estMusicIndicatorViewStateStopped
-		albumArtworkImageView.image = #imageLiteral(resourceName: "ArtPlaceholder")
+        albumArtworkImageView.image = setTrackInfo?.thumbnail_image
 		albumArtworkImageView.backgroundColor = .clear
 	}
 	

@@ -87,7 +87,7 @@ class TrackListTableVC: UITableViewController {
 
 	func setBackViewForTableView() {
 		let backView = UIView(frame: self.tableView.bounds)
-		backView.backgroundColor = .black
+		backView.backgroundColor = .youtubeDarkGray
 		self.tableView.backgroundView = backView
 	}
 	
@@ -124,15 +124,15 @@ class TrackListTableVC: UITableViewController {
 		UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes, for: .normal)
 		
 		definesPresentationContext = true
-		searchController.searchBar.barTintColor = .black
+		searchController.searchBar.barTintColor = .youtubeDarkGray
 		searchController.searchBar.keyboardAppearance = .dark
 		searchController.searchBar.delegate = self
 		searchController.searchBar.textField?.textColor = .white
 		searchController.searchBar.textField?.font = UIFont.systemFont(ofSize: 13)
 		searchController.searchBar.textField?.backgroundColor = .lightBlack
-		searchController.searchBar.textField?.layer.borderWidth = 4
+		searchController.searchBar.textField?.layer.borderWidth = 2
 		searchController.searchBar.textField?.autocapitalizationType = .none
-		searchController.searchBar.textField?.layer.borderColor = UIColor.black.cgColor
+		searchController.searchBar.textField?.layer.borderColor = UIColor.youtubeDarkGray.cgColor
 		searchController.searchBar.textField?.layer.cornerRadius = 10
 		searchController.searchBar.textField?.clipsToBounds = true
 		tableView.tableHeaderView = searchController.searchBar
@@ -474,7 +474,6 @@ extension TrackListTableVC: UISearchBarDelegate {
 	func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
 		if let url = UIPasteboard.general.string, url.hasPrefix("http") {
 			searchBar.textField?.insertText(url)
-			UIPasteboard.general.string = ""
 		}
 	}
 	
