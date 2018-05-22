@@ -482,10 +482,6 @@ extension TrackListTableVC: UISearchBarDelegate {
 		
 	}
 	
-	func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-		// view.removeGestureRecognizer(tapRecognizer)
-	}
-	
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 		if let searchText = searchBar.text {
 			if searchText.hasPrefix("http") {

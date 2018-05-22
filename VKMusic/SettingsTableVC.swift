@@ -216,6 +216,12 @@ extension SettingsTableVC: DownloadManagerDelegate {
 //MARK: - SessionDelegage
 extension SettingsTableVC: UploadManagerDelegage {
 	func didReceiveResponseJSON(_ json: [String : Any]) {
+        
+        if let error = json["error"] as? String {
+            DispatchQueue.main.async {
+                SwiftNotificationBanner.presentNotification("Error occured while uploading a file. \(error)")
+            }
+        }
 		hideActivityIndicator()
 		
         //Delete archive after uploading

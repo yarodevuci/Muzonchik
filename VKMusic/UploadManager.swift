@@ -22,9 +22,10 @@ class UploadManager: NSObject, URLSessionDataDelegate {
         var urlRequest = URLRequest(url: UPLOAD_ZIP_FILE_URL)
         urlRequest.httpMethod = "POST"
         urlRequest.setValue("Keep-Alive", forHTTPHeaderField: "Connection")
-        
+    
 		let session = URLSession(configuration: URLSessionConfiguration.background(withIdentifier: "uploadTask"), delegate: self, delegateQueue: OperationQueue.main)
         let task = session.uploadTask(with: urlRequest, fromFile: DocumentsDirectory.localDocumentsURL.appendingPathComponent("import.zip"))
+        
 		task.resume()
 	}
 	
@@ -43,8 +44,9 @@ class UploadManager: NSObject, URLSessionDataDelegate {
 				//print(json)
 				delegate?.didReceiveResponseJSON(json)
 			}
-		} catch {
-			print("error")
+		} catch let error {
+            delegate?.didReceiveResponseJSON(["error": error.localizedDescription])
+			print("error occured in UploadManager \(error.localizedDescription)")
 		}
 	}
 }
