@@ -194,10 +194,8 @@ class GlobalFunctions {
 	}
 	
 	func getUserCurrentOneSigPushID() -> String {
-		
 		let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
-		if let id = status.subscriptionStatus.userId { return id }
-		return "0000-1234-9874"
+        return status.subscriptionStatus.userId ?? "0000-1234-9874"
 	}
 }
 
