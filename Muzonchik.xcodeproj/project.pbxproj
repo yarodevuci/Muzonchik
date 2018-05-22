@@ -22,6 +22,7 @@
 		5B7C32F9205B80E6007E8BF6 /* UploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7C32F8205B80E5007E8BF6 /* UploadManager.swift */; };
 		5B7C32FB205BBA57007E8BF6 /* DownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7C32FA205BBA57007E8BF6 /* DownloadManager.swift */; };
 		5B7C32FD205BCB9F007E8BF6 /* SettingsHellper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7C32FC205BCB9F007E8BF6 /* SettingsHellper.swift */; };
+		5B9C3C6320B3CE5A00AE9197 /* ApiKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9C3C6220B3CE5A00AE9197 /* ApiKey.swift */; };
 		5BA1B7A0206367E800DAE526 /* MarqueeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA1B79F206367E800DAE526 /* MarqueeLabel.swift */; };
 		5BC751F7204411CE00228EDF /* SettingsTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC751F6204411CE00228EDF /* SettingsTableVC.swift */; };
 		5BFFCE0B2040AC7A00716A78 /* TrackListTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFCE0A2040AC7A00716A78 /* TrackListTableVC.swift */; };
@@ -94,6 +95,7 @@
 		5B7C32F8205B80E5007E8BF6 /* UploadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadManager.swift; sourceTree = "<group>"; };
 		5B7C32FA205BBA57007E8BF6 /* DownloadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadManager.swift; sourceTree = "<group>"; };
 		5B7C32FC205BCB9F007E8BF6 /* SettingsHellper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHellper.swift; sourceTree = "<group>"; };
+		5B9C3C6220B3CE5A00AE9197 /* ApiKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiKey.swift; sourceTree = "<group>"; };
 		5BA1B79F206367E800DAE526 /* MarqueeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarqueeLabel.swift; sourceTree = "<group>"; };
 		5BC751F6204411CE00228EDF /* SettingsTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableVC.swift; sourceTree = "<group>"; };
 		5BFFCE0A2040AC7A00716A78 /* TrackListTableVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackListTableVC.swift; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 				C498CB751D9ED52D00B73FF1 /* GlobalFunctions.swift */,
 				5BFFCE0C2040B1DE00716A78 /* Extensions.swift */,
 				5BFFCE112040C25F00716A78 /* Constants.swift */,
+				5B9C3C6220B3CE5A00AE9197 /* ApiKey.swift */,
 				5B33AF34205370C4006A8B86 /* CoreDataManager.swift */,
 				5B7C32FA205BBA57007E8BF6 /* DownloadManager.swift */,
 				5B7C32F8205B80E5007E8BF6 /* UploadManager.swift */,
@@ -485,6 +488,7 @@
 				5B33AF35205370C4006A8B86 /* CoreDataManager.swift in Sources */,
 				5BFFCE362041172A00716A78 /* HelperFunctions.swift in Sources */,
 				5BFFCE38204117CE00716A78 /* DownloadAudio.swift in Sources */,
+				5B9C3C6320B3CE5A00AE9197 /* ApiKey.swift in Sources */,
 				5BFFCE33204115D600716A78 /* TableViewSwipeSettings.swift in Sources */,
 				5BFFCE102040BCE500716A78 /* TrackListTableViewCell.swift in Sources */,
 				5B5078CC204ACC3E00712ADE /* SubtleVolume.swift in Sources */,

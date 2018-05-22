@@ -8,9 +8,6 @@
 
 import Foundation
 
-//OLD URL NO LONGER WORKS ON MOBILE
-//let WEB_BASE_URL = "http://regalbloodline.com/"
-
 let WEB_BASE_URL = "https://m.my.mail.ru/"
 let SEARCH_URL = WEB_BASE_URL + "music/search/"
 //OneSignal
