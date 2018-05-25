@@ -51,16 +51,14 @@ extension TrackListTableVC: URLSessionDownloadDelegate {
         if let downloadUrl = downloadTask.originalRequest?.url?.absoluteString,
             let download = activeDownloads[downloadUrl] {
             download.progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
-            let totalSize = ByteCountFormatter.string(fromByteCount: totalBytesExpectedToWrite, countStyle: ByteCountFormatter.CountStyle.binary)
-            print(download.progress)
+            let totalSize = ByteCountFormatter.string(fromByteCount: totalBytesExpectedToWrite, countStyle: .binary)
+//            print(download.progress)
             
             DispatchQueue.main.async {
-                
-                self.toolBarStatusLabel.text = "Downloading \(String(format: "%.1f%%",  download.progress * 100))"
-
-                
+            
                 if let trackIndex = self.trackIndexForDownloadTask(downloadTask),
                     let trackCell = self.tableView.cellForRow(at: IndexPath(row: trackIndex, section: 0)) as? TrackListTableViewCell {
+                    
                     trackCell.downloadProgressView.progress = download.progress
                     let bitRate = String(Int(totalBytesExpectedToWrite) * 8 / 1000 / download.duration)
                     trackCell.downloadProgressLabel.text =  String(format: "%.1f%% of %@",  download.progress * 100, totalSize) + " \(bitRate) kbps"
@@ -70,12 +68,7 @@ extension TrackListTableVC: URLSessionDownloadDelegate {
     }
     
     func startDownload(_ track: Audio) {
-
-        if track.url.isEmpty {
-            SwiftNotificationBanner.presentNotification("Unable to download. No url")
-            return
-        }
-        downloadFile(fromURL: track.url, track: track)
+        track.url.isEmpty ? SwiftNotificationBanner.presentNotification("Unable to download. No url") : downloadFile(fromURL: track.url, track: track)
     }
     
     func downloadFile(fromURL urlString: String, track: Audio) {

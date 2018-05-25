@@ -16,6 +16,7 @@ class TrackListTableVC: UITableViewController {
 	
 	//MARK: - Constants
 	let searchController = UISearchController(searchResultsController: nil)
+    
 	//MARK: - Variables
 	var currentSelectedIndex = -1
 	var audioFiles = [Audio]()
@@ -436,7 +437,7 @@ class TrackListTableVC: UITableViewController {
 			musicPlayerController.tracks = audioFiles
 			musicPlayerController.currentIndexPathRow = currentSelectedIndex
 			navigationController?.popupBar.marqueeScrollEnabled = true
-			self.navigationController?.presentPopupBar(withContentViewController: musicPlayerController, animated: true, completion: nil)
+			navigationController?.presentPopupBar(withContentViewController: musicPlayerController, animated: true, completion: nil)
 			
 			AudioPlayer.defaultPlayer.setPlayList(audioFiles)
 			AudioPlayer.index = currentSelectedIndex
@@ -474,12 +475,12 @@ extension TrackListTableVC: UISearchBarDelegate {
 	func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
 		if let url = UIPasteboard.general.string, url.hasPrefix("http") {
 			searchBar.textField?.insertText(url)
+            UIPasteboard.general.string = ""
 		}
 	}
 	
 	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
 		fetchDownloads()
-		
 	}
 	
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
