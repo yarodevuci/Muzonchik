@@ -360,6 +360,8 @@ class TrackListTableVC: UITableViewController {
 		GlobalFunctions.shared.convertYouTubeURL(url: url) { (message, error) in
 			
 			if error == nil {
+                self.currentSelectedIndex = -1
+
 				guard let message = message else { return }
 				
                 self.subscribeForProgress()
