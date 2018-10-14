@@ -358,14 +358,17 @@ class TrackListTableVC: UITableViewController {
     func getLocalTrack() {
         showActivityIndicator(withStatus: "Waiting for response ...")
         
-        GlobalFunctions.shared.getLocalTrack { (audio, error) in
+        GlobalFunctions.shared.getLocalTrack { (audios, error) in
             if error == nil {
                 self.currentSelectedIndex = -1
                 
-                guard let audio = audio else { return }
+                guard let audios = audios else { return }
                 
                 self.audioFiles.removeAll()
-                self.audioFiles.append(audio)
+
+                for audio in audios {
+                    self.audioFiles.append(audio)
+                }
                 
                 DispatchQueue.main.async {
                     self.isDownloadedListShown = false

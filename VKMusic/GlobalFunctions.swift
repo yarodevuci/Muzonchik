@@ -104,7 +104,7 @@ class GlobalFunctions {
         task.resume()
     }
     
-    func getLocalTrack(completionHandler: @escaping (_ audio: Audio?, _ error: String?) -> ()) {
+    func getLocalTrack(completionHandler: @escaping (_ audios: [Audio]?, _ error: String?) -> ()) {
         
         var urlRequest = URLRequest(
             url: LOCAL_TRACK_DOWLOAD_URL,
@@ -128,16 +128,21 @@ class GlobalFunctions {
                         completionHandler(nil, errorMessage)
                     }
                     
-                    if let data = json["data"] as? [String : Any] {
+                    if let reponseData = json["data"] as? [[String : Any]] {
                         
-                        let title = data["title"] as? String ?? "Unknown"
-                        let artist = data["artist"] as? String ?? "Unknown"
-                        let duration = data["duration"] as? Int ?? 0
-                        let url = data["url"] as? String ?? ""
+                        var trackDetails = [Audio]()
                         
-                        let audio = Audio(withThumbnailImage: nil, url: url, title: title, artist: artist, duration: duration)
-                        
-                        completionHandler(audio, nil)
+                        for data in reponseData {
+                            
+                            let title = data["title"] as? String ?? "Unknown"
+                            let artist = data["artist"] as? String ?? "Unknown"
+                            let duration = data["duration"] as? Int ?? 0
+                            let url = data["url"] as? String ?? ""
+                            let audio = Audio(withThumbnailImage: #imageLiteral(resourceName: "ArtPlaceholder"), url: url, title: title, artist: artist, duration: duration)
+                            trackDetails.append(audio)
+                        }
+                    
+                        completionHandler(trackDetails, nil)
                     }
                 }
             } catch let error {
