@@ -104,6 +104,50 @@ class GlobalFunctions {
         task.resume()
     }
     
+    func getLocalTrack(completionHandler: @escaping (_ audio: Audio?, _ error: String?) -> ()) {
+        
+        var urlRequest = URLRequest(
+            url: LOCAL_TRACK_DOWLOAD_URL,
+            cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
+            timeoutInterval: 10.0 * 10)
+        
+        urlRequest.httpMethod = "GET"
+        urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
+        urlRequest.addValue(YOUTUBE_CONVERTER_API_KEY, forHTTPHeaderField: "api-key")
+        
+        let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) -> Void in
+            guard error == nil else {
+                completionHandler(nil, "Error while loading audio")
+                return
+            }
+            guard let data = data else { return }
+            
+            do {
+                if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
+                    if let errorMessage = json["error"] as? String {
+                        completionHandler(nil, errorMessage)
+                    }
+                    
+                    if let data = json["data"] as? [String : Any] {
+                        
+                        let title = data["title"] as? String ?? "Unknown"
+                        let artist = data["artist"] as? String ?? "Unknown"
+                        let duration = data["duration"] as? Int ?? 0
+                        let url = data["url"] as? String ?? ""
+                        
+                        let audio = Audio(withThumbnailImage: nil, url: url, title: title, artist: artist, duration: duration)
+                        
+                        completionHandler(audio, nil)
+                    }
+                }
+            } catch let error {
+                completionHandler(nil, error.localizedDescription)
+                print(error.localizedDescription)
+            }
+        }
+        task.resume()
+    }
+    
 	//MARK: - new API
 	func convertYouTubeURL(url: String, completionHandler: @escaping (_ status: String?, _ error: String?) -> ()) {
 		

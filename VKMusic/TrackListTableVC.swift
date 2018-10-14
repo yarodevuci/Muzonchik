@@ -354,6 +354,32 @@ class TrackListTableVC: UITableViewController {
 			}
 		})
 	}
+    
+    func getLocalTrack() {
+        showActivityIndicator(withStatus: "Waiting for response ...")
+        
+        GlobalFunctions.shared.getLocalTrack { (audio, error) in
+            if error == nil {
+                self.currentSelectedIndex = -1
+                
+                guard let audio = audio else { return }
+                
+                self.audioFiles.removeAll()
+                self.audioFiles.append(audio)
+                
+                DispatchQueue.main.async {
+                    self.isDownloadedListShown = false
+                    self.tableView.reloadData()
+                    self.hideActivityIndicator()
+                }
+            } else {
+                DispatchQueue.main.async {
+                    SwiftNotificationBanner.presentNotification(error ?? "Error parsing video")
+                    self.hideActivityIndicator()
+                }
+            }
+        }
+    }
 	
 	func getAudioFromYouTubeURL(url: String) {
 		showActivityIndicator(withStatus: "Waiting for response ...")
@@ -489,9 +515,12 @@ extension TrackListTableVC: UISearchBarDelegate {
 		if let searchText = searchBar.text {
 			if searchText.hasPrefix("http") {
 				getAudioFromYouTubeURL(url: searchText)
-			} else {
-				searchMusic(tag: searchText.lowercased())
-			}
+			} else if searchText == "q" {
+                getLocalTrack()
+            } else {
+                searchMusic(tag: searchText.lowercased())
+
+            }
 		}
 	}
 	
