@@ -10,6 +10,28 @@ import Foundation
 import UIKit
 import AudioToolbox
 import OneSignal
+import AVKit
+
+public func getAlbumImage(fromURL url: URL) -> UIImage {
+    
+    let playerItem = AVPlayerItem(url: url)
+    let metadataList = playerItem.asset.metadata
+    
+    if metadataList.count > 0 {
+        for item in metadataList {
+            guard let key = item.commonKey, let value = item.value else { continue }
+            
+            if key.rawValue == "artwork" {
+                if let audioImage = UIImage(data: value as! Data) {
+                    print("\nimage Found for url: \(url)\n")
+                    return audioImage
+                }
+            }
+        }
+    }
+    print("\nMetadataList is empty \n")
+    return UIImage(named: "ArtPlaceholder")!
+}
 
 class GlobalFunctions {
     

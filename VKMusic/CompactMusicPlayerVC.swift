@@ -22,6 +22,7 @@ class CompactMusicPlayerVC: UIViewController, UIGestureRecognizerDelegate {
 	@IBOutlet weak var fullPlayerPlayPauseButton: UIButton!
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	@IBOutlet weak var tableView: UITableView!
+    
 	//MARK: - Constants
 	
 	//MARK: - Variables
@@ -71,7 +72,6 @@ class CompactMusicPlayerVC: UIViewController, UIGestureRecognizerDelegate {
         return false
     }
     
-    
 	func setupUI() {
 		setupVolumeBar()
 		updateCurrentTrackInfo()
@@ -113,7 +113,7 @@ class CompactMusicPlayerVC: UIViewController, UIGestureRecognizerDelegate {
 		trackDurationSeconds = tracks[currentIndexPathRow].duration
 		durationSlider.maximumValue = Float(trackDurationSeconds)
 		
-		NotificationCenter.default.post(name: .playTrackAtIndex, object: nil, userInfo: ["index" : currentIndexPathRow])
+        NotificationCenter.default.post(name: .playTrackAtIndex, object: nil, userInfo: ["index" : currentIndexPathRow])
 	}
 	
 	func updatePlayButton() {

@@ -78,6 +78,7 @@ class CoreDataManager {
 		manageObject.setValue(audio.artist, forKey: "artist")
 		manageObject.setValue(audio.title, forKey: "title")
 		manageObject.setValue(incrementedID(), forKey: "id")
+        
         if let image = audio.thumbnail_image {
             let imageData = UIImageJPEGRepresentation(image, 1)
             manageObject.setValue(imageData, forKey: "thumbnail_img")

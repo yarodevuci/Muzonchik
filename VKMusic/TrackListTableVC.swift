@@ -58,8 +58,12 @@ class TrackListTableVC: UITableViewController {
 	
 	@objc func playTrackAtIndex(notification: NSNotification) {
 		if let index = notification.userInfo?["index"] as? Int {
-			currentSelectedIndex = index
-			tableView.reloadData()
+
+            let selectedIndexPath = IndexPath(item: index, section: 0)
+            let oldIndexPath = IndexPath(item: currentSelectedIndex, section: 0)
+            tableView.reloadRows(at: [oldIndexPath, selectedIndexPath], with: .none)
+            
+            currentSelectedIndex = index
 		}
 	}
 	
@@ -217,8 +221,11 @@ class TrackListTableVC: UITableViewController {
 				let duration = audio.value(forKey: "duration") as? Int ?? 0
 				let id = audio.value(forKey: "id") as? Int ?? 0
                 
-                var default_thmb_img: UIImage = #imageLiteral(resourceName: "ArtPlaceholder")
-                if let thumb_imageData = audio.value(forKey: "thumbnail_img") as? Data {
+                
+                let urlString = "\(title)_\(artist)_\(duration).mp3"
+                var default_thmb_img = getAlbumImage(fromURL: localFilePathForUrl(urlString)!)
+                
+                if url.hasSuffix(".mp4"), let thumb_imageData = audio.value(forKey: "thumbnail_img") as? Data {
                     default_thmb_img = UIImage(data: thumb_imageData) ?? #imageLiteral(resourceName: "ArtPlaceholder")
                 }
                 
@@ -461,34 +468,35 @@ class TrackListTableVC: UITableViewController {
 		//        var audio: Audio
 		//        isFiltering() ? (audio = filterAudios[indexPath.row]) : (audio = audioFiles[indexPath.row])
 		if currentSelectedIndex != indexPath.row {
-			let audio = audioFiles[indexPath.row]
-			currentSelectedIndex = indexPath.row
 			
-			let musicPlayerController = storyboard?.instantiateViewController(withIdentifier: "CompactMusicPlayerVC") as! CompactMusicPlayerVC
-			musicPlayerController.tracks = audioFiles
-			musicPlayerController.currentIndexPathRow = currentSelectedIndex
-			navigationController?.popupBar.marqueeScrollEnabled = true
-			navigationController?.presentPopupBar(withContentViewController: musicPlayerController, animated: true, completion: nil)
+            let audio = audioFiles[indexPath.row]
+//            currentSelectedIndex = indexPath.row
 			
-			AudioPlayer.defaultPlayer.setPlayList(audioFiles)
-			AudioPlayer.index = currentSelectedIndex
+            let musicPlayerController = storyboard?.instantiateViewController(withIdentifier: "CompactMusicPlayerVC") as! CompactMusicPlayerVC
+            musicPlayerController.tracks = audioFiles
+            musicPlayerController.currentIndexPathRow = indexPath.row
+            navigationController?.popupBar.marqueeScrollEnabled = true
+            navigationController?.presentPopupBar(withContentViewController: musicPlayerController, animated: true, completion: nil)
+
+            AudioPlayer.defaultPlayer.setPlayList(audioFiles)
+            AudioPlayer.index = indexPath.row
 			
-			if localFileExistsForTrack(audio) {
+            if localFileExistsForTrack(audio) {
                 var trackURLString = ""
                 if audio.url.hasSuffix(".mp3") || audio.url.hasSuffix(".mp4") {
                     trackURLString = audio.url
                 } else { //MAILRU IS MISSING .mp3 extension, adding it manually to avoid bugs
                     trackURLString = audio.url + ".mp3"
                 }
-				let urlString = "\(audio.title)_\(audio.artist)_\(audio.duration).mp\(trackURLString.hasSuffix(".mp3") ? "3" : "4")"
-				let url = localFilePathForUrl(urlString)
-				AudioPlayer.defaultPlayer.playAudio(fromURL: url!)
-			} else {
-				let url = URL(string: audio.url)
+                let urlString = "\(audio.title)_\(audio.artist)_\(audio.duration).mp\(trackURLString.hasSuffix(".mp3") ? "3" : "4")"
+                let url = localFilePathForUrl(urlString)
+                AudioPlayer.defaultPlayer.playAudio(fromURL: url!)
+            } else {
+                let url = URL(string: audio.url)
                 DispatchQueue.global(qos: .background).async {
                     AudioPlayer.defaultPlayer.playAudio(fromURL: url)
                 }
-			}			
+            }
 		}
 	}
 }
