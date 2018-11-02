@@ -256,12 +256,6 @@ class CompactMusicPlayerVC: UIViewController, UIGestureRecognizerDelegate {
 //MARK: - AudioPlayerDelegate
 extension CompactMusicPlayerVC: AudioPlayerDelegate {
 	
-	func receivedArtworkImage(_ image: UIImage) {
-		DispatchQueue.main.async {
-			self.albumArtImageView.image = image
-		}
-	}
-	
 	func audioDidChangeTime(_ time: Int64) {
 		//Unhide play button and hide activity indicator
         activityIndicator.stopAnimating()
@@ -276,6 +270,8 @@ extension CompactMusicPlayerVC: AudioPlayerDelegate {
 		currenTimeLabel.text = Int(time).toAudioString
 		durationLabel.text = "-\((Int(trackDurationSeconds) - Int(time)).toAudioString)"
 		
+        let track = tracks[currentIndexPathRow]
+        UserDefaults.standard.set(Double(time), forKey: track.url)
 	}
 	
 	func playerWillPlayNexAudio() {

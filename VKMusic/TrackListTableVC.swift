@@ -34,7 +34,8 @@ class TrackListTableVC: UITableViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		tableView.reloadData()
+		
+        tableView.reloadData()
 	}
 	
 	//MARK: - viewDidLoad
@@ -44,6 +45,14 @@ class TrackListTableVC: UITableViewController {
 //		setupDropdownMenu()
 //		pullMusic()
 		fetchDownloads()
+        
+        if let savedIndexTrack = UserDefaults.standard.value(forKey: "savedIndexTrack") as? Int {
+            if #available(iOS 10.0, *) {
+                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (timer) in
+                    self.initiatePlayForSelectedTrack(selectedIndex: savedIndexTrack)
+                }
+            }
+        }
 	}
 	
 	override func viewDidLayoutSubviews() {
@@ -61,9 +70,11 @@ class TrackListTableVC: UITableViewController {
 
             let selectedIndexPath = IndexPath(item: index, section: 0)
             let oldIndexPath = IndexPath(item: currentSelectedIndex, section: 0)
-            tableView.reloadRows(at: [oldIndexPath, selectedIndexPath], with: .none)
-            
             currentSelectedIndex = index
+            
+            UserDefaults.standard.set(index, forKey: "savedIndexTrack")
+
+            tableView.reloadRows(at: [oldIndexPath, selectedIndexPath], with: .none)
 		}
 	}
 	
@@ -416,6 +427,42 @@ class TrackListTableVC: UITableViewController {
 	func isFiltering() -> Bool {
 		return searchController.isActive && !(searchController.searchBar.text ?? "").isEmpty && isDownloadedListShown
 	}
+    
+    func initiatePlayForSelectedTrack(selectedIndex: Int) {
+        if currentSelectedIndex != selectedIndex {
+            
+            let audio = audioFiles[selectedIndex]
+            //            currentSelectedIndex = indexPath.row
+            
+            let mPlayer = storyboard?.instantiateViewController(withIdentifier: "CompactMusicPlayerVC") as! CompactMusicPlayerVC
+            mPlayer.tracks = audioFiles
+            mPlayer.currentIndexPathRow = selectedIndex
+            navigationController?.popupBar.marqueeScrollEnabled = true
+            navigationController?.presentPopupBar(withContentViewController: mPlayer, animated: true, completion: nil)
+            
+            AudioPlayer.defaultPlayer.setPlayList(audioFiles)
+            AudioPlayer.index = selectedIndex
+            
+            if localFileExistsForTrack(audio) {
+                var trackURLString = ""
+                if audio.url.hasSuffix(".mp3") || audio.url.hasSuffix(".mp4") {
+                    trackURLString = audio.url
+                    
+                } else { //MAIL.RU Service IS MISSING .mp3 extension, adding it manually
+                    trackURLString = audio.url + ".mp3"
+                }
+                let urlString = "\(audio.title)_\(audio.artist)_\(audio.duration).mp\(trackURLString.hasSuffix(".mp3") ? "3" : "4")"
+                let url = localFilePathForUrl(urlString)
+                AudioPlayer.defaultPlayer.playAudio(fromURL: url!)
+            } else {
+                let url = URL(string: audio.url)
+                DispatchQueue.global(qos: .background).async {
+                    AudioPlayer.defaultPlayer.playAudio(fromURL: url)
+                }
+            }
+        }
+    }
+    
 	
 	// MARK: - Table view data source
 	
@@ -462,42 +509,11 @@ class TrackListTableVC: UITableViewController {
 		
 		return cell
 	}
-	
-	
+    
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		//        var audio: Audio
 		//        isFiltering() ? (audio = filterAudios[indexPath.row]) : (audio = audioFiles[indexPath.row])
-		if currentSelectedIndex != indexPath.row {
-			
-            let audio = audioFiles[indexPath.row]
-//            currentSelectedIndex = indexPath.row
-			
-            let musicPlayerController = storyboard?.instantiateViewController(withIdentifier: "CompactMusicPlayerVC") as! CompactMusicPlayerVC
-            musicPlayerController.tracks = audioFiles
-            musicPlayerController.currentIndexPathRow = indexPath.row
-            navigationController?.popupBar.marqueeScrollEnabled = true
-            navigationController?.presentPopupBar(withContentViewController: musicPlayerController, animated: true, completion: nil)
-
-            AudioPlayer.defaultPlayer.setPlayList(audioFiles)
-            AudioPlayer.index = indexPath.row
-			
-            if localFileExistsForTrack(audio) {
-                var trackURLString = ""
-                if audio.url.hasSuffix(".mp3") || audio.url.hasSuffix(".mp4") {
-                    trackURLString = audio.url
-                } else { //MAILRU IS MISSING .mp3 extension, adding it manually to avoid bugs
-                    trackURLString = audio.url + ".mp3"
-                }
-                let urlString = "\(audio.title)_\(audio.artist)_\(audio.duration).mp\(trackURLString.hasSuffix(".mp3") ? "3" : "4")"
-                let url = localFilePathForUrl(urlString)
-                AudioPlayer.defaultPlayer.playAudio(fromURL: url!)
-            } else {
-                let url = URL(string: audio.url)
-                DispatchQueue.global(qos: .background).async {
-                    AudioPlayer.defaultPlayer.playAudio(fromURL: url)
-                }
-            }
-		}
+        initiatePlayForSelectedTrack(selectedIndex: indexPath.row)
 	}
 }
 
