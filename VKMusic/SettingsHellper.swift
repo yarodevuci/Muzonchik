@@ -13,7 +13,7 @@ extension SettingsTableVC {
 	
 	//MARK: - Unused at this moment
 	func presentActivityVC() {
-		let objectsToShare = [DocumentsDirectory.localDocumentsURL.appendingPathComponent("import.zip")]
+		let objectsToShare = [AppDirectory.localDocumentsURL.appendingPathComponent("import.zip")]
 		let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
 		DispatchQueue.main.async {
 			self.present(activityVC, animated: true, completion: nil)

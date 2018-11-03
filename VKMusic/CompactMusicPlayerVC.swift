@@ -146,7 +146,7 @@ class CompactMusicPlayerVC: UIViewController, UIGestureRecognizerDelegate {
         prepPlayerControlsUIForNewSong(with: track.duration.toAudioString)
         
 		let trackPath = "\(track.title)_\(track.artist)_\(track.duration).mp\(track.url.last ?? "3")"
-		AudioPlayer.defaultPlayer.playAudio(fromURL: DocumentsDirectory.localDownloadsURL.appendingPathComponent(trackPath))
+		AudioPlayer.defaultPlayer.playAudio(fromURL: AppDirectory.localDownloadsURL.appendingPathComponent(trackPath))
 	}
 	
     func playRemoteTrack(for track: Audio) {

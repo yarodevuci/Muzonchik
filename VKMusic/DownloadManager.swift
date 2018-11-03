@@ -37,13 +37,13 @@ class DownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
 		//Removed import.zip from Doc folder if exist
 		do {
-			try FileManager.default.removeItem(at: DocumentsDirectory.localDocumentsURL.appendingPathComponent("import.zip"))
+			try FileManager.default.removeItem(at: AppDirectory.localDocumentsURL.appendingPathComponent("import.zip"))
 		} catch {
 			print("Unable to remove import.zip, probably because it does not exist..")
 		}
 		
 		do {			
-			try FileManager.default.moveItem(at: location, to: DocumentsDirectory.localDocumentsURL.appendingPathComponent("import.zip"))
+			try FileManager.default.moveItem(at: location, to: AppDirectory.localDocumentsURL.appendingPathComponent("import.zip"))
 			delegate?.didFinishDownloading(withError: nil)
 		} catch let error {
 			delegate?.didFinishDownloading(withError: error.localizedDescription)

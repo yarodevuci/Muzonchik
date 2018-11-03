@@ -13,28 +13,28 @@ extension TrackListTableVC: URLSessionDownloadDelegate {
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         
         if let originalURL = downloadTask.originalRequest?.url?.absoluteString,
-            let destinationURL = localFilePathForUrl(originalURL) {
+            let currentDownload = activeDownloads[originalURL] {
+            let destinationURL = getFileURL(for: currentDownload.fileName)
+            
             let fileManager = FileManager.default
-			// Do this just in case if same file name is already exist. 
-			do { try fileManager.removeItem(at: destinationURL) }
-			catch let error as Error { //FILE PROBABLY DOES NOT EXIST:
-//                print("ERROR REMOVING TEMP FILE: \(error.localizedDescription)")
-            }
+            // Do this just in case if same file name is already exist.
+            do { try fileManager.removeItem(at: destinationURL) }
+            catch let error as Error {} //FILE PROBABLY DOES NOT EXIST
+            
             self.hideActivityIndicator()
             
             do {
                 try fileManager.moveItem(at: location, to: destinationURL)
-				if let currentDownload = self.activeDownloads[originalURL] {
-					CoreDataManager.shared.saveToCoreData(audio: Audio(withThumbnailImage: currentDownload.thumbnailImage, url: destinationURL.absoluteString, title: currentDownload.title, artist: currentDownload.artist, duration: currentDownload.duration))
-                    
-					DispatchQueue.main.async {
-						SwiftNotificationBanner.presentNotification("\(currentDownload.songName)\nDownload complete")
-						self.activeDownloads[downloadTask.originalRequest?.url?.absoluteString ?? ""] = nil
-						self.tableView.reloadData()
-					}
-				}
+                
+                CoreDataManager.shared.saveToCoreData(audio: Audio(withThumbnailImage: currentDownload.thumbnailImage, url: destinationURL.absoluteString, title: currentDownload.title, artist: currentDownload.artist, duration: currentDownload.duration))
+                
+                DispatchQueue.main.async {
+                    SwiftNotificationBanner.presentNotification("\(currentDownload.songName)\nDownload complete")
+                    self.activeDownloads[downloadTask.originalRequest?.url?.absoluteString ?? ""] = nil
+                    self.tableView.reloadData()
+                }
             } catch let error as Error {
-				DispatchQueue.main.async {
+                DispatchQueue.main.async {
                     print("ERROR: \(error.localizedDescription)")
                     if self.activeDownloads[originalURL] != nil {
                         SwiftNotificationBanner.presentNotification("\(self.activeDownloads[originalURL]!.songName)\n\(error.localizedDescription)")

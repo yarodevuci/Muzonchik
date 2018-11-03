@@ -16,10 +16,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        print(DocumentsDirectory.localDocumentsURL)
+        print(AppDirectory.getDownloadsFolderURL())
+        
 		UINavigationBar.appearance().shadowImage = UIImage()
 		UINavigationBar.appearance().tintColor = .white
+        
 		registerOneSignalNotifications(launchOptions: launchOptions)
+        
         return true
     }
 	

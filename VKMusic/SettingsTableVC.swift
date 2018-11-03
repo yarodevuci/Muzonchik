@@ -36,11 +36,11 @@ class SettingsTableVC: UITableViewController {
 	
 	func zipAllDownloads() {
 		do {
-			let zipFilePath = DocumentsDirectory.localDocumentsURL.appendingPathComponent("import.zip")
-			let downloadsPath = DocumentsDirectory.localDocumentsURL.appendingPathComponent("Downloads")
-			let sqlitePath = DocumentsDirectory.localDocumentsURL.appendingPathComponent("CoreDataModel.sqlite")
-			let sqlite_shmPath = DocumentsDirectory.localDocumentsURL.appendingPathComponent("CoreDataModel.sqlite-shm")
-			let sqlite_walPath = DocumentsDirectory.localDocumentsURL.appendingPathComponent("CoreDataModel.sqlite-wal")
+			let zipFilePath = AppDirectory.localDocumentsURL.appendingPathComponent("import.zip")
+			let downloadsPath = AppDirectory.localDocumentsURL.appendingPathComponent("Downloads")
+			let sqlitePath = AppDirectory.localDocumentsURL.appendingPathComponent("CoreDataModel.sqlite")
+			let sqlite_shmPath = AppDirectory.localDocumentsURL.appendingPathComponent("CoreDataModel.sqlite-shm")
+			let sqlite_walPath = AppDirectory.localDocumentsURL.appendingPathComponent("CoreDataModel.sqlite-wal")
 			
 			try Zip.zipFiles(paths: [downloadsPath, sqlitePath, sqlite_shmPath, sqlite_walPath], zipFilePath: zipFilePath, password: nil, progress: { (progress) -> () in
 				
@@ -95,8 +95,8 @@ class SettingsTableVC: UITableViewController {
 	
     func unZip() {
         do {
-            let zipFilePath = DocumentsDirectory.localDocumentsURL.appendingPathComponent("import.zip")
-            try Zip.unzipFile(zipFilePath, destination: DocumentsDirectory.localDocumentsURL, overwrite: true, password: nil, progress: { (progress) in
+            let zipFilePath = AppDirectory.localDocumentsURL.appendingPathComponent("import.zip")
+            try Zip.unzipFile(zipFilePath, destination: AppDirectory.localDocumentsURL, overwrite: true, password: nil, progress: { (progress) in
                 print(progress)
                 
                 DispatchQueue.main.async {
@@ -226,7 +226,7 @@ extension SettingsTableVC: UploadManagerDelegage {
 		
         //Delete archive after uploading
 		do {
-			try FileManager.default.removeItem(at: DocumentsDirectory.localDocumentsURL.appendingPathComponent("import.zip"))
+			try FileManager.default.removeItem(at: AppDirectory.localDocumentsURL.appendingPathComponent("import.zip"))
 		} catch {}
 	}
 	

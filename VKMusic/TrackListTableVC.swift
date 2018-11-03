@@ -49,6 +49,10 @@ class TrackListTableVC: UITableViewController {
         if let savedIndexTrack = UserDefaults.standard.value(forKey: "savedIndexTrack") as? Int {
             if #available(iOS 10.0, *) {
                 Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (timer) in
+                    if savedIndexTrack > self.audioFiles.count - 1 {
+                        UserDefaults.standard.removeObject(forKey: "savedIndexTrack")
+                        return
+                    }
                     self.initiatePlayForSelectedTrack(selectedIndex: savedIndexTrack)
                 }
             }
@@ -91,6 +95,7 @@ class TrackListTableVC: UITableViewController {
 	}
 	
 	private func setupUI() {
+        tableView.estimatedRowHeight = 100
 		NotificationCenter.default.addObserver(self, selector: #selector(playTrackAtIndex), name: .playTrackAtIndex, object: nil)
 		setupActivityToolBar()
 		setupRefreshControl()
@@ -226,17 +231,16 @@ class TrackListTableVC: UITableViewController {
 		if let downloadedAudioFiles = CoreDataManager.shared.fetchSavedResults() {
 			audioFiles.removeAll()
 			for audio in downloadedAudioFiles {
-				let url = audio.value(forKey: "url") as? String ?? ""
-				let artist = audio.value(forKey: "artist") as? String ?? ""
-				let title = audio.value(forKey: "title") as? String ?? ""
-				let duration = audio.value(forKey: "duration") as? Int ?? 0
-				let id = audio.value(forKey: "id") as? Int ?? 0
+				let url = audio.url as? String ?? ""
+				let artist = audio.artist as? String ?? ""
+				let title = audio.title as? String ?? ""
+				let duration = Int(audio.duration as? Int32 ?? 0)
+				let id = Int(audio.id as? Int32 ?? 0)
                 
+                let fileName = "\(title)_\(artist)_\(duration).mp3"
+                var default_thmb_img = getAlbumImage(fromURL: getFileURL(for: fileName))
                 
-                let urlString = "\(title)_\(artist)_\(duration).mp3"
-                var default_thmb_img = getAlbumImage(fromURL: localFilePathForUrl(urlString)!)
-                
-                if url.hasSuffix(".mp4"), let thumb_imageData = audio.value(forKey: "thumbnail_img") as? Data {
+                if url.hasSuffix(".mp4"), let thumb_imageData = audio.thumbnail_img as? Data {
                     default_thmb_img = UIImage(data: thumb_imageData) ?? #imageLiteral(resourceName: "ArtPlaceholder")
                 }
                 
@@ -429,36 +433,33 @@ class TrackListTableVC: UITableViewController {
 	}
     
     func initiatePlayForSelectedTrack(selectedIndex: Int) {
-        if currentSelectedIndex != selectedIndex {
+        
+        let audio = audioFiles[selectedIndex]
+        //            currentSelectedIndex = indexPath.row
+        
+        let mPlayer = storyboard?.instantiateViewController(withIdentifier: "CompactMusicPlayerVC") as! CompactMusicPlayerVC
+        mPlayer.tracks = audioFiles
+        mPlayer.currentIndexPathRow = selectedIndex
+        navigationController?.popupBar.marqueeScrollEnabled = true
+        navigationController?.presentPopupBar(withContentViewController: mPlayer, animated: true, completion: nil)
+        
+        AudioPlayer.defaultPlayer.setPlayList(audioFiles)
+        AudioPlayer.index = selectedIndex
+        
+        if localFileExistsForTrack(audio) {
+            var trackURLString = ""
+            if audio.url.hasSuffix(".mp3") || audio.url.hasSuffix(".mp4") {
+                trackURLString = audio.url
+            } else { //MAIL.RU Service IS MISSING .mp3 extension, adding it manually
+                trackURLString = audio.url + ".mp3"
+            }
+            let fileName = "\(audio.title)_\(audio.artist)_\(audio.duration).mp\(trackURLString.hasSuffix(".mp3") ? "3" : "4")"
+            AudioPlayer.defaultPlayer.playAudio(fromURL: getFileURL(for: fileName))
             
-            let audio = audioFiles[selectedIndex]
-            //            currentSelectedIndex = indexPath.row
+        } else {
             
-            let mPlayer = storyboard?.instantiateViewController(withIdentifier: "CompactMusicPlayerVC") as! CompactMusicPlayerVC
-            mPlayer.tracks = audioFiles
-            mPlayer.currentIndexPathRow = selectedIndex
-            navigationController?.popupBar.marqueeScrollEnabled = true
-            navigationController?.presentPopupBar(withContentViewController: mPlayer, animated: true, completion: nil)
-            
-            AudioPlayer.defaultPlayer.setPlayList(audioFiles)
-            AudioPlayer.index = selectedIndex
-            
-            if localFileExistsForTrack(audio) {
-                var trackURLString = ""
-                if audio.url.hasSuffix(".mp3") || audio.url.hasSuffix(".mp4") {
-                    trackURLString = audio.url
-                    
-                } else { //MAIL.RU Service IS MISSING .mp3 extension, adding it manually
-                    trackURLString = audio.url + ".mp3"
-                }
-                let urlString = "\(audio.title)_\(audio.artist)_\(audio.duration).mp\(trackURLString.hasSuffix(".mp3") ? "3" : "4")"
-                let url = localFilePathForUrl(urlString)
-                AudioPlayer.defaultPlayer.playAudio(fromURL: url!)
-            } else {
-                let url = URL(string: audio.url)
-                DispatchQueue.global(qos: .background).async {
-                    AudioPlayer.defaultPlayer.playAudio(fromURL: url)
-                }
+            DispatchQueue.global(qos: .background).async {
+                AudioPlayer.defaultPlayer.playAudio(fromURL: URL(string: audio.url))
             }
         }
     }
@@ -500,7 +501,6 @@ class TrackListTableVC: UITableViewController {
 		//        cell.audioData = audio
 		//        cell.downloadData = activeDownloads[audio.url]
 		//        cell.checkMarkImageView.isHidden = !localFileExistsForTrack(audio)
-		
 		cell.delegate = self
 		cell.audioData = audioFiles[indexPath.row]
 		cell.downloadData = activeDownloads[audioFiles[indexPath.row].url]
@@ -513,7 +513,9 @@ class TrackListTableVC: UITableViewController {
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		//        var audio: Audio
 		//        isFiltering() ? (audio = filterAudios[indexPath.row]) : (audio = audioFiles[indexPath.row])
-        initiatePlayForSelectedTrack(selectedIndex: indexPath.row)
+        if currentSelectedIndex != indexPath.row {
+            initiatePlayForSelectedTrack(selectedIndex: indexPath.row)
+        }
 	}
 }
 

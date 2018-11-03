@@ -24,7 +24,7 @@ class UploadManager: NSObject, URLSessionDataDelegate {
         urlRequest.setValue("Keep-Alive", forHTTPHeaderField: "Connection")
     
 		let session = URLSession(configuration: URLSessionConfiguration.background(withIdentifier: "uploadTask"), delegate: self, delegateQueue: OperationQueue.main)
-        let task = session.uploadTask(with: urlRequest, fromFile: DocumentsDirectory.localDocumentsURL.appendingPathComponent("import.zip"))
+        let task = session.uploadTask(with: urlRequest, fromFile: AppDirectory.localDocumentsURL.appendingPathComponent("import.zip"))
         
 		task.resume()
 	}

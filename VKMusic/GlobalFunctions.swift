@@ -12,6 +12,18 @@ import AudioToolbox
 import OneSignal
 import AVKit
 
+struct AppDirectory {
+    static let localDocumentsURL = FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: .userDomainMask).last!
+    
+    fileprivate static let downloadsFolderURL = localDocumentsURL.appendingPathComponent("Downloads")
+    static func getDownloadsFolderURL() -> URL {
+        if !FileManager.default.fileExists(atPath: downloadsFolderURL.path) {
+            try! FileManager.default.createDirectory(atPath: downloadsFolderURL.path, withIntermediateDirectories: true, attributes: nil)
+        }
+        return downloadsFolderURL
+    }
+}
+
 public func getAlbumImage(fromURL url: URL) -> UIImage {
     
     let playerItem = AVPlayerItem(url: url)
@@ -31,6 +43,10 @@ public func getAlbumImage(fromURL url: URL) -> UIImage {
     }
     print("\nMetadataList is empty \n")
     return UIImage(named: "ArtPlaceholder")!
+}
+
+public func getFileURL(for fileName: String) -> URL {
+    return AppDirectory.getDownloadsFolderURL().appendingPathComponent(fileName)
 }
 
 class GlobalFunctions {
@@ -226,10 +242,9 @@ class GlobalFunctions {
     
     func folderSize() -> UInt {
     
-        let folderPath = DocumentsDirectory.localDocumentsURL.appendingPathComponent("Downloads")
-        if !FileManager.default.fileExists(atPath: folderPath.path) {
-            return 0
-        }
+        let folderPath = AppDirectory.localDocumentsURL.appendingPathComponent("Downloads")
+        
+        if !FileManager.default.fileExists(atPath: folderPath.path) { return 0 }
         
         let filesArray: [String] = try! FileManager.default.subpathsOfDirectory(atPath: folderPath.path)
         var fileSize:UInt = 0
@@ -259,7 +274,7 @@ class GlobalFunctions {
     }
 	
 	func localFileExistsForTrack(_ audio: Audio) -> Bool {
-		let localUrl = DocumentsDirectory.localDownloadsURL.appendingPathComponent("\(audio.title)_\(audio.artist)_\(audio.duration).mp\(audio.url.last ?? "3")")
+		let localUrl = AppDirectory.downloadsFolderURL.appendingPathComponent("\(audio.title)_\(audio.artist)_\(audio.duration).mp\(audio.url.last ?? "3")")
 		var isDir : ObjCBool = false
 		let path = localUrl.path
 		return FileManager.default.fileExists(atPath: path, isDirectory: &isDir)
