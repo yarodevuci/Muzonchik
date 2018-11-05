@@ -271,7 +271,12 @@ extension CompactMusicPlayerVC: AudioPlayerDelegate {
 		durationLabel.text = "-\((Int(trackDurationSeconds) - Int(time)).toAudioString)"
 		
         let track = tracks[currentIndexPathRow]
-        UserDefaults.standard.set(Double(time), forKey: track.url)
+        
+        if time > track.duration - 30 {
+            UserDefaults.standard.removeObject(forKey: track.url)
+        } else {
+            UserDefaults.standard.set(Double(time), forKey: track.url)
+        }
 	}
 	
 	func playerWillPlayNexAudio() {
