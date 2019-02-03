@@ -14,9 +14,6 @@ import RMQClient
 
 class TrackListTableVC: UITableViewController {
 	
-	//MARK: - Constants
-	let searchController = UISearchController(searchResultsController: nil)
-    
 	//MARK: - Variables
 	var currentSelectedIndex = -1
 	var audioFiles = [Audio]()
@@ -25,13 +22,19 @@ class TrackListTableVC: UITableViewController {
 	var isDownloadedListShown = false
 	var activityIndicator = UIActivityIndicatorView()
 	var toolBarStatusLabel = UILabel()
+    var currentOffset = 0
+    
+    //MARK: - Constants
+    let searchController = UISearchController(searchResultsController: nil)
+    let volume = SubtleVolume(style: .rounded)
+
 	
 	lazy var downloadsSession: URLSession = {
 		let configuration = URLSessionConfiguration.background(withIdentifier: "bgSessionConfiguration")
 		let session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
 		return session
 	}()
-	
+    
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
@@ -54,6 +57,7 @@ class TrackListTableVC: UITableViewController {
                         return
                     }
                     self.initiatePlayForSelectedTrack(selectedIndex: savedIndexTrack)
+                    AudioPlayer.defaultPlayer.pause()
                 }
             }
         }
@@ -67,6 +71,16 @@ class TrackListTableVC: UITableViewController {
 			tableView.contentInset = insets
 			tableView.scrollIndicatorInsets = insets
 		}
+        
+        if #available(iOS 11.0, *) {
+            if view.safeAreaInsets.top > 0 {
+                volume.padding = CGSize(width: 2, height: 8)
+                volume.frame = CGRect(x: 16, y: -10, width: 60, height: 20)
+            } else {
+                volume.frame = CGRect(x: 20, y: UIApplication.shared.statusBarFrame.height,
+                                      width: UIScreen.main.bounds.width - 40, height: 20)
+            }
+        }
 	}
 	
 	@objc func playTrackAtIndex(notification: NSNotification) {
@@ -83,20 +97,20 @@ class TrackListTableVC: UITableViewController {
 	}
 	
 	private func setupVolumeBar() {
-		let volume = SubtleVolume(style: .dashes)
-		let volumeHeight: CGFloat = 20
-		let volumeOrigin: CGFloat = -20
-		
-		volume.frame = CGRect(x: 0, y: volumeOrigin, width: UIScreen.main.bounds.width, height: volumeHeight)
-		volume.barTintColor = .pinkColor
-		volume.barBackgroundColor = UIColor.white.withAlphaComponent(0.3)
-		volume.animation = .slideDown
-		navigationController?.navigationBar.addSubview(volume)
+        
+        volume.barTintColor = .white
+        volume.barBackgroundColor = UIColor.white.withAlphaComponent(0.3)
+        volume.animation = .fadeIn
+        volume.padding = CGSize(width: 4, height: 8)
+        volume.delegate = self
+        
+        navigationController?.navigationBar.addSubview(volume)
 	}
 	
 	private func setupUI() {
         tableView.estimatedRowHeight = 100
 		NotificationCenter.default.addObserver(self, selector: #selector(playTrackAtIndex), name: .playTrackAtIndex, object: nil)
+        
 		setupActivityToolBar()
 		setupRefreshControl()
 		setupVolumeBar()
@@ -278,33 +292,38 @@ class TrackListTableVC: UITableViewController {
 				self.hideActivityIndicator()
 			}
 			if let htmlString = htmlString {
-				self.parseHTML(html: htmlString)
+                self.parseHTML(html: htmlString, removeAll: true)
 			}
 		}
 	}
 	
-	func searchMusic(tag: String) {
+    func searchMusic(tag: String, offSet: Int, removeAll: Bool) {
 		currentSelectedIndex = -1
 		isDownloadedListShown = false
 		
 		showActivityIndicator(withStatus: "Searching for \(tag)")
-		GlobalFunctions.shared.urlToHTMLString(url: SEARCH_URL + "\(tag)?offset=0&sameFromAjax=1") { (htmlString, error) in
-			if let error = error {
-				print(error)
-				DispatchQueue.main.async {
+		GlobalFunctions.shared.urlToHTMLString(url: SEARCH_URL + "\(tag)?offset=\(offSet)&sameFromAjax=1") { (htmlString, error) in
+			
+            if let error = error {
+
+                DispatchQueue.main.async {
 					SwiftNotificationBanner.presentNotification(error)
 				}
 				self.hideActivityIndicator()
 			}
 			if let htmlString = htmlString {
-				self.parseHTML(html: htmlString)
+                self.parseHTML(html: htmlString, removeAll: removeAll)
 			}
 		}
 	}
 	
-	func parseHTML(html: String) {
+    func parseHTML(html: String, removeAll: Bool) {
 		let els: Elements = try! SwiftSoup.parse(html).select("div")
-		audioFiles.removeAll()
+        
+        if removeAll {
+            audioFiles.removeAll()
+        }
+        
 		for element: Element in els.array() {
 			if try! element.className() == "eventContent__audio  mm-clickable mm-audioPlay" {
 				let audioFile = Audio(withElement: element)
@@ -464,6 +483,11 @@ class TrackListTableVC: UITableViewController {
         }
     }
     
+    @objc func loadMore() {
+        currentOffset += 20
+        searchMusic(tag: searchController.searchBar.text ?? "", offSet: currentOffset, removeAll: false)
+    }
+    
 	
 	// MARK: - Table view data source
 	
@@ -481,6 +505,9 @@ class TrackListTableVC: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if searchController.isActive && !(searchController.searchBar.text ?? "").isEmpty {
+            return 50
+        }
 		return CGFloat(Float.ulpOfOne)
 	}
 	
@@ -493,6 +520,20 @@ class TrackListTableVC: UITableViewController {
 			deleteSong(indexPath.row)
 		}
 	}
+    
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 50))
+        let b = UIButton(frame: view.frame)
+        b.setTitle("Load More", for: UIControlState())
+        b.addTarget(self, action: #selector(loadMore), for: .touchUpInside)
+        view.addSubview(b)
+        
+        if searchController.isActive && !(searchController.searchBar.text ?? "").isEmpty {
+            return view
+        }
+        
+        return nil
+    }
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "TrackListTableViewCell", for: indexPath) as! TrackListTableViewCell
@@ -506,7 +547,7 @@ class TrackListTableVC: UITableViewController {
 		cell.downloadData = activeDownloads[audioFiles[indexPath.row].url]
 		cell.checkMarkImageView.isHidden = !localFileExistsForTrack(audioFiles[indexPath.row])
 		cell.isSelected = currentSelectedIndex == indexPath.row
-		
+        
 		return cell
 	}
     
@@ -547,8 +588,7 @@ extension TrackListTableVC: UISearchBarDelegate {
 			} else if searchText == "q" {
                 getLocalTrack()
             } else {
-                searchMusic(tag: searchText.lowercased())
-
+                searchMusic(tag: searchText.lowercased(), offSet: currentOffset, removeAll: true)
             }
 		}
 	}
@@ -559,4 +599,10 @@ extension TrackListTableVC: UISearchBarDelegate {
 		})
 		tableView.reloadData()
 	}
+}
+
+extension TrackListTableVC: SubtleVolumeDelegate {
+    func subtleVolume(_ subtleVolume: SubtleVolume, accessoryFor value: Double) -> UIImage? {
+        return value > 0 ? #imageLiteral(resourceName: "volume-on.pdf") : #imageLiteral(resourceName: "volume-off.pdf")
+    }
 }

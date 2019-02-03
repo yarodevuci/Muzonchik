@@ -122,24 +122,7 @@ const NSInteger LNBackgroundStyleInherit = -1;
     NSArray<__kindof NSLayoutConstraint *> * _progressViewVerticalConstraints;
 }
 
-CGFloat _LNPopupBarHeightForBarStyle(LNPopupBarStyle style, LNPopupCustomBarViewController* customBarVC)
-{
-	if(customBarVC) { return customBarVC.preferredContentSize.height; }
-	
-	return style == LNPopupBarStyleCompact ? LNPopupBarHeightCompact : LNPopupBarHeightProminent;
-}
-
-LNPopupBarStyle _LNPopupResolveBarStyleFromBarStyle(LNPopupBarStyle style)
-{
-	LNPopupBarStyle rv = style;
-	if(rv == LNPopupBarStyleDefault)
-	{
-		rv = [[NSProcessInfo processInfo] operatingSystemVersion].majorVersion > 9 ? LNPopupBarStyleProminent : LNPopupBarStyleCompact;
-	}
-	return rv;
-}
-
-static LNPopupBarProgressViewStyle _LNPopupResolveProgressViewStyleFromProgressViewStyle(LNPopupBarProgressViewStyle style)
+static inline __attribute__((always_inline)) LNPopupBarProgressViewStyle _LNPopupResolveProgressViewStyleFromProgressViewStyle(LNPopupBarProgressViewStyle style)
 {
 	LNPopupBarProgressViewStyle rv = style;
 	if(rv == LNPopupBarProgressViewStyleDefault)
@@ -149,7 +132,7 @@ static LNPopupBarProgressViewStyle _LNPopupResolveProgressViewStyleFromProgressV
 	return rv;
 }
 
-static UIBlurEffectStyle _LNBlurEffectStyleForSystemBarStyle(UIBarStyle systemBarStyle, LNPopupBarStyle barStyle)
+static inline __attribute__((always_inline)) UIBlurEffectStyle _LNBlurEffectStyleForSystemBarStyle(UIBarStyle systemBarStyle, LNPopupBarStyle barStyle)
 {
 	return systemBarStyle == UIBarStyleBlack ? UIBlurEffectStyleDark : barStyle == LNPopupBarStyleCompact ? UIBlurEffectStyleExtraLight : UIBlurEffectStyleLight;
 }
@@ -585,6 +568,7 @@ static UIBlurEffectStyle _LNBlurEffectStyleForSystemBarStyle(UIBarStyle systemBa
 	{
 		__FakeMarqueeLabel* rv = [[__FakeMarqueeLabel alloc] initWithFrame:_titlesView.bounds];
 		rv.minimumScaleFactor = 1.0;
+		rv.lineBreakMode = NSLineBreakByTruncatingTail;
 		return rv;
 	}
 	
@@ -789,47 +773,28 @@ static UIBlurEffectStyle _LNBlurEffectStyleForSystemBarStyle(UIBarStyle systemBa
 		if(_titleLabel == nil)
 		{
 			_titleLabel = [self _newMarqueeLabel];
+			_titleLabel.font = _resolvedStyle == LNPopupBarStyleProminent ? [UIFont systemFontOfSize:18 weight:UIFontWeightRegular] : [UIFont systemFontOfSize:12];
 			[_titlesView addSubview:_titleLabel];
 		}
-		
-		NSMutableParagraphStyle* paragraph = [NSMutableParagraphStyle new];
-		if(_resolvedStyle == LNPopupBarStyleCompact)
-		{
-			paragraph.alignment = NSTextAlignmentCenter;
-		}
-		else
-		{
-			paragraph.alignment = NSTextAlignmentNatural;
-		}
-		
-		if(_marqueeScrollEnabled == NO)
-		{
-			paragraph.lineBreakMode = NSLineBreakByTruncatingTail;
-		}
-		
-		NSMutableDictionary* defaultTitleAttribures = [@{NSParagraphStyleAttributeName: paragraph, NSFontAttributeName: _resolvedStyle == LNPopupBarStyleProminent ? [UIFont systemFontOfSize:18 weight:UIFontWeightRegular] : [UIFont systemFontOfSize:12]} mutableCopy];
-		[defaultTitleAttribures addEntriesFromDictionary:_titleTextAttributes];
-		
-		NSMutableDictionary* defaultSubtitleAttribures = [@{NSParagraphStyleAttributeName: paragraph, NSFontAttributeName: _resolvedStyle == LNPopupBarStyleProminent ? [UIFont systemFontOfSize:14 weight:UIFontWeightRegular] : [UIFont systemFontOfSize:12]} mutableCopy];
-		[defaultSubtitleAttribures addEntriesFromDictionary:_subtitleTextAttributes];
 		
 		BOOL reset = NO;
 		
 		if([_titleLabel.text isEqualToString:_title] == NO && _title != nil)
 		{
-			_titleLabel.attributedText = [[NSAttributedString alloc] initWithString:_title attributes:defaultTitleAttribures];
+			_titleLabel.attributedText = [[NSAttributedString alloc] initWithString:_title attributes:_titleTextAttributes];
 			reset = YES;
 		}
 		
 		if(_subtitleLabel == nil)
 		{
 			_subtitleLabel = [self _newMarqueeLabel];
+			_subtitleLabel.font = _resolvedStyle == LNPopupBarStyleProminent ? [UIFont systemFontOfSize:14 weight:UIFontWeightRegular] : [UIFont systemFontOfSize:12];
 			[_titlesView addSubview:_subtitleLabel];
 		}
 		
 		if([_subtitleLabel.text isEqualToString:_subtitle] == NO && _subtitle != nil)
 		{
-			_subtitleLabel.attributedText = [[NSAttributedString alloc] initWithString:_subtitle attributes:defaultSubtitleAttribures];
+			_subtitleLabel.attributedText = [[NSAttributedString alloc] initWithString:_subtitle attributes:_subtitleTextAttributes];
 			reset = YES;
 		}
 		
