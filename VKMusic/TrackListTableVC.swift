@@ -49,18 +49,18 @@ class TrackListTableVC: UITableViewController {
 //		pullMusic()
 		fetchDownloads()
         
-        if let savedIndexTrack = UserDefaults.standard.value(forKey: "savedIndexTrack") as? Int {
-            if #available(iOS 10.0, *) {
-                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (timer) in
-                    if savedIndexTrack > self.audioFiles.count - 1 {
-                        UserDefaults.standard.removeObject(forKey: "savedIndexTrack")
-                        return
-                    }
-                    self.initiatePlayForSelectedTrack(selectedIndex: savedIndexTrack)
-                    AudioPlayer.defaultPlayer.pause()
-                }
-            }
-        }
+//        if let savedIndexTrack = UserDefaults.standard.value(forKey: "savedIndexTrack") as? Int {
+//            if #available(iOS 10.0, *) {
+//                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (timer) in
+//                    if savedIndexTrack > self.audioFiles.count - 1 {
+//                        UserDefaults.standard.removeObject(forKey: "savedIndexTrack")
+//                        return
+//                    }
+//                    self.initiatePlayForSelectedTrack(selectedIndex: savedIndexTrack)
+//                    AudioPlayer.defaultPlayer.pause()
+//                }
+//            }
+//        }
 	}
 	
 	override func viewDidLayoutSubviews() {

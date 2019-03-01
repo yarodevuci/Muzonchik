@@ -22,6 +22,7 @@ class CompactMusicPlayerVC: UIViewController, UIGestureRecognizerDelegate {
 	@IBOutlet weak var fullPlayerPlayPauseButton: UIButton!
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	@IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var closeButton: UIButton!
     
 	//MARK: - Constants
 	
@@ -65,7 +66,7 @@ class CompactMusicPlayerVC: UIViewController, UIGestureRecognizerDelegate {
 	
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
-		
+        
 		puseBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "MiniPlayer_Pause"), style: .plain, target: self, action: #selector(pauseSong))
 		nextBarButton = UIBarButtonItem(image: #imageLiteral(resourceName: "MiniPlayer_Forward"), style: .plain, target: self, action: #selector(nextSong))
 		
@@ -84,6 +85,8 @@ class CompactMusicPlayerVC: UIViewController, UIGestureRecognizerDelegate {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
+        view.backgroundColor = .black
+
 		tableView.reloadData()
 	}
     
@@ -282,6 +285,11 @@ class CompactMusicPlayerVC: UIViewController, UIGestureRecognizerDelegate {
 			}
 		}
 	}
+    
+    @IBAction func didTapCloseButton(_ sender: UIButton) {
+        popupPresentationContainer?.closePopup(animated: true, completion: nil)
+    }
+    
 }
 
 //MARK: - AudioPlayerDelegate

@@ -17,7 +17,7 @@ class SwiftNotificationBanner: NSObject {
     }
     
     func present(_ title: String) {
-        let bannerView = SwiftNotificationBannerView(frame: CGRect(x: 0, y: -65.0, width: UIScreen.main.bounds.width, height: 65.0))
+        let bannerView = SwiftNotificationBannerView(frame: CGRect(x: 0, y: -95.0, width: UIScreen.main.bounds.width, height: 95.0))
         bannerView.messageLabel.text = title
         
         if let _window = UIApplication.shared.keyWindow {
@@ -25,12 +25,12 @@ class SwiftNotificationBanner: NSObject {
         }
         
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
-            bannerView.transform = CGAffineTransform(translationX: 0, y: 65.0)
+            bannerView.transform = CGAffineTransform(translationX: 0, y: 95.0)
             
             }, completion: {
                 finished in
                 
-                UIView.animate(withDuration: 0.2, delay: 2.0, options: .curveEaseOut, animations: {
+                UIView.animate(withDuration: 0.2, delay: 3.0, options: .curveEaseOut, animations: {
                     bannerView.transform = CGAffineTransform.identity
                     }, completion: {
                         finished in
