@@ -6,6 +6,14 @@
 //  Copyright © 2018 Yaro. All rights reserved.
 //
 
+extension Data{
+    mutating func append(_ string: String, using encoding: String.Encoding = .utf8) {
+        if let data = string.data(using: encoding) {
+            append(data)
+        }
+    }
+}
+
 import Foundation
 
 @objc protocol UploadManagerDelegage: class {
@@ -20,11 +28,32 @@ class UploadManager: NSObject, URLSessionDataDelegate {
     
 	func uploadZipFile() {
         var urlRequest = URLRequest(url: UPLOAD_ZIP_FILE_URL)
+        let boundary = UUID().uuidString
         urlRequest.httpMethod = "POST"
         urlRequest.setValue("Keep-Alive", forHTTPHeaderField: "Connection")
+        urlRequest.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        let paramName = "file"
+        var data = Data()
+        data.append("\r\n--\(boundary)\r\n".data(using: .utf8)!)
+        data.append("Content-Disposition: form-data; name=\"\(paramName)\"; filename=\"\(paramName)\"\r\n".data(using: .utf8)!)
+        data.append("Content-Type: file/zip\r\n\r\n".data(using: .utf8)!)
     
-		let session = URLSession(configuration: URLSessionConfiguration.background(withIdentifier: "uploadTask"), delegate: self, delegateQueue: OperationQueue.main)
-        let task = session.uploadTask(with: urlRequest, fromFile: AppDirectory.localDocumentsURL.appendingPathComponent("import.zip"))
+        data.append(try! Data(contentsOf: AppDirectory.localDocumentsURL.appendingPathComponent("import.zip")))
+        data.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
+
+        urlRequest.httpBody = data
+    
+		let session = URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue.main)
+        
+//        let task = URLSession.shared.uploadTask(with: urlRequest, from: data) { (data, response, error) in
+//            print(data)
+//            print(response)
+//
+//        }
+        
+        let task = session.uploadTask(with: urlRequest, from: data)
+            
+            //session.uploadTask(with: urlRequest, fromFile: AppDirectory.localDocumentsURL.appendingPathComponent("import.zip"))
         
 		task.resume()
 	}

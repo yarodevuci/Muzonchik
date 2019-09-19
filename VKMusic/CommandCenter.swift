@@ -38,10 +38,30 @@ class CommandCenter: NSObject {
     //MARK: - Remote Command Center
     fileprivate func setCommandCenter() {
         let commandCenter = MPRemoteCommandCenter.shared()
-        commandCenter.pauseCommand.addTarget(self, action: #selector(remoteCommandPause))
-        commandCenter.playCommand.addTarget(self, action: #selector(remoteCommandPlay))
-        commandCenter.previousTrackCommand.addTarget(self, action: #selector(remoteCommandPrevious))
-        commandCenter.nextTrackCommand.addTarget(self, action: #selector(remoteCommandNext))
+//        commandCenter.pauseCommand.addTarget(self, action: #selector(remoteCommandPause))
+//        commandCenter.playCommand.addTarget(self, action: #selector(remoteCommandPlay))
+//        commandCenter.previousTrackCommand.addTarget(self, action: #selector(remoteCommandPrevious))
+//        commandCenter.nextTrackCommand.addTarget(self, action: #selector(remoteCommandNext))
+        
+        commandCenter.pauseCommand.addTarget { [unowned self] event in
+            self.remoteCommandPause()
+            return .success
+        }
+        
+        commandCenter.playCommand.addTarget { [unowned self] event in
+            self.remoteCommandPlay()
+            return .success
+        }
+        
+        commandCenter.previousTrackCommand.addTarget { [unowned self] event in
+            self.remoteCommandPrevious()
+            return .success
+        }
+        
+        commandCenter.nextTrackCommand.addTarget { [unowned self] event in
+            self.remoteCommandNext()
+            return .success
+        }
     }
     
     @objc fileprivate func remoteCommandPause() {

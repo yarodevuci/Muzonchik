@@ -58,15 +58,15 @@ class AudioPlayer {
         player = AVPlayer(playerItem:playerItem)
         
         
-        if let savedTime = UserDefaults.standard.value(forKey: currentAudio.url) as? Double {
-            print(savedTime)
-            if Int(savedTime) > currentAudio.duration - 30 {
-                UserDefaults.standard.removeObject(forKey: currentAudio.url)
-            } else {
-                let timeToScroll = CMTime(seconds: savedTime, preferredTimescale: 1)
-                player.seek(to: timeToScroll)
-            }
-        }
+//        if let savedTime = UserDefaults.standard.value(forKey: currentAudio.url) as? Double {
+//            print(savedTime)
+//            if Int(savedTime) > currentAudio.duration - 30 {
+//                UserDefaults.standard.removeObject(forKey: currentAudio.url)
+//            } else {
+//                let timeToScroll = CMTime(seconds: savedTime, preferredTimescale: 1)
+//                player.seek(to: timeToScroll)
+//            }
+//        }
         
         player.play()
         addTimeObeserver()

@@ -90,7 +90,7 @@ class TrackListTableVC: UITableViewController {
             let oldIndexPath = IndexPath(item: currentSelectedIndex, section: 0)
             currentSelectedIndex = index
             
-            UserDefaults.standard.set(index, forKey: "savedIndexTrack")
+//            UserDefaults.standard.set(index, forKey: "savedIndexTrack")
 
             tableView.reloadRows(at: [oldIndexPath, selectedIndexPath], with: .none)
 		}
@@ -159,6 +159,7 @@ class TrackListTableVC: UITableViewController {
 		UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes, for: .normal)
 		
 		definesPresentationContext = true
+        searchController.searchBar.barStyle = .blackTranslucent
 		searchController.searchBar.barTintColor = .youtubeDarkGray
 		searchController.searchBar.keyboardAppearance = .dark
 		searchController.searchBar.delegate = self
@@ -283,7 +284,7 @@ class TrackListTableVC: UITableViewController {
 		isDownloadedListShown = false
 		
 		showActivityIndicator(withStatus: "Loading")
-		GlobalFunctions.shared.urlToHTMLString(url: WEB_BASE_URL) { (htmlString, error) in
+		GlobalFunctions.shared.urlToHTMLString(url: SEARCH_URL) { (htmlString, error) in
 			if let error = error {
 				print(error)
 				DispatchQueue.main.async {
@@ -302,7 +303,7 @@ class TrackListTableVC: UITableViewController {
 		isDownloadedListShown = false
 		
 		showActivityIndicator(withStatus: "Searching for \(tag)")
-		GlobalFunctions.shared.urlToHTMLString(url: SEARCH_URL + "\(tag)?offset=\(offSet)&sameFromAjax=1") { (htmlString, error) in
+		GlobalFunctions.shared.urlToHTMLString(url: SEARCH_URL + "\(tag)") { (htmlString, error) in
 			
             if let error = error {
 
@@ -325,7 +326,8 @@ class TrackListTableVC: UITableViewController {
         }
         
 		for element: Element in els.array() {
-			if try! element.className() == "eventContent__audio  mm-clickable mm-audioPlay" {
+//            print(try! element.className())
+			if try! element.className() == "audio-list-entry" {
 				let audioFile = Audio(withElement: element)
 				audioFiles.append(audioFile)
 			}
@@ -483,12 +485,6 @@ class TrackListTableVC: UITableViewController {
         }
     }
     
-    @objc func loadMore() {
-        currentOffset += 20
-        searchMusic(tag: searchController.searchBar.text ?? "", offSet: currentOffset, removeAll: false)
-    }
-    
-	
 	// MARK: - Table view data source
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
@@ -521,19 +517,19 @@ class TrackListTableVC: UITableViewController {
 		}
 	}
     
-    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 50))
-        let b = UIButton(frame: view.frame)
-        b.setTitle("Load More", for: UIControlState())
-        b.addTarget(self, action: #selector(loadMore), for: .touchUpInside)
-        view.addSubview(b)
-        
-        if searchController.isActive && !(searchController.searchBar.text ?? "").isEmpty {
-            return view
-        }
-        
-        return nil
-    }
+//    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+//        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 50))
+//        let b = UIButton(frame: view.frame)
+//        b.setTitle("Load More", for: UIControlState())
+//        b.addTarget(self, action: #selector(loadMore), for: .touchUpInside)
+//        view.addSubview(b)
+//
+//        if searchController.isActive && !(searchController.searchBar.text ?? "").isEmpty {
+//            return view
+//        }
+//
+//        return nil
+//    }
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "TrackListTableViewCell", for: indexPath) as! TrackListTableViewCell

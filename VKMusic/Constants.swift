@@ -7,14 +7,13 @@
 //
 
 import Foundation
-
-let WEB_BASE_URL = "https://m.my.mail.ru/"
-let SEARCH_URL = WEB_BASE_URL + "music/search/"
+///https://mp3-tut.com/new-hits
+let SEARCH_URL = "https://mp3-tut.com/search?query="
 //OneSignal
 let ONE_SIGNAL_APP_ID = "d9d4d060-a3b8-4324-9474-eafea38ee267"
 
 //Local APIS URL
-let LOCAL_IP = "192.168.1.65"
+let LOCAL_IP = "192.168.1.97"
 let SERVER_RMQ_URL = "amqp://yaroslav:dukalis@\(LOCAL_IP)"
 let RMQConnection_URI = "amqp://yaroslav:dukalis@\(LOCAL_IP)"
 

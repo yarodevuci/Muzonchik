@@ -19,6 +19,10 @@ extension String {
         let sec = Int(comp[1])
         return ((min ?? 0) * 60) + (sec ?? 0)
     }
+    
+    var toInt: Int {
+        return Int(self) ?? 0
+    }
 	
 	var stripped: String {
 		let nolAllowedChars = Set("\\/")

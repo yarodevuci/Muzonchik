@@ -311,11 +311,11 @@ extension CompactMusicPlayerVC: AudioPlayerDelegate {
 		
         let track = tracks[currentIndexPathRow]
         
-        if time > track.duration - 30 {
-            UserDefaults.standard.removeObject(forKey: track.url)
-        } else {
-            UserDefaults.standard.set(Double(time), forKey: track.url)
-        }
+//        if time > track.duration - 30 {
+//            UserDefaults.standard.removeObject(forKey: track.url)
+//        } else {
+//            UserDefaults.standard.set(Double(time), forKey: track.url)
+//        }
 	}
 	
 	func playerWillPlayNexAudio() {
