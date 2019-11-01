@@ -186,7 +186,7 @@ class SettingsTableVC: UITableViewController {
     }
 	
 	override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-		return section == 2 ? "Музончик v\(Bundle.main.releaseVersionNumber ?? "") Build \(Bundle.main.buildVersionNumber ?? "")" : nil
+		return section == 2 ? "Музончик v\(Bundle.main.releaseVersionNumber ?? "") Build \(Bundle.main.buildVersionNumber ?? "")\nLocal IP: \(LOCAL_IP)" : nil
 	}
 }
 

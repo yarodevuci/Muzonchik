@@ -13,7 +13,7 @@ let SEARCH_URL = "https://mp3-tut.com/search?query="
 let ONE_SIGNAL_APP_ID = "d9d4d060-a3b8-4324-9474-eafea38ee267"
 
 //Local APIS URL
-let LOCAL_IP = "192.168.1.97"
+let LOCAL_IP = "192.168.1.92"
 let SERVER_RMQ_URL = "amqp://yaroslav:dukalis@\(LOCAL_IP)"
 let RMQConnection_URI = "amqp://yaroslav:dukalis@\(LOCAL_IP)"
 

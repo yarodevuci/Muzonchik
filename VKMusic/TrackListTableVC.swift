@@ -159,6 +159,7 @@ class TrackListTableVC: UITableViewController {
 		UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes, for: .normal)
 		
 		definesPresentationContext = true
+        searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.barStyle = .blackTranslucent
 		searchController.searchBar.barTintColor = .youtubeDarkGray
 		searchController.searchBar.keyboardAppearance = .dark
@@ -461,6 +462,7 @@ class TrackListTableVC: UITableViewController {
         let mPlayer = storyboard?.instantiateViewController(withIdentifier: "CompactMusicPlayerVC") as! CompactMusicPlayerVC
         mPlayer.tracks = audioFiles
         mPlayer.currentIndexPathRow = selectedIndex
+        navigationController?.setToolbarHidden(false, animated: false)
         navigationController?.popupBar.marqueeScrollEnabled = true
         navigationController?.presentPopupBar(withContentViewController: mPlayer, animated: true, completion: nil)
         

@@ -62,6 +62,7 @@ extension TrackListTableVC {
                 if AudioPlayer.defaultPlayer.currentAudio != nil && AudioPlayer.defaultPlayer.currentAudio.duration == track.duration {
                     AudioPlayer.defaultPlayer.kill()
                     currentSelectedIndex = -1
+                    self.navigationController?.setToolbarHidden(true, animated: true)
                     self.navigationController?.dismissPopupBar(animated: true, completion: nil)
                     
                 } 
@@ -82,8 +83,12 @@ extension TrackListTableVC {
 	
 	func hideActivityIndicator() {
 		DispatchQueue.main.async {
+            self.toolBarStatusLabel.text = ""
 			self.activityIndicator.stopAnimating()
-			self.navigationController?.setToolbarHidden(true, animated: true)
+            
+            let isPopupHidden = self.navigationController?.popupBar.isHidden ?? true
+            
+            self.navigationController?.setToolbarHidden(isPopupHidden, animated: true)
 		}
 	}
 }
