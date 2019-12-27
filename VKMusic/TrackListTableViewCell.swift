@@ -44,6 +44,9 @@ class TrackListTableViewCell: MGSwipeTableCell {
         
         albumArtworkImageView.layer.cornerRadius = 5
         albumArtworkImageView.clipsToBounds = true
+        
+        albumCoverTintView.layer.cornerRadius = 5
+        albumCoverTintView.clipsToBounds = true
     }
     
     func processDownloadingData() {
@@ -67,6 +70,8 @@ class TrackListTableViewCell: MGSwipeTableCell {
         musicPlayIdicatorView.state = .estMusicIndicatorViewStateStopped
         checkMarkImageView.isHidden = true
         albumArtworkImageView.image = audioData.thumbnail_image
+        
+        albumArtworkImageView.contentMode = audioData.thumbnail_image == UIImage(named: "ArtPlaceholder") ? .center : .scaleAspectFill
 
     }
     

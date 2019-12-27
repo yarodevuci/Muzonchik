@@ -45,6 +45,8 @@ class TrackTableViewCell: UITableViewCell {
 		trackDurationLabel.text = audio.duration.toAudioString
 		trackArtistLabel.text = audio.artist
 		checkMarkImageView.isHidden = !GlobalFunctions.shared.localFileExistsForTrack(audio)
+        
+        albumArtworkImageView.contentMode = audio.thumbnail_image == UIImage(named: "ArtPlaceholder") ? .center : .scaleAspectFill
 	}
     
     func setEST_Indicator(to isOn: Bool) {

@@ -9,7 +9,7 @@ func ==(lhs: Audio, rhs: Audio) -> Bool {
 
 import SwiftSoup
 
-struct Audio: Equatable {
+class Audio: Equatable {
     
     var url = ""
     var title = "Unknown"
@@ -17,6 +17,7 @@ struct Audio: Equatable {
     var duration = 0
     var thumbnail_image: UIImage?
 	var id = 0
+    var originalIndex = 0
     
     init(withThumbnailImage timage: UIImage?, url: String, title: String, artist: String , duration: Int) {
         self.thumbnail_image = timage

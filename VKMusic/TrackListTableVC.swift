@@ -48,18 +48,17 @@ class TrackListTableVC: UITableViewController {
 //		pullMusic()
 		fetchDownloads()
         
-//        if let savedIndexTrack = UserDefaults.standard.value(forKey: "savedIndexTrack") as? Int {
-//            if #available(iOS 10.0, *) {
-//                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (timer) in
-//                    if savedIndexTrack > self.audioFiles.count - 1 {
-//                        UserDefaults.standard.removeObject(forKey: "savedIndexTrack")
-//                        return
-//                    }
-//                    self.initiatePlayForSelectedTrack(selectedIndex: savedIndexTrack)
-//                    AudioPlayer.defaultPlayer.pause()
-//                }
-//            }
-//        }
+        if let savedIndexTrack = UserDefaults.standard.value(forKey: "savedIndexTrack") as? Int {
+            if #available(iOS 10.0, *) {
+                Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { (timer) in
+                    if savedIndexTrack > self.audioFiles.count - 1 {
+                        UserDefaults.standard.removeObject(forKey: "savedIndexTrack")
+                        return
+                    }
+                    self.offerToContinuePopUp(selectedIndex: savedIndexTrack)
+                }
+            }
+        }
 	}
 	
 	override func viewDidLayoutSubviews() {
@@ -81,6 +80,22 @@ class TrackListTableVC: UITableViewController {
             }
         }
 	}
+    
+    func offerToContinuePopUp(selectedIndex: Int) {
+        let sheet = UIAlertController(title: "Continue where you left of?", message: nil, preferredStyle: .alert)
+        let action = UIAlertAction(title: "Play", style: .default) { (action) in
+            self.initiatePlayForSelectedTrack(selectedIndex: selectedIndex)
+            AudioPlayer.defaultPlayer.play()
+        }
+        let noAction = UIAlertAction(title: "No", style: .default) { (action) in
+            UserDefaults.standard.removeObject(forKey: "savedIndexTrack")
+        }
+        
+        sheet.addAction(action)
+        sheet.addAction(noAction)
+        
+        self.present(sheet, animated: true)
+    }
 	
 	@objc func playTrackAtIndex(notification: NSNotification) {
 		if let index = notification.userInfo?["index"] as? Int {
@@ -89,7 +104,7 @@ class TrackListTableVC: UITableViewController {
             let oldIndexPath = IndexPath(item: currentSelectedIndex, section: 0)
             currentSelectedIndex = index
             
-//            UserDefaults.standard.set(index, forKey: "savedIndexTrack")
+            UserDefaults.standard.set(audioFiles[index].originalIndex, forKey: "savedIndexTrack")
 
             tableView.reloadRows(at: [oldIndexPath, selectedIndexPath], with: .none)
 		}
@@ -159,8 +174,7 @@ class TrackListTableVC: UITableViewController {
 		
 		definesPresentationContext = true
         searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchBar.barStyle = .blackTranslucent
-		searchController.searchBar.barTintColor = .youtubeDarkGray
+		searchController.searchBar.barTintColor = .vkNavBarDarkGray
 		searchController.searchBar.keyboardAppearance = .dark
 		searchController.searchBar.delegate = self
 		searchController.searchBar.textField?.textColor = .white
@@ -196,7 +210,7 @@ class TrackListTableVC: UITableViewController {
 	}
 	
 	private func setupMimiMusicPlayerView() {
-		UIProgressView.appearance(whenContainedInInstancesOf: [LNPopupBar.self]).tintColor = .pinkColor
+		UIProgressView.appearance(whenContainedInInstancesOf: [LNPopupBar.self]).tintColor = .vkBlue
 		
 		navigationController?.popupBar.progressViewStyle = .top
 		navigationController?.popupBar.barStyle = .compact
@@ -223,7 +237,8 @@ class TrackListTableVC: UITableViewController {
 		
 		if let downloadedAudioFiles = CoreDataManager.shared.fetchSavedResults() {
 			audioFiles.removeAll()
-			for audio in downloadedAudioFiles {
+            
+            for (inx, audio) in downloadedAudioFiles.enumerated() {
 				let url = audio.url as? String ?? ""
 				let artist = audio.artist as? String ?? ""
 				let title = audio.title as? String ?? ""
@@ -231,13 +246,19 @@ class TrackListTableVC: UITableViewController {
 				let id = Int(audio.id as? Int32 ?? 0)
                 
                 let fileName = "\(title)_\(artist)_\(duration).mp3"
-                var default_thmb_img = getAlbumImage(fromURL: getFileURL(for: fileName))
+                var default_thmb_img = #imageLiteral(resourceName: "ArtPlaceholder")
                 
                 if url.hasSuffix(".mp4"), let thumb_imageData = audio.thumbnail_img as? Data {
                     default_thmb_img = UIImage(data: thumb_imageData) ?? #imageLiteral(resourceName: "ArtPlaceholder")
                 }
                 
-                audioFiles.append(Audio(withID: id, url: url, title: title, artist: artist, duration: duration, t_img: default_thmb_img))
+                let savedAudio = Audio(withID: id, url: url, title: title, artist: artist, duration: duration, t_img: default_thmb_img)
+                savedAudio.originalIndex = inx
+                audioFiles.append(savedAudio)
+                
+                DispatchQueue.global(qos: .background).async {
+                    savedAudio.thumbnail_image = getAlbumImage(fromURL: getFileURL(for: fileName))
+                }
 				
 				//MARK: - Used this to rename files in the directory
 //				do {
@@ -461,6 +482,15 @@ class TrackListTableVC: UITableViewController {
             DispatchQueue.global(qos: .background).async {
                 AudioPlayer.defaultPlayer.playAudio(fromURL: URL(string: audio.url))
             }
+        }
+    }
+    
+    // MARK: - @IBAction
+    
+    @IBAction func didTapShuffleBarButton(_ sender: UIBarButtonItem) {
+        self.audioFiles = audioFiles.shuffled()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
         }
     }
     

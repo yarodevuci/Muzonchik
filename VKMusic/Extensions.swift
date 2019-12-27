@@ -60,6 +60,10 @@ extension UIColor {
 	open class var pinkColor: UIColor { return UIColor(red:0.77, green:0.14, blue:0.29, alpha:1.0) }
     open class var youtubeDarkGray: UIColor { return UIColor(red:0.07, green:0.07, blue:0.07, alpha:1.0) }
 	open class var playerBackgroundColor: UIColor { return UIColor(red:0.11, green:0.11, blue:0.12, alpha:1.0) }
+    //70AAEB
+    open class var vkBlue: UIColor { return UIColor(red:0.44, green:0.67, blue:0.92, alpha:1.0) }
+    //252525
+    open class var vkNavBarDarkGray: UIColor { return UIColor(red:0.15, green:0.15, blue:0.15, alpha:1.0) }
 }
 
 //MARK: - UIViewController

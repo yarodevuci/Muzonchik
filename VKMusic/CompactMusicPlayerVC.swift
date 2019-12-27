@@ -36,7 +36,6 @@ class CompactMusicPlayerVC: UIViewController, UIGestureRecognizerDelegate {
 	var currentIndexPathRow = -1
     
     var statusBarVisible = true
-    
     let volume = SubtleVolume(style: .rounded)
     
     override var prefersStatusBarHidden: Bool {
@@ -57,7 +56,7 @@ class CompactMusicPlayerVC: UIViewController, UIGestureRecognizerDelegate {
         if #available(iOS 11.0, *) {
             if view.safeAreaInsets.top > 0 {
                 volume.padding = CGSize(width: 2, height: 8)
-                volume.frame = CGRect(x: 16, y: 8, width: 60, height: 20)
+                volume.frame = CGRect(x: 16, y: 28, width: 60, height: 20)
             } else {
                 volume.frame = CGRect(x: 20, y: UIApplication.shared.statusBarFrame.height, width: UIScreen.main.bounds.width - 40, height: 20)
             }
@@ -117,16 +116,9 @@ class CompactMusicPlayerVC: UIViewController, UIGestureRecognizerDelegate {
 	}
 	
 	func setupVolumeBar() {
-		let volumeHeight: CGFloat = 20
-		var volumeOrigin: CGFloat = 0//UIApplication.shared.statusBarFrame.height
-		if #available(iOS 11.0, *) {
-			volumeOrigin = additionalSafeAreaInsets.top
-		}
-        
         volume.barTintColor = .white
         volume.barBackgroundColor = UIColor.white.withAlphaComponent(0.3)
         volume.animation = .fadeIn
-        volume.padding = CGSize(width: 4, height: 8)
         volume.delegate = self
         
         view.addSubview(volume)
@@ -139,6 +131,8 @@ class CompactMusicPlayerVC: UIViewController, UIGestureRecognizerDelegate {
 		songNameLabel.text = tracks[currentIndexPathRow].artist
 		albumNameLabel.text = tracks[currentIndexPathRow].title
 		albumArtImageView.image = tracks[currentIndexPathRow].thumbnail_image
+        
+        albumArtImageView.contentMode = tracks[currentIndexPathRow].thumbnail_image == UIImage(named: "ArtPlaceholder") ? .center : .scaleAspectFill
         
 		//Update popupItem text
 		popupItem.title = tracks[currentIndexPathRow].artist
@@ -311,11 +305,9 @@ extension CompactMusicPlayerVC: AudioPlayerDelegate {
 		
         let track = tracks[currentIndexPathRow]
         
-//        if time > track.duration - 30 {
-//            UserDefaults.standard.removeObject(forKey: track.url)
-//        } else {
-//            UserDefaults.standard.set(Double(time), forKey: track.url)
-//        }
+        if track.duration > 600 {
+            UserDefaults.standard.set(Double(time), forKey: track.url)
+        }
 	}
 	
 	func playerWillPlayNexAudio() {
@@ -361,6 +353,7 @@ extension CompactMusicPlayerVC: UITableViewDelegate, UITableViewDataSource {
 			
 			let track = tracks[indexPath.row]
 			albumArtImageView.image = tracks[indexPath.row].thumbnail_image
+            albumArtImageView.contentMode = tracks[currentIndexPathRow].thumbnail_image == UIImage(named: "ArtPlaceholder") ? .center : .scaleAspectFill
             GlobalFunctions.shared.localFileExistsForTrack(track) ? playLocalTrack(track: track) : playRemoteTrack(for: track)
 			
 			tableView.reloadData()
