@@ -26,37 +26,39 @@ class UploadManager: NSObject, URLSessionDataDelegate {
     static let shared = UploadManager()
 	weak var delegate: UploadManagerDelegage?
     
-	func uploadZipFile() {
+    func uploadFile(audio: TrackInfo) {
         var urlRequest = URLRequest(url: UPLOAD_ZIP_FILE_URL)
+        
         let boundary = UUID().uuidString
         urlRequest.httpMethod = "POST"
         urlRequest.setValue("Keep-Alive", forHTTPHeaderField: "Connection")
         urlRequest.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        if let artist = audio.artist as? String, let title = audio.title as? String {
+            
+            let encodedArtist = artist.data(using: .utf8)?.base64EncodedString()
+            let encodedSong = title.data(using: .utf8)?.base64EncodedString()
+        
+            urlRequest.setValue(encodedArtist, forHTTPHeaderField: "artist")
+            urlRequest.setValue(encodedSong, forHTTPHeaderField: "song")
+        }
+        
         let paramName = "file"
         var data = Data()
         data.append("\r\n--\(boundary)\r\n".data(using: .utf8)!)
         data.append("Content-Disposition: form-data; name=\"\(paramName)\"; filename=\"\(paramName)\"\r\n".data(using: .utf8)!)
-        data.append("Content-Type: file/zip\r\n\r\n".data(using: .utf8)!)
-    
-        data.append(try! Data(contentsOf: AppDirectory.localDocumentsURL.appendingPathComponent("import.zip")))
+        data.append("Content-Type: file/mp3\r\n\r\n".data(using: .utf8)!)
+        
+        let fileName = "\(audio.title!)_\(audio.artist!)_\(Int(audio.duration) ?? 0).mp\(audio.url!.hasSuffix(".mp3") ? "3" : "4")"
+        let fileURL = AppDirectory.getDownloadsFolderURL().appendingPathComponent(fileName)
+        data.append(try! Data(contentsOf: fileURL))
         data.append("\r\n--\(boundary)--\r\n".data(using: .utf8)!)
-
+                
         urlRequest.httpBody = data
-    
-		let session = URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue.main)
-        
-//        let task = URLSession.shared.uploadTask(with: urlRequest, from: data) { (data, response, error) in
-//            print(data)
-//            print(response)
-//
-//        }
-        
+        let session = URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue.main)
         let task = session.uploadTask(with: urlRequest, from: data)
-            
-            //session.uploadTask(with: urlRequest, fromFile: AppDirectory.localDocumentsURL.appendingPathComponent("import.zip"))
-        
-		task.resume()
-	}
+        task.resume()
+    }
 	
 	func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
 		let uploadProgress = Float(totalBytesSent) / Float(totalBytesExpectedToSend)

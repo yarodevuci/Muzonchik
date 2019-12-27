@@ -73,6 +73,7 @@ extension UIViewController {
         let vc = self.storyboard!.instantiateViewController(withIdentifier: identifier)
         let navController = UINavigationController(rootViewController: vc)
         navController.navigationBar.barStyle = .blackTranslucent
+        navController.modalPresentationStyle = .overFullScreen
         DispatchQueue.main.async {
             self.present(navController, animated:true, completion: nil)
         }

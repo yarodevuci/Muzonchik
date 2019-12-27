@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import AudioToolbox
-import OneSignal
 import AVKit
 
 struct AppDirectory {
@@ -203,7 +202,6 @@ class GlobalFunctions {
 		urlRequest.addValue("application/json", forHTTPHeaderField: "Accept")
 		urlRequest.addValue(url, forHTTPHeaderField: "url")
         urlRequest.addValue(YOUTUBE_CONVERTER_API_KEY, forHTTPHeaderField: "api-key")
-		urlRequest.addValue(GlobalFunctions.shared.getUserCurrentOneSigPushID(), forHTTPHeaderField: "push")
 		
 		let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) -> Void in
 			guard error == nil else {
@@ -278,11 +276,6 @@ class GlobalFunctions {
 		var isDir : ObjCBool = false
 		let path = localUrl.path
 		return FileManager.default.fileExists(atPath: path, isDirectory: &isDir)
-	}
-	
-	func getUserCurrentOneSigPushID() -> String {
-		let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
-        return status.subscriptionStatus.userId ?? "0000-1234-9874"
 	}
 }
 

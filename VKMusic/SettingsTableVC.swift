@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Zip
 
 class SettingsTableVC: UITableViewController {
     //MARK: - IBOutlet
@@ -23,6 +22,8 @@ class SettingsTableVC: UITableViewController {
 	var toolBarStatusLabel = UILabel()
 	var progressView = UIProgressView()
     var isTaskActive = false
+    var fileCounter = 0
+    var totalFiles = 0
 	
 	//MARK: - viewDidLoad
     override func viewDidLoad() {
@@ -34,40 +35,11 @@ class SettingsTableVC: UITableViewController {
         numberOfCurrentFilesLabel.text = calculatedNumOfSongs()
     }
 	
-	func zipAllDownloads() {
-		do {
-			let zipFilePath = AppDirectory.localDocumentsURL.appendingPathComponent("import.zip")
-			let downloadsPath = AppDirectory.localDocumentsURL.appendingPathComponent("Downloads")
-			let sqlitePath = AppDirectory.localDocumentsURL.appendingPathComponent("CoreDataModel.sqlite")
-			let sqlite_shmPath = AppDirectory.localDocumentsURL.appendingPathComponent("CoreDataModel.sqlite-shm")
-			let sqlite_walPath = AppDirectory.localDocumentsURL.appendingPathComponent("CoreDataModel.sqlite-wal")
-			
-			try Zip.zipFiles(paths: [downloadsPath, sqlitePath, sqlite_shmPath, sqlite_walPath], zipFilePath: zipFilePath, password: nil, progress: { (progress) -> () in
-				
-				DispatchQueue.main.async {
-					self.toolBarStatusLabel.text = "Archiving " + String(format: "%.1f%%", progress * 100)
-					self.progressView.progress = Float(progress)
-					
-					if progress == 1.0 {
-						self.hideActivityIndicator()
-						print("Done archiving..")
-						self.showUploadAlert()
-					}
-				}
-			}) //Zip
-		}
-		catch {
-			DispatchQueue.main.async {
-				self.hideActivityIndicator()
-				SwiftNotificationBanner.presentNotification("Nothing to upload")
-			}
-			
-		}
-	}
-	
 	func showUploadAlert() {
 		let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		let uploadAction = UIAlertAction(title: "Upload", style: .default) { (action) in
+            self.showActivityIndicator(withStatus: "Uploading ...")
+            self.fileCounter = 0
 			self.uploadZipToLocalPC()
 		}
 		
@@ -88,45 +60,14 @@ class SettingsTableVC: UITableViewController {
 	
 	func uploadZipToLocalPC() {
 		self.progressView.progress = Float(0)
-		self.showActivityIndicator(withStatus: "Uploading ...")
 		UploadManager.shared.delegate = self
-		UploadManager.shared.uploadZipFile()
-	}
-	
-    func unZip() {
-        do {
-            let zipFilePath = AppDirectory.localDocumentsURL.appendingPathComponent("import.zip")
-            try Zip.unzipFile(zipFilePath, destination: AppDirectory.localDocumentsURL, overwrite: true, password: nil, progress: { (progress) in
-                print(progress)
-                
-                DispatchQueue.main.async {
-					self.toolBarStatusLabel.text = "Unzipping " + String(format: "%.1f%%", progress * 100)
-					self.progressView.progress = Float(progress)
-                }
-                if progress == 1.0 {
-                    DispatchQueue.main.async {
-						self.hideActivityIndicator()
-                        self.musicLibrarySizeLabel.text = GlobalFunctions.shared.getFriendlyCacheSize()
-                        self.numberOfCurrentFilesLabel.text = self.calculatedNumOfSongs()
-                        
-                        //Delete archive after downloading
-                        do {
-                            try FileManager.default.removeItem(at: zipFilePath)
-                        } catch {
-                            //Error Deleting file
-                        }
-                    }
-                }
-            })
-            
-        } catch {
-            DispatchQueue.main.async {
-                SwiftNotificationBanner.presentNotification("Something went wrong")
-                self.hideActivityIndicator()
-            }
-            print("Something went wrong")
+        
+        if let downloadedAudioFiles = CoreDataManager.shared.fetchSavedResults() {
+            totalFiles = downloadedAudioFiles.count
+            UploadManager.shared.uploadFile(audio: downloadedAudioFiles[fileCounter])
+            fileCounter += 1
         }
-    }
+	}
 	
 	func calculatedNumOfSongs() -> String {
 		var timeSeconds = 0
@@ -174,10 +115,11 @@ class SettingsTableVC: UITableViewController {
         if isTaskActive { return }
         
         if indexPath.row == 0 && indexPath.section == 2 {
-			showActivityIndicator(withStatus: "Archiving")
-            DispatchQueue.global(qos: .background).async {
-                self.zipAllDownloads()
-            }
+            self.showUploadAlert()
+//            DispatchQueue.global(qos: .background).async {
+//                self.zipAllDownloads()
+//
+//            }
         }
         if indexPath.row == 1 && indexPath.section == 2 {
 			showActivityIndicator(withStatus: "Downloading music archive")
@@ -195,7 +137,7 @@ extension SettingsTableVC: DownloadManagerDelegate {
 	func didFinishDownloading(withError error: String?) {
         if error == nil { 
 			DispatchQueue.global(qos: .background).async {
-				self.unZip()
+				
 			}
 		} else {
 			DispatchQueue.main.async {
@@ -222,16 +164,22 @@ extension SettingsTableVC: UploadManagerDelegage {
                 SwiftNotificationBanner.presentNotification("Error occured while uploading a file. \(error)")
             }
         }
-		hideActivityIndicator()
-		
         //Delete archive after uploading
 		do {
 			try FileManager.default.removeItem(at: AppDirectory.localDocumentsURL.appendingPathComponent("import.zip"))
 		} catch {}
+        print(json)
+        if fileCounter < totalFiles {
+            uploadZipToLocalPC()
+        } else {
+            hideActivityIndicator()
+        }
 	}
 	
-	func progress(progress: Float) {
-		self.toolBarStatusLabel.text = "Uploading " + String(format: "%.1f%%", progress * 100)
-		self.progressView.progress = progress
-	}
+    func progress(progress: Float) {
+        DispatchQueue.main.async {
+            self.toolBarStatusLabel.text = "Uploading file \(self.fileCounter) of \(self.totalFiles) "// + String(format: "%.1f%%", progress * 100)
+            self.progressView.progress = progress
+        }
+    }
 }

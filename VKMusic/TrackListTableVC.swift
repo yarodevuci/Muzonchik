@@ -342,7 +342,7 @@ class TrackListTableVC: UITableViewController {
 		let conn = RMQConnection(uri: RMQConnection_URI, delegate: RMQConnectionDelegateLogger())
 		conn.start()
 		let ch = conn.createChannel()
-		let q = ch.queue(GlobalFunctions.shared.getUserCurrentOneSigPushID())
+		let q = ch.queue("1234")
 		q.subscribe({ m in
 			
 			guard let messageData = String(data: m.body, encoding: String.Encoding.utf8) else { return }

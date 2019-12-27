@@ -31,9 +31,10 @@ extension SettingsTableVC {
 		let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
 		
 		let statusView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 200, height: 40))
-		progressView = UIProgressView(frame: CGRect(x: 0.0, y: 25, width: 200, height: 10))
+        
+		progressView = UIProgressView(frame: CGRect(x: 0.0, y: 30, width: 200, height: 10))
 		progressView.progress = 0.0
-		progressView.tintColor = .red
+		progressView.tintColor = .vkBlue
 		
 		toolBarStatusLabel = UILabel(frame: CGRect(x: 0.0, y: 2.0, width: 200, height: 20))
 		toolBarStatusLabel.backgroundColor = .clear

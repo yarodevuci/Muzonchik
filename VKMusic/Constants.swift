@@ -26,5 +26,5 @@ let LOCAL_TRACK_DOWLOAD_URL = URL(string: SERVER_API_ADDRESS + "getLocalmp3List"
 let URL_TO_HTML_API = URL(string: LOCAL_API_SERVER_ADDRESS + "urltostring")!
 let LOCAL_API_URL_FILEDOWNLOAD = URL(string: SERVER_API_ADDRESS + "downloadfile")!
 //ZIP FILE OPERATIONS URLS
-let UPLOAD_ZIP_FILE_URL = URL(string: SERVER_API_ADDRESS + "upload/import.zip")!
+let UPLOAD_ZIP_FILE_URL = URL(string: SERVER_API_ADDRESS + "upload")!
 let DOWNLOAD_ZIP_FILE_URL = URL(string: SERVER_API_ADDRESS + "downloads/import.zip")!
