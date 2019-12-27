@@ -23,17 +23,16 @@ class TrackListTableVC: UITableViewController {
 	var toolBarStatusLabel = UILabel()
     var currentOffset = 0
     
+    lazy var downloadsSession: URLSession = {
+        let configuration = URLSessionConfiguration.background(withIdentifier: "bgSessionConfiguration")
+        let session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
+        return session
+    }()
+
     //MARK: - Constants
     let searchController = UISearchController(searchResultsController: nil)
     let volume = SubtleVolume(style: .rounded)
-
-	
-	lazy var downloadsSession: URLSession = {
-		let configuration = URLSessionConfiguration.background(withIdentifier: "bgSessionConfiguration")
-		let session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
-		return session
-	}()
-    
+        
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
@@ -43,9 +42,8 @@ class TrackListTableVC: UITableViewController {
 	//MARK: - viewDidLoad
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		setupUI()
-//		setupDropdownMenu()
-//		pullMusic()
+		
+        setupUI()
 		fetchDownloads()
         
         if let savedIndexTrack = UserDefaults.standard.value(forKey: "savedIndexTrack") as? Int {
@@ -69,16 +67,6 @@ class TrackListTableVC: UITableViewController {
 			tableView.contentInset = insets
 			tableView.scrollIndicatorInsets = insets
 		}
-        
-        if #available(iOS 11.0, *) {
-            if view.safeAreaInsets.top > 0 {
-                volume.padding = CGSize(width: 2, height: 8)
-                volume.frame = CGRect(x: 16, y: -10, width: 60, height: 20)
-            } else {
-                volume.frame = CGRect(x: 20, y: UIApplication.shared.statusBarFrame.height,
-                                      width: UIScreen.main.bounds.width - 40, height: 20)
-            }
-        }
 	}
     
     func offerToContinuePopUp(selectedIndex: Int) {
@@ -115,8 +103,9 @@ class TrackListTableVC: UITableViewController {
         volume.barTintColor = .white
         volume.barBackgroundColor = UIColor.white.withAlphaComponent(0.3)
         volume.animation = .fadeIn
-        volume.padding = CGSize(width: 4, height: 8)
         volume.delegate = self
+        volume.padding = CGSize(width: 2, height: 8)
+        volume.frame = CGRect(x: 16, y: -10, width: 60, height: 20)
         
         navigationController?.navigationBar.addSubview(volume)
 	}
@@ -607,6 +596,7 @@ extension TrackListTableVC: UISearchBarDelegate {
 }
 
 extension TrackListTableVC: SubtleVolumeDelegate {
+    
     func subtleVolume(_ subtleVolume: SubtleVolume, accessoryFor value: Double) -> UIImage? {
         return value > 0 ? #imageLiteral(resourceName: "volume-on.pdf") : #imageLiteral(resourceName: "volume-off.pdf")
     }

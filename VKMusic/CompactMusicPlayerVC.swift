@@ -35,34 +35,8 @@ class CompactMusicPlayerVC: UIViewController, UIGestureRecognizerDelegate {
 	var tracks = [Audio]()
 	var currentIndexPathRow = -1
     
-    var statusBarVisible = true
     let volume = SubtleVolume(style: .rounded)
     
-    override var prefersStatusBarHidden: Bool {
-        return !statusBarVisible
-    }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
-    }
-    
-    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
-        return .slide
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        if #available(iOS 11.0, *) {
-            if view.safeAreaInsets.top > 0 {
-                volume.padding = CGSize(width: 2, height: 8)
-                volume.frame = CGRect(x: 16, y: 28, width: 60, height: 20)
-            } else {
-                volume.frame = CGRect(x: 20, y: UIApplication.shared.statusBarFrame.height, width: UIScreen.main.bounds.width - 40, height: 20)
-            }
-        }
-    }
-	
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
         
@@ -120,6 +94,8 @@ class CompactMusicPlayerVC: UIViewController, UIGestureRecognizerDelegate {
         volume.barBackgroundColor = UIColor.white.withAlphaComponent(0.3)
         volume.animation = .fadeIn
         volume.delegate = self
+        volume.padding = CGSize(width: 2, height: 8)
+        volume.frame = CGRect(x: 16, y: 28, width: 60, height: 20)
         
         view.addSubview(volume)
 	}
@@ -266,7 +242,7 @@ class CompactMusicPlayerVC: UIViewController, UIGestureRecognizerDelegate {
 				durationLabel.text = "-\((Int(trackDurationSeconds) - Int(durationSlider.value)).toAudioString)"
 				
 			case .ended:
-				// handle drag ended
+				/// handle drag ended
 				let value = self.durationSlider.value
 				let time = CMTime(value: Int64(value), timescale: 1)
 				AudioPlayer.defaultPlayer.seekToTime(time)
@@ -364,27 +340,5 @@ extension CompactMusicPlayerVC: UITableViewDelegate, UITableViewDataSource {
 extension CompactMusicPlayerVC: SubtleVolumeDelegate {
     func subtleVolume(_ subtleVolume: SubtleVolume, accessoryFor value: Double) -> UIImage? {
         return value > 0 ? #imageLiteral(resourceName: "volume-on.pdf") : #imageLiteral(resourceName: "volume-off.pdf")
-    }
-    
-    func subtleVolume(_ subtleVolume: SubtleVolume, didChange value: Double) {
-        if #available(iOS 11.0, *) {
-            if !subtleVolume.isAnimating && view.safeAreaInsets.top > 0 {
-                statusBarVisible = true
-                UIView.animate(withDuration: 0.1) {
-                    self.setNeedsStatusBarAppearanceUpdate()
-                }
-            }
-        }
-    }
-    
-    func subtleVolume(_ subtleVolume: SubtleVolume, willChange value: Double) {
-        if #available(iOS 11.0, *) {
-            if !subtleVolume.isAnimating && view.safeAreaInsets.top > 0 {
-                statusBarVisible = false
-                UIView.animate(withDuration: 0.1) {
-                    self.setNeedsStatusBarAppearanceUpdate()
-                }
-            }
-        }
     }
 }
