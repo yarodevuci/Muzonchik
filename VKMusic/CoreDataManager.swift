@@ -80,7 +80,7 @@ class CoreDataManager {
 		manageObject.setValue(incrementedID(), forKey: "id")
         
         if let image = audio.thumbnail_image {
-            let imageData = UIImageJPEGRepresentation(image, 1)
+            let imageData = image.jpegData(compressionQuality: 1)
             manageObject.setValue(imageData, forKey: "thumbnail_img")
         }
 		saveContext()		

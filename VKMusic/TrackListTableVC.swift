@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import BTNavigationDropdownMenu
 import SwiftSoup
 import LNPopupController
 import RMQClient
@@ -67,7 +66,7 @@ class TrackListTableVC: UITableViewController {
 		super.viewDidLayoutSubviews()
 		
 		if ProcessInfo.processInfo.operatingSystemVersion.majorVersion <= 10 {
-			let insets = UIEdgeInsetsMake(topLayoutGuide.length, 0, bottomLayoutGuide.length, 0)
+			let insets = UIEdgeInsets.init(top: topLayoutGuide.length, left: 0, bottom: bottomLayoutGuide.length, right: 0)
 			tableView.contentInset = insets
 			tableView.scrollIndicatorInsets = insets
 		}
@@ -155,7 +154,7 @@ class TrackListTableVC: UITableViewController {
 		}
 		searchController.searchBar.placeholder = "Search for music"
 		
-		let cancelButtonAttributes: [NSAttributedStringKey : Any] = [.foregroundColor: UIColor.white]
+		let cancelButtonAttributes: [NSAttributedString.Key : Any] = [.foregroundColor: UIColor.white]
 		UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes, for: .normal)
 		
 		definesPresentationContext = true
@@ -207,31 +206,9 @@ class TrackListTableVC: UITableViewController {
 		navigationController?.popupBar.tintColor = .white
 		let paragraphStyle = NSMutableParagraphStyle()
 		paragraphStyle.alignment = .left
-		navigationController?.popupBar.subtitleTextAttributes = [NSAttributedStringKey.paragraphStyle: paragraphStyle]
-		navigationController?.popupBar.titleTextAttributes = [NSAttributedStringKey.paragraphStyle: paragraphStyle]
+		navigationController?.popupBar.subtitleTextAttributes = [NSAttributedString.Key.paragraphStyle: paragraphStyle]
+		navigationController?.popupBar.titleTextAttributes = [NSAttributedString.Key.paragraphStyle: paragraphStyle]
 		navigationController?.updatePopupBarAppearance()
-	}
-	
-	private func setupDropdownMenu() {
-		let items = ["Music", "Downloads"]
-		let menuView = BTNavigationDropdownMenu(navigationController: self.navigationController, containerView: self.navigationController!.view, title: BTTitle.title("Music"), items: items)
-		menuView.cellSeparatorColor = .black
-		menuView.cellHeight = 50
-		menuView.cellBackgroundColor = .lightBlack
-		menuView.cellSelectionColor = .lightBlack
-		menuView.shouldKeepSelectedCellColor = false
-		menuView.cellTextLabelColor = .white
-		menuView.cellTextLabelFont = UIFont(name: "Avenir-Heavy", size: 15)
-		menuView.cellTextLabelAlignment = .center
-		menuView.arrowPadding = 15
-		menuView.animationDuration = 0.5
-		menuView.maskBackgroundColor = .black
-		menuView.maskBackgroundOpacity = 0.3
-		menuView.didSelectItemAtIndexHandler = {(indexPath: Int) -> () in
-			indexPath == 0 ? self.pullMusic() : self.fetchDownloads()
-		}
-		self.navigationItem.titleView = menuView
-		
 	}
 	
 	@objc func fetchDownloads() {
@@ -513,7 +490,7 @@ class TrackListTableVC: UITableViewController {
 		return isDownloadedListShown
 	}
 	
-	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 		if editingStyle == .delete {
 			deleteSong(indexPath.row)
 		}

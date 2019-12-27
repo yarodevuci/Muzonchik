@@ -67,7 +67,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
 	
 	Defaults to `UIViewAnimationOptionCurveEaseInOut`.
 	*/
-	open var animationCurve: UIViewAnimationCurve = .linear
+	open var animationCurve: UIView.AnimationCurve = .linear
 	
 	/**
 	A boolean property that sets whether the `MarqueeLabel` should behave like a normal `UILabel`.
@@ -209,8 +209,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
 			}
 		}
 	}
-	
-	@available(*, deprecated : 2.6, message : "Use speed property instead")
+    //@available(*, deprecated : 2.6, message : "Use speed property instead")
 	@IBInspectable open var scrollDuration: CGFloat {
 		get {
 			switch speed {
@@ -223,7 +222,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
 		}
 	}
 	
-	@available(*, deprecated : 2.6, message : "Use speed property instead")
+	//@available(*, deprecated : 2.6, message : "Use speed property instead")
 	@IBInspectable open var scrollRate: CGFloat {
 		get {
 			switch speed {
@@ -453,8 +452,8 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
 		NotificationCenter.default.addObserver(self, selector: #selector(MarqueeLabel.labelizeForController(_:)), name: NSNotification.Name(rawValue: MarqueeKeys.Labelize.rawValue), object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(MarqueeLabel.animateForController(_:)), name: NSNotification.Name(rawValue: MarqueeKeys.Animate.rawValue), object: nil)
 		// UIApplication state notifications
-		NotificationCenter.default.addObserver(self, selector: #selector(MarqueeLabel.restartLabel), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(MarqueeLabel.shutdownLabel), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(MarqueeLabel.restartLabel), name: UIApplication.didBecomeActiveNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(MarqueeLabel.shutdownLabel), name: UIApplication.didEnterBackgroundNotification, object: nil)
 	}
 	
 	override open func awakeFromNib() {
@@ -949,7 +948,7 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
 			let colorAnimation = GradientSetupAnimation(keyPath: "colors")
 			colorAnimation.fromValue = gradientMask.colors
 			colorAnimation.toValue = adjustedColors
-			colorAnimation.fillMode = kCAFillModeForwards
+			colorAnimation.fillMode = CAMediaTimingFillMode.forwards
 			colorAnimation.isRemovedOnCompletion = false
 			colorAnimation.delegate = self
 			gradientMask.add(colorAnimation, forKey: "setupFade")
@@ -1137,21 +1136,21 @@ open class MarqueeLabel: UILabel, CAAnimationDelegate {
 		return animation
 	}
 	
-	private func timingFunctionForAnimationCurve(_ curve: UIViewAnimationCurve) -> CAMediaTimingFunction {
+	private func timingFunctionForAnimationCurve(_ curve: UIView.AnimationCurve) -> CAMediaTimingFunction {
 		let timingFunction: String?
 		
 		switch curve {
 		case .easeIn:
-			timingFunction = kCAMediaTimingFunctionEaseIn
+			timingFunction = convertFromCAMediaTimingFunctionName(CAMediaTimingFunctionName.easeIn)
 		case .easeInOut:
-			timingFunction = kCAMediaTimingFunctionEaseInEaseOut
+			timingFunction = convertFromCAMediaTimingFunctionName(CAMediaTimingFunctionName.easeInEaseOut)
 		case .easeOut:
-			timingFunction = kCAMediaTimingFunctionEaseOut
+			timingFunction = convertFromCAMediaTimingFunctionName(CAMediaTimingFunctionName.easeOut)
 		default:
-			timingFunction = kCAMediaTimingFunctionLinear
+			timingFunction = convertFromCAMediaTimingFunctionName(CAMediaTimingFunctionName.linear)
 		}
 		
-		return CAMediaTimingFunction(name: timingFunction!)
+		return CAMediaTimingFunction(name: convertToCAMediaTimingFunctionName(timingFunction!))
 	}
 	
 	private func transactionDurationType(_ labelType: MarqueeType, interval: CGFloat, delay: CGFloat) -> TimeInterval {
@@ -1793,3 +1792,13 @@ fileprivate extension CAMediaTimingFunction {
 }
 
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromCAMediaTimingFunctionName(_ input: CAMediaTimingFunctionName) -> String {
+	return input.rawValue
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToCAMediaTimingFunctionName(_ input: String) -> CAMediaTimingFunctionName {
+	return CAMediaTimingFunctionName(rawValue: input)
+}

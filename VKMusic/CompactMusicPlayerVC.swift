@@ -113,7 +113,7 @@ class CompactMusicPlayerVC: UIViewController, UIGestureRecognizerDelegate {
 				
 		AudioPlayer.defaultPlayer.delegate = self
 		
-		durationSlider.setThumbImage(#imageLiteral(resourceName: "circle"), for: UIControlState())
+		durationSlider.setThumbImage(#imageLiteral(resourceName: "circle"), for: UIControl.State())
 	}
 	
 	func setupVolumeBar() {
@@ -152,20 +152,20 @@ class CompactMusicPlayerVC: UIViewController, UIGestureRecognizerDelegate {
 	
 	func updatePlayButton() {
 		if fullPlayerPlayPauseButton.imageView?.image == #imageLiteral(resourceName: "MPPlay") {
-			fullPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "MPPause"), for: UIControlState())
+			fullPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "MPPause"), for: UIControl.State())
 			playSong()
 		} else {
-			fullPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "MPPlay"), for: UIControlState())
+			fullPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "MPPlay"), for: UIControl.State())
 			pauseSong()
 		}
 	}
 	
 	func setPlayButtonIconToPause() {
-		fullPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "MPPause"), for: UIControlState())
+		fullPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "MPPause"), for: UIControl.State())
 	}
 	
 	func setPlayButtonIconToPlay() {
-		fullPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "MPPlay"), for: UIControlState())
+		fullPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "MPPlay"), for: UIControl.State())
 	}
     
     func prepPlayerControlsUIForNewSong(with duration: String) {
@@ -264,7 +264,7 @@ class CompactMusicPlayerVC: UIViewController, UIGestureRecognizerDelegate {
 				AudioPlayer.defaultPlayer.pause()
 				currenTimeLabel.text = Int(durationSlider.value).toAudioString
 				print(Int(durationSlider.value).toAudioString)
-				fullPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "MPPlay"), for: UIControlState())
+				fullPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "MPPlay"), for: UIControl.State())
 				
 			case .moved:
 				// handle drag moved
@@ -276,7 +276,7 @@ class CompactMusicPlayerVC: UIViewController, UIGestureRecognizerDelegate {
 				let value = self.durationSlider.value
 				let time = CMTime(value: Int64(value), timescale: 1)
 				AudioPlayer.defaultPlayer.seekToTime(time)
-				fullPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "MPPause"), for: UIControlState())
+				fullPlayerPlayPauseButton.setImage(#imageLiteral(resourceName: "MPPause"), for: UIControl.State())
 				
 				AudioPlayer.defaultPlayer.play()
 				

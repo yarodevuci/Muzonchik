@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         print(AppDirectory.getDownloadsFolderURL())
         
 		UINavigationBar.appearance().shadowImage = UIImage()
@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 	
-	func registerOneSignalNotifications(launchOptions: [UIApplicationLaunchOptionsKey: Any]?) {
+	func registerOneSignalNotifications(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
 		OneSignal.initWithLaunchOptions(launchOptions, appId: ONE_SIGNAL_APP_ID, handleNotificationReceived: { (notification) in
 			
 			if notification?.payload.additionalData != nil {

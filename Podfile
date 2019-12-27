@@ -8,7 +8,6 @@ target 'Muzonchik' do
   
   # Pods for VKMusic
   pod 'SwiftSoup', :inhibit_warnings => true
-  pod 'BTNavigationDropdownMenu', :git => 'https://github.com/zkrige/BTNavigationDropdownMenu.git', :inhibit_warnings => true
   pod 'Zip', :git => 'https://github.com/marmelroy/Zip.git', :inhibit_warnings => true
   pod 'RMQClient', '~> 0.10.0', :inhibit_warnings => true
   pod 'OneSignal', :inhibit_warnings => true

@@ -90,7 +90,7 @@ import UIKit
     
     func internalInit() {
         displayLink = CADisplayLink(target: self, selector: #selector(CircleProgressView.displayLinkTick))
-        displayLink?.add(to: RunLoop.main, forMode: .defaultRunLoopMode)
+        displayLink?.add(to: RunLoop.main, forMode: RunLoop.Mode.default)
         displayLink?.isPaused = true
     }
     
