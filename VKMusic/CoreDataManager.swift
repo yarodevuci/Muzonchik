@@ -119,6 +119,8 @@ class CoreDataManager {
 	
 	func fetchSavedResults() -> [TrackInfo]? {
         let fetchRequest: NSFetchRequest = TrackInfo.fetchRequest()
+        let sortDescriptor = NSSortDescriptor(key: "id", ascending: false)
+        fetchRequest.sortDescriptors = [sortDescriptor]
 		
 		do {
 			let result = try managedObjectContext.fetch(fetchRequest)
