@@ -43,7 +43,7 @@ extension TrackListTableVC {
 			do {
                 try FileManager.default.removeItem(at: getFileURL(for: "\(track.title)_\(track.artist)_\(track.duration).mp\(track.url.last ?? "3")"))
                 
-				//Delete From Realm
+				//Delete From Core Data
 				CoreDataManager.shared.deleteAudioFile(withID: track.id)
                 audioFiles.remove(at: row)
                 
@@ -72,7 +72,11 @@ extension TrackListTableVC {
 				print(error.debugDescription)
 				SwiftNotificationBanner.presentNotification(error.localizedDescription)
 			}
-		}
+        } else {
+            CoreDataManager.shared.deleteAudioFile(withID: track.id)
+            audioFiles.remove(at: row)
+            tableView.deleteRows(at: [IndexPath(row: row, section: 0)], with: .automatic)
+        }
 	}
 	
 	func showActivityIndicator(withStatus status: String) {
