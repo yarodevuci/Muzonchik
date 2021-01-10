@@ -22,6 +22,7 @@ class TrackListTableVC: UITableViewController {
 	var activityIndicator = UIActivityIndicatorView()
 	var toolBarStatusLabel = UILabel()
     var currentOffset = 0
+    var isLocalSearch = false
     
     lazy var downloadsSession: URLSession = {
         let configuration = URLSessionConfiguration.background(withIdentifier: "bgSessionConfiguration")
@@ -270,7 +271,7 @@ class TrackListTableVC: UITableViewController {
 	func pullMusic() {
 		currentSelectedIndex = -1
 		isDownloadedListShown = false
-		
+
 		showActivityIndicator(withStatus: "Loading")
 		GlobalFunctions.shared.urlToHTMLString(url: SEARCH_URL) { (htmlString, error) in
 			if let error = error {
@@ -285,39 +286,59 @@ class TrackListTableVC: UITableViewController {
 			}
 		}
 	}
-	
+    	
+//    func searchMusic(tag: String, offSet: Int, removeAll: Bool) {
+//		currentSelectedIndex = -1
+//		isDownloadedListShown = false
+//
+//		showActivityIndicator(withStatus: "Searching for \(tag)")
+//		GlobalFunctions.shared.urlToHTMLString(url: SEARCH_URL + "\(tag)") { (htmlString, error) in
+//
+//            if let error = error {
+//
+//                DispatchQueue.main.async {
+//					SwiftNotificationBanner.presentNotification(error)
+//				}
+//				self.hideActivityIndicator()
+//			}
+//			if let htmlString = htmlString {
+//                self.parseHTML(html: htmlString, removeAll: removeAll)
+//			}
+//		}
+//	}
+    
     func searchMusic(tag: String, offSet: Int, removeAll: Bool) {
-		currentSelectedIndex = -1
-		isDownloadedListShown = false
-		
-		showActivityIndicator(withStatus: "Searching for \(tag)")
-		GlobalFunctions.shared.urlToHTMLString(url: SEARCH_URL + "\(tag)") { (htmlString, error) in
-			
+        currentSelectedIndex = -1
+        isDownloadedListShown = false
+        
+        showActivityIndicator(withStatus: "Searching for \(tag)")
+        
+        GlobalFunctions.shared.search(query: tag) { (htmlString, error) in
             if let error = error {
 
                 DispatchQueue.main.async {
-					SwiftNotificationBanner.presentNotification(error)
-				}
-				self.hideActivityIndicator()
-			}
-			if let htmlString = htmlString {
+                    SwiftNotificationBanner.presentNotification(error)
+                }
+                self.hideActivityIndicator()
+            }
+            if let htmlString = htmlString {
                 self.parseHTML(html: htmlString, removeAll: removeAll)
-			}
-		}
-	}
+            }
+        }
+    }
 	
     func parseHTML(html: String, removeAll: Bool) {
-		let els: Elements = try! SwiftSoup.parse(html).select("div")
+        let els: Elements = try! SwiftSoup.parse(html).select("div")
         
         if removeAll {
             audioFiles.removeAll()
         }
         
 		for element: Element in els.array() {
-//            print(try! element.className())
-			if try! element.className() == "audio-list-entry" {
-				let audioFile = Audio(withElement: element)
-				audioFiles.append(audioFile)
+            print(try! element.className())
+			if try! element.className() == "track-item fx-row fx-middle js-item" {
+                let audioFile = Audio(withElement: element)
+                audioFiles.append(audioFile)
 			}
 		}
 		
@@ -438,36 +459,28 @@ class TrackListTableVC: UITableViewController {
 	}
 	
 	func isFiltering() -> Bool {
-		return searchController.isActive && !(searchController.searchBar.text ?? "").isEmpty && isDownloadedListShown
+		return searchController.isActive && !(searchController.searchBar.text ?? "").isEmpty && isLocalSearch
 	}
     
     func initiatePlayForSelectedTrack(selectedIndex: Int) {
         
-        let audio = audioFiles[selectedIndex]
-        //            currentSelectedIndex = indexPath.row
+        let audio = isFiltering() ? filterAudios[selectedIndex] : audioFiles[selectedIndex]
         
         let mPlayer = storyboard?.instantiateViewController(withIdentifier: "CompactMusicPlayerVC") as! CompactMusicPlayerVC
-        mPlayer.tracks = audioFiles
+        mPlayer.tracks = isFiltering() ? filterAudios : audioFiles
         mPlayer.currentIndexPathRow = selectedIndex
         navigationController?.setToolbarHidden(false, animated: false)
         navigationController?.popupBar.marqueeScrollEnabled = true
         navigationController?.presentPopupBar(withContentViewController: mPlayer, animated: true, completion: nil)
         
-        AudioPlayer.defaultPlayer.setPlayList(audioFiles)
+        AudioPlayer.defaultPlayer.setPlayList(isFiltering() ? filterAudios : audioFiles)
         AudioPlayer.index = selectedIndex
         
         if localFileExistsForTrack(audio) {
-            var trackURLString = ""
-            if audio.url.hasSuffix(".mp3") || audio.url.hasSuffix(".mp4") {
-                trackURLString = audio.url
-            } else { //MAIL.RU Service IS MISSING .mp3 extension, adding it manually
-                trackURLString = audio.url + ".mp3"
-            }
+            let trackURLString = audio.url
             let fileName = "\(audio.title)_\(audio.artist)_\(audio.duration).mp\(trackURLString.hasSuffix(".mp3") ? "3" : "4")"
             AudioPlayer.defaultPlayer.playAudio(fromURL: getFileURL(for: fileName))
-            
         } else {
-            
             DispatchQueue.global(qos: .background).async {
                 AudioPlayer.defaultPlayer.playAudio(fromURL: URL(string: audio.url))
             }
@@ -490,8 +503,7 @@ class TrackListTableVC: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return audioFiles.count
-		//return isFiltering() ? filterAudios.count : audioFiles.count
+		return isFiltering() ? filterAudios.count : audioFiles.count
 	}
 		
 	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -509,11 +521,38 @@ class TrackListTableVC: UITableViewController {
 		return isDownloadedListShown
 	}
 	
-	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-		if editingStyle == .delete {
-			deleteSong(indexPath.row)
-		}
-	}
+//	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+//		if editingStyle == .delete {
+//			deleteSong(indexPath.row)
+//		}
+//	}
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete") { action, index in
+            self.deleteSong(indexPath.row)
+        }
+        
+        let shareAction = UITableViewRowAction(style: .normal, title: "Share") { action, index in
+            
+            let audio = self.isFiltering() ? self.filterAudios[indexPath.row] : self.audioFiles[indexPath.row]
+            let fileName = "\(audio.title)_\(audio.artist)_\(audio.duration).mp\(audio.url.hasSuffix(".mp3") ? "3" : "4")"
+            
+            
+            let activityVC = UIActivityViewController(activityItems: [getFileURL(for: fileName)], applicationActivities: nil)
+            activityVC.popoverPresentationController?.sourceView = self.view
+            
+            self.present(activityVC, animated: true, completion: nil)
+            activityVC.completionWithItemsHandler = { (activityType, completed:Bool, returnedItems:[Any]?, error: Error?) in
+                
+                if completed  {
+                    self.dismiss(animated: true, completion: nil)
+                }
+            }
+        }
+        shareAction.backgroundColor = .systemBlue
+        
+        return [shareAction, deleteAction]
+    }
     
 //    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
 //        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 50))
@@ -537,11 +576,17 @@ class TrackListTableVC: UITableViewController {
 		//        cell.downloadData = activeDownloads[audio.url]
 		//        cell.checkMarkImageView.isHidden = !localFileExistsForTrack(audio)
 		cell.delegate = self
-		cell.audioData = audioFiles[indexPath.row]
-		cell.downloadData = activeDownloads[audioFiles[indexPath.row].url]
-		cell.checkMarkImageView.isHidden = !localFileExistsForTrack(audioFiles[indexPath.row])
-		cell.isSelected = currentSelectedIndex == indexPath.row
         
+        if isFiltering() {
+            cell.audioData = filterAudios[indexPath.row]
+            cell.downloadData = activeDownloads[filterAudios[indexPath.row].url]
+            cell.checkMarkImageView.isHidden = !localFileExistsForTrack(filterAudios[indexPath.row])
+        } else {
+            cell.audioData = audioFiles[indexPath.row]
+            cell.downloadData = activeDownloads[audioFiles[indexPath.row].url]
+            cell.checkMarkImageView.isHidden = !localFileExistsForTrack(audioFiles[indexPath.row])
+            cell.isSelected = currentSelectedIndex == indexPath.row
+        }
 		return cell
 	}
     
@@ -562,6 +607,8 @@ extension TrackListTableVC: UISearchBarDelegate {
 		//        if isDownloadedListShown {
 		//            filterContentForSearchText(searchText)
 		//        }
+        isLocalSearch = true
+        filterContentForSearchText(searchText)
 	}
 	
 	func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -573,6 +620,7 @@ extension TrackListTableVC: UISearchBarDelegate {
 	
 	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
 		fetchDownloads()
+        isLocalSearch = false
 	}
 	
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -585,6 +633,7 @@ extension TrackListTableVC: UISearchBarDelegate {
                 searchMusic(tag: searchText.lowercased(), offSet: currentOffset, removeAll: true)
             }
 		}
+        isLocalSearch = false
 	}
 	
 	func filterContentForSearchText(_ searchText: String) {

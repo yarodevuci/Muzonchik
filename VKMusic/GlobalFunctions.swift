@@ -70,6 +70,23 @@ class GlobalFunctions {
         }
     }
     
+    func search(query: String, completionHandler: @escaping (_ html: String?, _ error: String?) -> ()) {
+        let url = URL(string: "https://mp3mob.net/index.php?do=search&subaction=search&story")!
+        
+        let form_data = ["do": "search",
+                         "subaction":"search",
+                         "story": query]
+        
+        sendPOSTRequest(url: url, json: form_data) { (html, error) in
+            if let html = html {
+                completionHandler(html, nil)
+            } else {
+                completionHandler(nil, error ?? "Error Occured")
+            }
+        }
+        
+    }
+    
 //    func urlToHTMLString(url: String, completionHandler: @escaping (_ html: String?, _ error: String?) -> ()) {
 //        var urlRequest = URLRequest(
 //            url: URL_TO_HTML_API,
@@ -277,5 +294,34 @@ class GlobalFunctions {
 		let path = localUrl.path
 		return FileManager.default.fileExists(atPath: path, isDirectory: &isDir)
 	}
+    
+    fileprivate func sendPOSTRequest(url: URL, json: [String: Any], completionHandler: @escaping (_ html: String?, _ error: String?) -> ()) {
+        
+        var urlRequest = URLRequest(
+            url: url,
+            cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
+            timeoutInterval: 60.0)
+        
+        urlRequest.httpMethod = "POST"
+        urlRequest.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        
+        urlRequest.httpBody = json.percentEncoded()
+       
+        let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+            
+            if let _ = response as? HTTPURLResponse, let data = data {
+                
+                if let htmlString = String(data: data, encoding: .utf8) {
+                    completionHandler(htmlString, nil)
+                } else {
+                    completionHandler(nil, "Error 500")
+                }
+            } else {
+                print(error?.localizedDescription ?? "Error in \(urlRequest.url!)")
+                completionHandler(nil, error?.localizedDescription ?? "Error occured 801")
+            }
+        }
+        task.resume()
+    }
 }
 

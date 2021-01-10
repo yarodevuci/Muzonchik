@@ -3,10 +3,10 @@
 //  LNPopupController
 //
 //  Created by Leo Natan on 7/24/15.
-//  Copyright © 2015 Leo Natan. All rights reserved.
+//  Copyright © 2015-2020 Leo Natan. All rights reserved.
 //
 
-#import "LNPopupCloseButton.h"
+#import "LNPopupCloseButton+Private.h"
 @import ObjectiveC;
 #import "LNChevronView.h"
 
@@ -14,28 +14,16 @@
 {
 	UIVisualEffectView* _effectView;
 	UIView* _highlightView;
-	LNPopupCloseButtonStyle _style;
 	
 	LNChevronView* _chevronView;
 }
 
-- (instancetype)initWithStyle:(LNPopupCloseButtonStyle)style
+- (instancetype)init
 {
-	self = [self init];
+	self = [super init];
 	
 	if(self)
 	{
-		_style = style;
-		
-		if(_style == LNPopupCloseButtonStyleRound)
-		{
-			[self _setupForCircularButton];
-		}
-		else
-		{
-			[self _setupForChevronButton];
-		}
-		
 		self.accessibilityLabel = NSLocalizedString(@"Close", @"");
 		
 		[self setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
@@ -44,15 +32,57 @@
 		[self setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 		[self setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 		
-		return self;
+		_style = LNPopupCloseButtonStyleChevron;
+		[self _setupForChevronButton];
 	}
 	
 	return self;
 }
 
+- (void)setStyle:(LNPopupCloseButtonStyle)style
+{
+	//This will take care of cases where the user sets LNPopupCloseButtonStyleDefault as well as close button repositioning.
+	[self.popupContentView setPopupCloseButtonStyle:style];
+}
+
+- (void)_setStyle:(LNPopupCloseButtonStyle)style
+{
+	if(_style == style)
+	{
+		return;
+	}
+	
+	_style = style;
+	
+	[self _cleanup];
+	
+	if(_style == LNPopupCloseButtonStyleRound)
+	{
+		[self _setupForCircularButton];
+	}
+	else if(_style == LNPopupCloseButtonStyleChevron)
+	{
+		[self _setupForChevronButton];
+	}
+}
+
 - (UIVisualEffectView*)backgroundView
 {
 	return _effectView;
+}
+
+- (void)_cleanup
+{
+	[_chevronView removeFromSuperview];
+	_chevronView = nil;
+	
+	[_effectView removeFromSuperview];
+	_effectView = nil;
+	
+	[_highlightView removeFromSuperview];
+	_highlightView = nil;
+	
+	[self setImage:nil forState:UIControlStateNormal];
 }
 
 - (void)_setupForChevronButton
@@ -65,7 +95,17 @@
 
 - (void)_setupForCircularButton
 {
-	_effectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight]];
+	UIBlurEffectStyle blurStyle;
+	if(@available(iOS 13.0, *))
+	{
+		blurStyle = UIBlurEffectStyleSystemChromeMaterial;
+	}
+	else
+	{
+		blurStyle = UIBlurEffectStyleExtraLight;
+	}
+	
+	_effectView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:blurStyle]];
 	_effectView.userInteractionEnabled = NO;
 	[self addSubview:_effectView];
 	
@@ -87,14 +127,26 @@
 	[self addTarget:self action:@selector(_didTouchCancel) forControlEvents:UIControlEventTouchCancel];
 	
 	self.layer.shadowColor = [UIColor blackColor].CGColor;
-	self.layer.shadowOpacity = 0.1;
-	self.layer.shadowRadius = 3.0;
+	self.layer.shadowOpacity = 0.15;
+	self.layer.shadowRadius = 4.0;
 	self.layer.shadowOffset = CGSizeMake(0, 0);
 	self.layer.masksToBounds = NO;
 	
-	[self setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+	[self setTitleColor:self.tintColor forState:UIControlStateNormal];
 	
-	[self setImage:[UIImage imageNamed:@"DismissChevron" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil] forState:UIControlStateNormal];
+	if(@available(iOS 13.0, *))
+	{
+		UIImageSymbolConfiguration* config = [UIImageSymbolConfiguration configurationWithPointSize:15 weight:UIImageSymbolWeightHeavy scale:UIImageSymbolScaleSmall];
+		UIImage* image = [[UIImage systemImageNamed:@"chevron.down" withConfiguration:config] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+		[self setImage:image forState:UIControlStateNormal];
+	}
+	else
+	{
+		_chevronView = [[LNChevronView alloc] initWithFrame:CGRectMake(4, 4.5, 16, 16)];
+		_chevronView.width = 3.0;
+		[_chevronView setState:LNChevronViewStateUp animated:NO];
+		[self addSubview:_chevronView];
+	}
 }
 
 - (void)_didTouchDown
@@ -197,6 +249,11 @@
 	}
 	
 	[_chevronView setState:LNChevronViewStateFlat animated:YES];
+}
+
+- (void)tintColorDidChange
+{
+	[self setTitleColor:self.tintColor forState:UIControlStateNormal];
 }
 
 @end

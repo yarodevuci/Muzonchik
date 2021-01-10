@@ -2,8 +2,8 @@
 //  LNPopupInteractionPanGestureRecognizer.m
 //  LNPopupController
 //
-//  Created by Leo Natan (Wix) on 15/07/2017.
-//  Copyright © 2017 Leo Natan. All rights reserved.
+//  Created by Leo Natan on 15/07/2017.
+//  Copyright © 2015-2020 Leo Natan. All rights reserved.
 //
 
 #import "LNPopupInteractionPanGestureRecognizer.h"
@@ -48,7 +48,7 @@ extern LNPopupInteractionStyle _LNPopupResolveInteractionStyleFromInteractionSty
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{	
+{
 	if([NSStringFromClass(otherGestureRecognizer.view.class) containsString:@"DropShadow"])
 	{
 		otherGestureRecognizer.state = UIGestureRecognizerStateFailed;
@@ -60,7 +60,7 @@ extern LNPopupInteractionStyle _LNPopupResolveInteractionStyleFromInteractionSty
 		return NO;
 	}
 	
-	if(_popupController.popupControllerState != LNPopupPresentationStateOpen)
+	if(_popupController.popupControllerInternalState != LNPopupPresentationStateOpen)
 	{
 		if([self.forwardedDelegate respondsToSelector:_cmd])
 		{
@@ -83,7 +83,14 @@ extern LNPopupInteractionStyle _LNPopupResolveInteractionStyleFromInteractionSty
 	
 	if([otherGestureRecognizer.view isKindOfClass:[UIScrollView class]])
 	{
-		return YES;
+		if(otherGestureRecognizer.view == gestureRecognizer.view)
+		{
+			return NO;
+		}
+		else
+		{
+			return YES;
+		}
 	}
 	
 	if([self.forwardedDelegate respondsToSelector:_cmd])
@@ -96,8 +103,18 @@ extern LNPopupInteractionStyle _LNPopupResolveInteractionStyleFromInteractionSty
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRequireFailureOfGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
-	if(_popupController.popupControllerState != LNPopupPresentationStateOpen)
+	if(_popupController.popupControllerInternalState != LNPopupPresentationStateOpen)
 	{
+		return NO;
+	}
+	
+	if(_popupController.popupBar._applySwiftUILayoutFixes)
+	{
+		if([otherGestureRecognizer isKindOfClass:UIPanGestureRecognizer.class])
+		{
+			return YES;
+		}
+		
 		return NO;
 	}
 	
@@ -112,6 +129,11 @@ extern LNPopupInteractionStyle _LNPopupResolveInteractionStyleFromInteractionSty
 		{
 			return NO;
 		}
+	}
+
+	if([NSStringFromClass(otherGestureRecognizer.view.class) containsString:@"SwiftUI"])
+	{
+		return NO;
 	}
 	
 	return YES;

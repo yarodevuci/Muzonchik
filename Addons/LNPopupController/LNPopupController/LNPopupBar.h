@@ -3,15 +3,17 @@
 //  LNPopupController
 //
 //  Created by Leo Natan on 7/24/15.
-//  Copyright © 2015 Leo Natan. All rights reserved.
+//  Copyright © 2015-2020 Leo Natan. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import <LNPopupController/LNPopupItem.h>
 #import <LNPopupController/LNPopupCustomBarViewController.h>
 
+#define LN_UNAVAILABLE_API(x) __attribute__((unavailable(x)))
+#define LN_UNAVAILABLE_PREVIEWING_MSG "Add context menu interaction or register for previewing directly on the popup bar view."
+
 #define LN_DEPRECATED_API(x) __attribute__((deprecated(x)))
-#define LN_DEPRECATED_PREVIEWING_MSG "Add context menu interaction or register for previewing directly on the popup bar view. This API will be removed soon."
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -22,7 +24,7 @@ extern const UIBlurEffectStyle LNBackgroundStyleInherit;
  */
 typedef NS_ENUM(NSUInteger, LNPopupBarStyle) {
 	/**
-	 * Use the most appropriate style for the current operating system version—uses prominent style for iOS 10 and above, otherwise compact.
+	 * The default bar style for the current environment
 	 */
 	LNPopupBarStyleDefault,
 	
@@ -37,7 +39,7 @@ typedef NS_ENUM(NSUInteger, LNPopupBarStyle) {
 	/**
 	 * Custom bar style
 	 *
-	 * @note Do not set this style directly. Instead set @c LNPopupBar.customBarViewController and the framework will use this style.
+	 * @note Do not set this style directly. Instead, set @c LNPopupBar.customBarViewController and the framework will use this style.
 	 */
 	LNPopupBarStyleCustom
 };
@@ -68,7 +70,7 @@ typedef NS_ENUM(NSUInteger, LNPopupBarProgressViewStyle) {
 @interface LNPopupBar : UIView <UIAppearanceContainer>
 
 /**
- * If @c YES, the popup bar will automatically inherit its style from the bottom docking view.
+ * If @c true, the popup bar will automatically inherit its style from the bottom docking view.
  */
 @property (nonatomic, assign) BOOL inheritsVisualStyleFromDockingView UI_APPEARANCE_SELECTOR;
 
@@ -78,14 +80,21 @@ typedef NS_ENUM(NSUInteger, LNPopupBarProgressViewStyle) {
 @property (nullable, nonatomic, weak, readonly) LNPopupItem* popupItem;
 
 /**
+ * An array of custom bar button items. (read-only)
+ *
+ * @note For compact popup bars, this property is equivalent to @c trailingBarButtonItems.
+ */
+@property (nullable, nonatomic, copy, readonly) NSArray<UIBarButtonItem*>* barButtonItems;
+
+/**
  * An array of custom bar button items to display on the left side. (read-only)
  */
-@property (nullable, nonatomic, copy, readonly) NSArray<UIBarButtonItem*>* leftBarButtonItems;
+@property (nullable, nonatomic, copy, readonly) NSArray<UIBarButtonItem*>* leadingBarButtonItems;
 
 /**
  * An array of custom bar button items to display on the right side. (read-only)
  */
-@property (nullable, nonatomic, copy, readonly) NSArray<UIBarButtonItem*>* rightBarButtonItems;
+@property (nullable, nonatomic, copy, readonly) NSArray<UIBarButtonItem*>* trailingBarButtonItems;
 
 /**
  * An image view displayed when the bar style is prominent. (read-only)
@@ -110,7 +119,9 @@ typedef NS_ENUM(NSUInteger, LNPopupBarProgressViewStyle) {
 /**
  * The popup bar background style that specifies its appearance.
  *
- * Use @c LNBackgroundStyleInherit value to inherit the docking view's bar style if possible.
+ * Use @c LNBackgroundStyleInherit value to inherit the docking view's bar style if possible, or use a system default.
+ *
+ * Defaults to @c LNBackgroundStyleInherit.
  */
 @property (nonatomic, assign) UIBlurEffectStyle backgroundStyle UI_APPEARANCE_SELECTOR;
 
@@ -120,7 +131,7 @@ typedef NS_ENUM(NSUInteger, LNPopupBarProgressViewStyle) {
 @property (nullable, nonatomic, strong) UIColor* barTintColor UI_APPEARANCE_SELECTOR;
 
 /**
- * A Boolean value that indicates whether the popup bar is translucent (@c YES) or not (@c NO).
+ * A Boolean value that indicates whether the popup bar is translucent (@c true) or not (@c false).
  */
 @property(nonatomic, assign, getter=isTranslucent) BOOL translucent UI_APPEARANCE_SELECTOR;
 
@@ -148,7 +159,9 @@ typedef NS_ENUM(NSUInteger, LNPopupBarProgressViewStyle) {
 @property (nonatomic) UISemanticContentAttribute barItemsSemanticContentAttribute;
 
 /**
- * When enabled, titles and subtitles that are longer than the space available will scroll text over time. By default, this is set to @c false for iOS 10 and above, @c true otherwise.
+ * When enabled, titles and subtitles that are longer than the space available will scroll text over time.
+ *
+ * Defaults to @c false.
  */
 @property (nonatomic, assign) BOOL marqueeScrollEnabled;
 
@@ -168,46 +181,45 @@ typedef NS_ENUM(NSUInteger, LNPopupBarProgressViewStyle) {
 @property (nonatomic, strong, readonly) UILongPressGestureRecognizer* barHighlightGestureRecognizer;
 
 /**
- * Set this property with an @c LNPopupCustomBarViewController subclass object to provide a popup bar with custom content.
+ * Set this property to an @c LNPopupCustomBarViewController subclass object to provide a popup bar with custom content controller.
  */
-@property (nullable, nonatomic, strong) LNPopupCustomBarViewController* customBarViewController;
+@property (nullable, nonatomic, strong) __kindof LNPopupCustomBarViewController* customBarViewController;
 
 @end
 
 #pragma mark Deprecatations
 
 #if ! TARGET_OS_MACCATALYST
-LN_DEPRECATED_API(LN_DEPRECATED_PREVIEWING_MSG)
+LN_UNAVAILABLE_API(LN_UNAVAILABLE_PREVIEWING_MSG)
+/// This no longer has any effect. Add context menu interaction or register for previewing directly on the popup bar view.
 @protocol LNPopupBarPreviewingDelegate <NSObject>
 
 @required
 
-/**
- * Called when the user performs a peek action on the popup bar.
- *
- * The default implementation returns @c nil and no preview is displayed.
- *
- * @return The view controller whose view you want to provide as the preview (peek), or @c nil to disable preview.
- */
-- (nullable UIViewController*)previewingViewControllerForPopupBar:(LNPopupBar*)popupBar LN_DEPRECATED_API(LN_DEPRECATED_PREVIEWING_MSG);
+- (nullable UIViewController*)previewingViewControllerForPopupBar:(LNPopupBar*)popupBar LN_UNAVAILABLE_API(LN_UNAVAILABLE_PREVIEWING_MSG);
 
 @optional
 
-/**
- * Called when the user performs a pop action on the popup bar.
- *
- * The default implementation does not commit the view controller.
- */
-- (void)popupBar:(LNPopupBar*)popupBar commitPreviewingViewController:(UIViewController*)viewController LN_DEPRECATED_API(LN_DEPRECATED_PREVIEWING_MSG);
+- (void)popupBar:(LNPopupBar*)popupBar commitPreviewingViewController:(UIViewController*)viewController LN_UNAVAILABLE_API(LN_UNAVAILABLE_PREVIEWING_MSG);
 
 @end
 
-@interface LNPopupBar ()
+@interface LNPopupBar (Deprecated)
 
 /**
- * The previewing delegate object mediates the presentation of views from the preview (peek) view controller and the commit (pop) view controller. In practice, these two are typically the same view controller. The delegate performs this mediation through your implementation of the methods of the @c LNPopupBarPreviewingDelegate protocol.
+ * This no longer has any effect. Add context menu interaction or register for previewing directly on the popup bar view.
  */
-@property (nullable, nonatomic, weak) id<LNPopupBarPreviewingDelegate> previewingDelegate LN_DEPRECATED_API(LN_DEPRECATED_PREVIEWING_MSG);
+@property (nullable, nonatomic, weak) id<LNPopupBarPreviewingDelegate> previewingDelegate LN_UNAVAILABLE_API(LN_UNAVAILABLE_PREVIEWING_MSG);
+
+/**
+ * An array of custom bar button items to display on the left side. (read-only)
+ */
+@property (nullable, nonatomic, copy, readonly) NSArray<UIBarButtonItem*>* leftBarButtonItems LN_DEPRECATED_API("Use leadingBarButtonItems instead.");
+
+/**
+ * An array of custom bar button items to display on the right side. (read-only)
+ */
+@property (nullable, nonatomic, copy, readonly) NSArray<UIBarButtonItem*>* rightBarButtonItems LN_DEPRECATED_API("Use barButtonItems or trailingBarButtonItems instead.");
 
 @end
 #endif

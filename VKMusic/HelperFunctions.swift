@@ -36,7 +36,7 @@ extension TrackListTableVC {
     }
 		
 	func deleteSong(_ row: Int) {
-		let track = audioFiles[row]
+        let track = isFiltering() ? filterAudios[row] : audioFiles[row]
         
 		if localFileExistsForTrack(track) {
             

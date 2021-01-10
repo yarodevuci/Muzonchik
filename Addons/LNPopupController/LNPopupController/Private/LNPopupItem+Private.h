@@ -3,7 +3,7 @@
 //  LNPopupController
 //
 //  Created by Leo Natan on 7/25/15.
-//  Copyright © 2015 Leo Natan. All rights reserved.
+//  Copyright © 2015-2020 Leo Natan. All rights reserved.
 //
 
 #import <LNPopupController/LNPopupItem.h>
@@ -18,6 +18,8 @@
 @end
 
 @interface LNPopupItem ()
+
+@property (nonatomic, strong) UIViewController* swiftuiImageController;
 
 /**
  * The accessibility label of the image, in a localized string.

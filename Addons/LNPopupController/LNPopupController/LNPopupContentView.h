@@ -3,7 +3,7 @@
 //  LNPopupController
 //
 //  Created by Leo Natan on 7/25/15.
-//  Copyright © 2015 Leo Natan. All rights reserved.
+//  Copyright © 2015-2020 Leo Natan. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -29,7 +29,7 @@ extern const UIBlurEffectStyle LNBackgroundStyleInherit;
 /**
  * The popup close button style.
  */
-@property (nonatomic) LNPopupCloseButtonStyle popupCloseButtonStyle;
+@property (nonatomic) LNPopupCloseButtonStyle popupCloseButtonStyle UI_APPEARANCE_SELECTOR;
 
 /**
  * The popup close button. (read-only)
@@ -46,12 +46,12 @@ extern const UIBlurEffectStyle LNBackgroundStyleInherit;
  *
  * Use @c LNBackgroundStyleInherit value to inherit the popup bar's background style if possible.
  *
- * Defaults to @c LNBackgroundStyleInherit
+ * Defaults to @c LNBackgroundStyleInherit.
  */
 @property (nonatomic, assign) UIBlurEffectStyle backgroundStyle UI_APPEARANCE_SELECTOR;
 
 /**
- * A Boolean value that indicates whether the popup conetnt view is translucent (@c YES) or not (@c NO).
+ * A Boolean value that indicates whether the popup conetnt view is translucent (@c true) or not (@c false).
  */
 @property(nonatomic, assign, getter=isTranslucent) BOOL translucent UI_APPEARANCE_SELECTOR;
 
