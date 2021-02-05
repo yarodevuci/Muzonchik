@@ -90,7 +90,7 @@ class TrackListTableVC: UITableViewController {
 		if let index = notification.userInfo?["index"] as? Int {
 
             let selectedIndexPath = IndexPath(item: index, section: 0)
-            let oldIndexPath = IndexPath(item: currentSelectedIndex, section: 0)
+            let oldIndexPath = IndexPath(item: currentSelectedIndex == -1 ? 0 : currentSelectedIndex, section: 0)
             currentSelectedIndex = index
             
             UserDefaults.standard.set(audioFiles[index].originalIndex, forKey: "savedIndexTrack")

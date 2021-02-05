@@ -15,6 +15,7 @@
 #import "_LNPopupSwizzlingUtils.h"
 #import "NSObject+AltKVC.h"
 #import "UIView+LNPopupSupportPrivate.h"
+#import "LNPopupCustomBarViewController+Private.h"
 @import ObjectiveC;
 
 #if TARGET_OS_MACCATALYST
@@ -1110,18 +1111,32 @@ static void __LNPopupControllerDeeplyEnumerateSubviewsUsingBlock(UIView* view, v
 
 - (void)openPopupAnimated:(BOOL)animated completion:(void(^)(void))completionBlock
 {
-	[self _transitionToState:_LNPopupPresentationStateTransitioning notifyDelegate:NO animated:NO useSpringAnimation:NO allowPopupBarAlphaModification:YES completion:^{
-		[_containerController.view setNeedsLayout];
-		[_containerController.view layoutIfNeeded];
-		[self _transitionToState:LNPopupPresentationStateOpen notifyDelegate:YES animated:animated useSpringAnimation:NO allowPopupBarAlphaModification:YES completion:completionBlock transitionOriginatedByUser:NO];
-	} transitionOriginatedByUser:YES];
+	if(_popupControllerTargetState == LNPopupPresentationStateBarPresented)
+	{
+		[self _transitionToState:_LNPopupPresentationStateTransitioning notifyDelegate:NO animated:NO useSpringAnimation:NO allowPopupBarAlphaModification:YES completion:^{
+			[_containerController.view setNeedsLayout];
+			[_containerController.view layoutIfNeeded];
+			[self _transitionToState:LNPopupPresentationStateOpen notifyDelegate:YES animated:animated useSpringAnimation:NO allowPopupBarAlphaModification:YES completion:completionBlock transitionOriginatedByUser:NO];
+		} transitionOriginatedByUser:YES];
+	}
+	else if(completionBlock != nil)
+	{
+		completionBlock();
+	}
 }
 
 - (void)closePopupAnimated:(BOOL)animated completion:(void(^)(void))completionBlock
 {
-	LNPopupInteractionStyle resolvedStyle = _LNPopupResolveInteractionStyleFromInteractionStyle(_containerController.popupInteractionStyle);
-	
-	[self _transitionToState:LNPopupPresentationStateBarPresented notifyDelegate:YES animated:animated useSpringAnimation:resolvedStyle == LNPopupInteractionStyleSnap ? YES : NO allowPopupBarAlphaModification:YES completion:completionBlock transitionOriginatedByUser:YES];
+	if(_popupControllerTargetState == LNPopupPresentationStateOpen)
+	{
+		LNPopupInteractionStyle resolvedStyle = _LNPopupResolveInteractionStyleFromInteractionStyle(_containerController.popupInteractionStyle);
+		
+		[self _transitionToState:LNPopupPresentationStateBarPresented notifyDelegate:YES animated:animated useSpringAnimation:resolvedStyle == LNPopupInteractionStyleSnap ? YES : NO allowPopupBarAlphaModification:YES completion:completionBlock transitionOriginatedByUser:YES];
+	}
+	else if(completionBlock != nil)
+	{
+		completionBlock();
+	}
 }
 
 - (void)dismissPopupBarAnimated:(BOOL)animated completion:(void(^)(void))completionBlock
@@ -1232,6 +1247,18 @@ static void __LNPopupControllerDeeplyEnumerateSubviewsUsingBlock(UIView* view, v
 {
 	[self _updateBarExtensionStyleFromPopupBar];
 	[_containerController.popupBar _applyGroupingIdentifierToVisualEffectView:self.popupContentView.effectView];
+}
+
+- (void)_popupBar:(LNPopupBar *)bar updateCustomBarController:(LNPopupCustomBarViewController *)customController cleanup:(BOOL)cleanup
+{
+	if(cleanup)
+	{
+		customController.popupController = nil;
+	}
+	else
+	{
+		customController.popupController = self;
+	}
 }
 
 #pragma mark Utils

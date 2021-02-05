@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="119-B8-iKs">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="119-B8-iKs">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -58,7 +59,7 @@
                                             </constraints>
                                         </view>
                                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2qi-6e-cc1">
-                                            <rect key="frame" x="75" y="63" width="300" height="2"/>
+                                            <rect key="frame" x="75" y="61" width="300" height="4"/>
                                             <color key="progressTintColor" red="0.4392156862745098" green="0.66666666666666663" blue="0.92156862745098034" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="trackTintColor" red="0.1450980392" green="0.1450980392" blue="0.1450980392" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </progressView>
@@ -335,14 +336,14 @@
                                     <constraint firstItem="2rM-AM-BVF" firstAttribute="width" secondItem="RyA-FW-Be3" secondAttribute="width" constant="-40" id="xgB-Sr-Qzz"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="NV7-CE-32U">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="NV7-CE-32U">
                                 <rect key="frame" x="0.0" y="253" width="375" height="495"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <color key="separatorColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="separatorInset" minX="80" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="TrackTableViewCell" rowHeight="60" id="cqe-TK-pTB" customClass="TrackTableViewCell" customModule="Muzonchik" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="60"/>
+                                        <rect key="frame" x="0.0" y="55.333332061767578" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cqe-TK-pTB" id="noa-KD-Zzg">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
@@ -706,11 +707,25 @@
             <point key="canvasLocation" x="2778" y="2196"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="S3B-NC-e1t">
+            <size key="intrinsicContentSize" width="140" height="20.666666666666668"/>
+        </designable>
+        <designable name="hmy-iy-sp0">
+            <size key="intrinsicContentSize" width="22" height="18"/>
+        </designable>
+        <designable name="wi9-Ag-myw">
+            <size key="intrinsicContentSize" width="39.333333333333336" height="22"/>
+        </designable>
+    </designables>
     <resources>
         <image name="ArtPlaceholder" width="24" height="24"/>
         <image name="MPForward" width="44" height="44"/>
         <image name="MPPause" width="44" height="44"/>
         <image name="MPPrev" width="44" height="44"/>
         <image name="audio_downloaded_icon" width="64" height="64"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>
