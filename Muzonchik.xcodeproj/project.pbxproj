@@ -3,11 +3,10 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4A3023939614D193F847A910 /* Pods_Muzonchik.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC1F7F3BD2F52A7CCB85E5F5 /* Pods_Muzonchik.framework */; };
 		5B33AF1220532404006A8B86 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5B33AF1020532404006A8B86 /* CoreDataModel.xcdatamodeld */; };
 		5B33AF35205370C4006A8B86 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B33AF34205370C4006A8B86 /* CoreDataManager.swift */; };
 		5B3949CD1D8D10AA00A20E7E /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3949CC1D8D10AA00A20E7E /* MainScreen.swift */; };
@@ -17,13 +16,13 @@
 		5B5078C8204A759A00712ADE /* TrackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5078C7204A759A00712ADE /* TrackTableViewCell.swift */; };
 		5B5078CC204ACC3E00712ADE /* SubtleVolume.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5078CB204ACC3E00712ADE /* SubtleVolume.swift */; };
 		5B5078D0204BE78500712ADE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5B5078CF204BE78500712ADE /* Main.storyboard */; };
-		5B7A10B02042CCB500CF3E8C /* LNPopupController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7A10AF2042CCA200CF3E8C /* LNPopupController.framework */; };
-		5B7A10B12042CCB500CF3E8C /* LNPopupController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5B7A10AF2042CCA200CF3E8C /* LNPopupController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5B7C32F9205B80E6007E8BF6 /* UploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7C32F8205B80E5007E8BF6 /* UploadManager.swift */; };
 		5B7C32FB205BBA57007E8BF6 /* DownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7C32FA205BBA57007E8BF6 /* DownloadManager.swift */; };
 		5B7C32FD205BCB9F007E8BF6 /* SettingsHellper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7C32FC205BCB9F007E8BF6 /* SettingsHellper.swift */; };
 		5B9C3C6320B3CE5A00AE9197 /* ApiKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B9C3C6220B3CE5A00AE9197 /* ApiKey.swift */; };
 		5BA1B7A0206367E800DAE526 /* MarqueeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA1B79F206367E800DAE526 /* MarqueeLabel.swift */; };
+		5BC13AEA2717CD8B0045DF20 /* LNPopupController in Frameworks */ = {isa = PBXBuildFile; productRef = 5BC13AE92717CD8B0045DF20 /* LNPopupController */; };
+		5BC13AEB2717CDA90045DF20 /* LNPopupController in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 5BC13AE92717CD8B0045DF20 /* LNPopupController */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		5BC751F7204411CE00228EDF /* SettingsTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC751F6204411CE00228EDF /* SettingsTableVC.swift */; };
 		5BFFCE0B2040AC7A00716A78 /* TrackListTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFCE0A2040AC7A00716A78 /* TrackListTableVC.swift */; };
 		5BFFCE0D2040B1DE00716A78 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFCE0C2040B1DE00716A78 /* Extensions.swift */; };
@@ -32,6 +31,7 @@
 		5BFFCE33204115D600716A78 /* TableViewSwipeSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFCE32204115D600716A78 /* TableViewSwipeSettings.swift */; };
 		5BFFCE362041172A00716A78 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFCE352041172A00716A78 /* HelperFunctions.swift */; };
 		5BFFCE38204117CE00716A78 /* DownloadAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFCE37204117CE00716A78 /* DownloadAudio.swift */; };
+		BE4F222E48B0443D47A43EF6 /* Pods_Muzonchik.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B65F6B959EC02871D48C35D3 /* Pods_Muzonchik.framework */; };
 		C4444E781DA2867300160F1F /* ESTMusicIndicatorContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4444E761DA2867300160F1F /* ESTMusicIndicatorContentView.swift */; };
 		C4444E791DA2867300160F1F /* ESTMusicIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4444E771DA2867300160F1F /* ESTMusicIndicatorView.swift */; };
 		C4444E7F1DA3868200160F1F /* CircleProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4444E7E1DA3868200160F1F /* CircleProgressView.swift */; };
@@ -47,23 +47,6 @@
 		C4CC8D941D8A7F8600BF68A1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C4CC8D921D8A7F8600BF68A1 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		5B7A10AE2042CCA200CF3E8C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5B7A10AA2042CCA100CF3E8C /* LNPopupController.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 39DB52E51B5823330061C589;
-			remoteInfo = LNPopupController;
-		};
-		5B7A10B22042CCB500CF3E8C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5B7A10AA2042CCA100CF3E8C /* LNPopupController.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 39DB52E41B5823330061C589;
-			remoteInfo = LNPopupController;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		C475CA6B1DA536D9009C8674 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -71,7 +54,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5B7A10B12042CCB500CF3E8C /* LNPopupController.framework in Embed Frameworks */,
+				5BC13AEB2717CDA90045DF20 /* LNPopupController in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -80,7 +63,6 @@
 
 /* Begin PBXFileReference section */
 		39666A64A0F31A1371D9452D /* Pods-VKMusic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VKMusic.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VKMusic/Pods-VKMusic.debug.xcconfig"; sourceTree = "<group>"; };
-		4128D48A6FB63A3004F51565 /* Pods_VKMusic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VKMusic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B0E3BD52058DAEA00D574E9 /* Muzonchik.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Muzonchik.entitlements; sourceTree = "<group>"; };
 		5B33AF1120532404006A8B86 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
 		5B33AF34205370C4006A8B86 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -91,7 +73,6 @@
 		5B5078C7204A759A00712ADE /* TrackTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackTableViewCell.swift; sourceTree = "<group>"; };
 		5B5078CB204ACC3E00712ADE /* SubtleVolume.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubtleVolume.swift; sourceTree = "<group>"; };
 		5B5078CF204BE78500712ADE /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		5B7A10AA2042CCA100CF3E8C /* LNPopupController.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LNPopupController.xcodeproj; path = Addons/LNPopupController/LNPopupController.xcodeproj; sourceTree = "<group>"; };
 		5B7C32F8205B80E5007E8BF6 /* UploadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadManager.swift; sourceTree = "<group>"; };
 		5B7C32FA205BBA57007E8BF6 /* DownloadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadManager.swift; sourceTree = "<group>"; };
 		5B7C32FC205BCB9F007E8BF6 /* SettingsHellper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHellper.swift; sourceTree = "<group>"; };
@@ -107,7 +88,7 @@
 		5BFFCE37204117CE00716A78 /* DownloadAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadAudio.swift; sourceTree = "<group>"; };
 		A3AF06D2A3F37E16D0179E16 /* Pods-VKMusic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VKMusic.release.xcconfig"; path = "Pods/Target Support Files/Pods-VKMusic/Pods-VKMusic.release.xcconfig"; sourceTree = "<group>"; };
 		ADA000499C89EF66BC4E0D77 /* Pods-Muzonchik.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Muzonchik.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Muzonchik/Pods-Muzonchik.debug.xcconfig"; sourceTree = "<group>"; };
-		BC1F7F3BD2F52A7CCB85E5F5 /* Pods_Muzonchik.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Muzonchik.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B65F6B959EC02871D48C35D3 /* Pods_Muzonchik.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Muzonchik.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4444E761DA2867300160F1F /* ESTMusicIndicatorContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ESTMusicIndicatorContentView.swift; sourceTree = "<group>"; };
 		C4444E771DA2867300160F1F /* ESTMusicIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ESTMusicIndicatorView.swift; sourceTree = "<group>"; };
 		C4444E7E1DA3868200160F1F /* CircleProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleProgressView.swift; sourceTree = "<group>"; };
@@ -131,8 +112,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5B7A10B02042CCB500CF3E8C /* LNPopupController.framework in Frameworks */,
-				4A3023939614D193F847A910 /* Pods_Muzonchik.framework in Frameworks */,
+				BE4F222E48B0443D47A43EF6 /* Pods_Muzonchik.framework in Frameworks */,
+				5BC13AEA2717CD8B0045DF20 /* LNPopupController in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,14 +139,6 @@
 				5B5078CB204ACC3E00712ADE /* SubtleVolume.swift */,
 			);
 			name = TelegramMusicPlayer;
-			sourceTree = "<group>";
-		};
-		5B7A10AB2042CCA100CF3E8C /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				5B7A10AF2042CCA200CF3E8C /* LNPopupController.framework */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		5BC751F8204411D200228EDF /* Settings */ = {
@@ -206,8 +179,7 @@
 		BA02850FD7841EC50B6A37DF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4128D48A6FB63A3004F51565 /* Pods_VKMusic.framework */,
-				BC1F7F3BD2F52A7CCB85E5F5 /* Pods_Muzonchik.framework */,
+				B65F6B959EC02871D48C35D3 /* Pods_Muzonchik.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -266,7 +238,6 @@
 			children = (
 				5B0E3BD52058DAEA00D574E9 /* Muzonchik.entitlements */,
 				5B33AF1020532404006A8B86 /* CoreDataModel.xcdatamodeld */,
-				5B7A10AA2042CCA100CF3E8C /* LNPopupController.xcodeproj */,
 				C4CC8D881D8A7F8600BF68A1 /* VKMusic */,
 				C4CC8D871D8A7F8600BF68A1 /* Products */,
 				BA02850FD7841EC50B6A37DF /* Frameworks */,
@@ -328,9 +299,11 @@
 			buildRules = (
 			);
 			dependencies = (
-				5B7A10B32042CCB500CF3E8C /* PBXTargetDependency */,
 			);
 			name = Muzonchik;
+			packageProductDependencies = (
+				5BC13AE92717CD8B0045DF20 /* LNPopupController */,
+			);
 			productName = VKMusic;
 			productReference = C4CC8D861D8A7F8600BF68A1 /* Muzonchik.app */;
 			productType = "com.apple.product-type.application";
@@ -371,30 +344,17 @@
 				Base,
 			);
 			mainGroup = C4CC8D7D1D8A7F8600BF68A1;
+			packageReferences = (
+				5BC13AE82717CD8B0045DF20 /* XCRemoteSwiftPackageReference "LNPopupController" */,
+			);
 			productRefGroup = C4CC8D871D8A7F8600BF68A1 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 5B7A10AB2042CCA100CF3E8C /* Products */;
-					ProjectRef = 5B7A10AA2042CCA100CF3E8C /* LNPopupController.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				C4CC8D851D8A7F8600BF68A1 /* Muzonchik */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		5B7A10AF2042CCA200CF3E8C /* LNPopupController.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = LNPopupController.framework;
-			remoteRef = 5B7A10AE2042CCA200CF3E8C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		C4CC8D841D8A7F8600BF68A1 /* Resources */ = {
@@ -510,14 +470,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		5B7A10B32042CCB500CF3E8C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = LNPopupController;
-			targetProxy = 5B7A10B22042CCB500CF3E8C /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		C4CC8D921D8A7F8600BF68A1 /* LaunchScreen.storyboard */ = {
@@ -637,7 +589,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -659,8 +612,11 @@
 				IBC_WARNINGS = NO;
 				IBSC_WARNINGS = NO;
 				INFOPLIST_FILE = VKMusic/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.VKM.enjoy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -691,8 +647,11 @@
 				IBC_WARNINGS = NO;
 				IBSC_WARNINGS = NO;
 				INFOPLIST_FILE = VKMusic/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.VKM.enjoy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -727,6 +686,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5BC13AE82717CD8B0045DF20 /* XCRemoteSwiftPackageReference "LNPopupController" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/LeoNatan/LNPopupController.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5BC13AE92717CD8B0045DF20 /* LNPopupController */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5BC13AE82717CD8B0045DF20 /* XCRemoteSwiftPackageReference "LNPopupController" */;
+			productName = LNPopupController;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		5B33AF1020532404006A8B86 /* CoreDataModel.xcdatamodeld */ = {

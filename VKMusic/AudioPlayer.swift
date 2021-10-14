@@ -35,7 +35,7 @@ class AudioPlayer {
             
             self.delegate?.audioDidChangeTime(currentTime)
             
-            if currentTime == Int64(self.currentAudio.duration) {
+            if (Int64(self.currentAudio.duration) - currentTime) <= 2  {
                 self.next()
             }
         }

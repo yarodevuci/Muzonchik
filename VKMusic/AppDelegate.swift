@@ -19,6 +19,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
 		UINavigationBar.appearance().shadowImage = UIImage()
 		UINavigationBar.appearance().tintColor = .white
+        
+        if #available(iOS 15, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+            appearance.backgroundColor = .tertiarySystemBackground
+            UINavigationBar.appearance().standardAppearance = appearance
+            UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        }
                 
         return true
     }
