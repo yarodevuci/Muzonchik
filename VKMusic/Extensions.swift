@@ -16,7 +16,7 @@ extension String {
         if self.isEmpty { return 0 } //Just in case we get empty value 
         let comp = self.components(separatedBy: ":")
         let min = Int(comp[0])
-        let sec = Int(comp[1])
+        let sec = comp.count > 1 ? Int(comp[1]) : 0
         return ((min ?? 0) * 60) + (sec ?? 0)
     }
     

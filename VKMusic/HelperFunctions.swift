@@ -45,11 +45,11 @@ extension TrackListTableVC {
                 
 				//Delete From Core Data
 				CoreDataManager.shared.deleteAudioFile(withID: track.id)
-                audioFiles.remove(at: row)
+                isFiltering() ? filterAudios.remove(at: row) : audioFiles.remove(at: row)
                 
                 if AudioPlayer.defaultPlayer.currentAudio != nil {
                     /// Find new index for playing audio
-                    for (index, track) in audioFiles.enumerated() {
+                    for (index, track) in isFiltering() ? filterAudios.enumerated() : audioFiles.enumerated() {
                         if track == AudioPlayer.defaultPlayer.currentAudio {
                             currentSelectedIndex = index
                             break

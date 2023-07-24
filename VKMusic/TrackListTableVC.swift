@@ -21,7 +21,8 @@ class TrackListTableVC: UITableViewController {
 	var isDownloadedListShown = false
 	var activityIndicator = UIActivityIndicatorView()
 	var toolBarStatusLabel = UILabel()
-    var currentOffset = 0
+    var currentOffset = 1
+    var resultFrom = 1
     var isLocalSearch = false
     
     lazy var downloadsSession: URLSession = {
@@ -213,6 +214,10 @@ class TrackListTableVC: UITableViewController {
 		navigationController?.popupBar.subtitleTextAttributes = [NSAttributedString.Key.paragraphStyle: paragraphStyle]
 		navigationController?.popupBar.titleTextAttributes = [NSAttributedString.Key.paragraphStyle: paragraphStyle]
 		navigationController?.updatePopupBarAppearance()
+                
+        let appearanceProxy = LNPopupBar.appearance(whenContainedInInstancesOf: [UINavigationController.self])
+        appearanceProxy.inheritsAppearanceFromDockingView = false
+        appearanceProxy.tintColor = .yellow
 	}
 	
 	@objc func fetchDownloads() {
@@ -223,6 +228,8 @@ class TrackListTableVC: UITableViewController {
         }
         
 		isDownloadedListShown = true
+        currentOffset = 1
+        resultFrom = 1
 //		currentSelectedIndex = -1
 		
 		if let downloadedAudioFiles = CoreDataManager.shared.fetchSavedResults() {
@@ -313,7 +320,7 @@ class TrackListTableVC: UITableViewController {
         
         showActivityIndicator(withStatus: "Searching for \(tag)")
         
-        GlobalFunctions.shared.search(query: tag) { (htmlString, error) in
+        GlobalFunctions.shared.search(query: tag, offset: offSet, resultFrom: resultFrom) { (htmlString, error) in
             if let error = error {
 
                 DispatchQueue.main.async {
@@ -346,6 +353,8 @@ class TrackListTableVC: UITableViewController {
 			self.hideActivityIndicator()
 			self.tableView.reloadData()
 		}
+        currentOffset += 1
+        resultFrom += audioFiles.count
 	}
 	
 	func subscribeForProgress() {
@@ -609,6 +618,9 @@ extension TrackListTableVC: UISearchBarDelegate {
 		//        }
         isLocalSearch = true
         filterContentForSearchText(searchText)
+        
+        currentOffset = 1
+        resultFrom = 1
 	}
 	
 	func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -621,6 +633,9 @@ extension TrackListTableVC: UISearchBarDelegate {
 	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
 		fetchDownloads()
         isLocalSearch = false
+        
+        currentOffset = 1
+        resultFrom = 1
 	}
 	
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {

@@ -62,7 +62,7 @@ class AudioPlayer {
             print(savedTime)
             if currentAudio.duration > 600 && currentAudio.duration != Int(savedTime) {
                 let timeToScroll = CMTime(seconds: savedTime, preferredTimescale: 1)
-                player.seek(to: timeToScroll)
+//                player.seek(to: timeToScroll)
             }
         }
         

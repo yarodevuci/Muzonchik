@@ -70,10 +70,12 @@ class GlobalFunctions {
         }
     }
     
-    func search(query: String, completionHandler: @escaping (_ html: String?, _ error: String?) -> ()) {
+    func search(query: String, offset: Int, resultFrom: Int, completionHandler: @escaping (_ html: String?, _ error: String?) -> ()) {
         let url = URL(string: "https://mp3mob.net/index.php?do=search&subaction=search&story")!
         
-        let form_data = ["do": "search",
+        let form_data: [String : Any] = ["do": "search",
+                         "search_start": offset,
+                         "result_from": resultFrom,
                          "subaction":"search",
                          "story": query]
         
