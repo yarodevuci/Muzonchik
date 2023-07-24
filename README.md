@@ -10,9 +10,9 @@ This app lets you search and download music. This app can convert youtube url to
 </div>
 
 ## **Requirements**
-* Swift 4.0+
-* iOS 9.0+ 
-* Xcode 9.2+
+* Swift 5.0+
+* iOS 13.0+ 
+* Xcode 14+
 
 ## If you like the project and would like to see more updates and bug fixes down the line I would really appreciate some donations! Support Developers. 
 <span class="badge-paypal"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JAGFP3M6BG7LN" title="Donate to this project using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="PayPal Donation Button" /></a></span>
