@@ -1,3 +1,8 @@
+# Deprecated
+This repository is no longer maintained.
+
+
+
 # Muzonchik [![Swift](https://img.shields.io/badge/Swift-4.0.0-orange.svg?style=flat)](https://developer.apple.com/swift/)
 <span class="badge-paypal"><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JAGFP3M6BG7LN" title="Donate to this project using PayPal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="PayPal Donation Button" /></a></span>
 
